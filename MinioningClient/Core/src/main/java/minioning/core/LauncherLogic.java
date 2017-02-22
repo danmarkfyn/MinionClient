@@ -16,6 +16,7 @@ import java.net.InetAddress;
  */
 public class LauncherLogic {
     
+    private static final String token = "CREATEPLAYER;";
     
     public String nameCheck(String input){
      
@@ -24,10 +25,10 @@ public class LauncherLogic {
         tempPlayer = tempPlayer.replaceAll(" ", "");
         
         if (tempPlayer.contains("ø") || tempPlayer.contains("å")
-        || tempPlayer.contains("æ")){
+        || tempPlayer.contains("æ") || tempPlayer.length() < 1 || tempPlayer.length() > 8){
             return null;
         }else{
-        player = "CREATEPLAYER;" + tempPlayer;
+        player = token + tempPlayer;
         }
         return player;
     }
