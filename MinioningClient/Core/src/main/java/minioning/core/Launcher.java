@@ -40,7 +40,9 @@ public class Launcher extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        
+        LauncherLogic launcher = new LauncherLogic();
+        
         final BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
         final DatagramSocket clientSocket = new DatagramSocket();
         final InetAddress IPAddress = InetAddress.getByName("localhost");
@@ -64,6 +66,8 @@ public class Launcher extends Application {
 
         Button createBtn = new Button("Create");
         createBtn.setVisible(false);
+        
+        Button quitBtn = new Button("Quit");
 
         // create textfields
         TextField nameField = new TextField();
@@ -76,6 +80,8 @@ public class Launcher extends Application {
         Label titelLabel = new Label("The Minioning");
         titelLabel.setFont(font1);
         titelLabel.setVisible(true);
+        
+        Label feedbackLabel = new Label();
 
         createPlayerBtn.setOnAction((v) -> {
             createPlayerBtn.setVisible(false);
@@ -84,6 +90,12 @@ public class Launcher extends Application {
             nameLabel.setVisible(true);
             createBtn.setVisible(true);
         });
+        
+        
+           quitBtn.setOnAction((v) -> {
+            primaryStage.close();
+        });
+        
 
         backBtn.setOnAction((v) -> {
             createPlayerBtn.setVisible(true);
@@ -94,28 +106,15 @@ public class Launcher extends Application {
         });
         
         createBtn.setOnAction((v) -> {
-            System.out.println("efesfd");
-             byte[] sendData = new byte[1024];
-             byte[] receiveData = new byte[1024];
-            
-            String sentence = "CREATEPLAYER;" + nameField.getText();
-            System.out.println(sentence);
-            sendData = sentence.getBytes();
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+             String s = nameField.getText();
+            String output = launcher.nameCheck(s);
             try {
-                System.out.println("fuck");
-                clientSocket.send(sendPacket);
-                System.out.println("Fick");
-//        DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-//        clientSocket.receive(receivePacket);
-//        String modifiedSentence = new String(receivePacket.getData());
-//        System.out.println("FROM SERVER:" + modifiedSentence);
-//        clientSocket.close();
-//            System.out.println(output);
-            } catch (IOException ex) {
-                System.out.println("Pizza");
-                System.out.println(ex);
+                launcher.CreatePlayer(output, IPAddress, clientSocket);
+                feedbackLabel.setText("Player Created");
+            } catch (Exception e) {
+                feedbackLabel.setText("Error");
             }
+            nameField.clear();
         });
 
         Button leftbtn = new Button("Previous");
@@ -131,14 +130,14 @@ public class Launcher extends Application {
         VBox vb2 = new VBox();
         VBox vb3 = new VBox();
 
-//        vb3.setPrefWidth(width - 122);
+//        vb3.setPrefWidth(width + 10);
         vb1.getChildren().addAll();
         vb2.getChildren().addAll(nameLabel, nameField, createBtn,backBtn);
-        vb3.getChildren().addAll();
+        vb3.getChildren().addAll(feedbackLabel);
 
         hb0.getChildren().addAll(titelLabel);
         hb1.getChildren().addAll(createPlayerBtn);
-        hb2.getChildren().addAll(vb1, vb2, vb3);
+        hb2.getChildren().addAll(vb1, vb2, vb3, quitBtn);
         
         
         
