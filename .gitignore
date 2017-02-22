@@ -1,2 +1,5 @@
 /MinioningClient/branding/target/
 /MinioningClient/application/target/
+/MinioningClient/Core/target/
+/MinioningClient/Common/target/
+/JavaFXApplication45/nbproject/private/
