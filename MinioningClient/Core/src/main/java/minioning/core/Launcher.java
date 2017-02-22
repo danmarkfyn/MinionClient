@@ -9,6 +9,14 @@ package minioning.core;
  *
  * @author Jakob
  */
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -18,8 +26,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.openide.util.Exceptions;
 
 public class Launcher extends Application {
 
@@ -31,6 +41,11 @@ public class Launcher extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        final BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+        final DatagramSocket clientSocket = new DatagramSocket();
+        final InetAddress IPAddress = InetAddress.getByName("localhost");
+      
+        
         Group root = new Group();
 
         BorderPane pane = new BorderPane();
@@ -77,6 +92,31 @@ public class Launcher extends Application {
             nameLabel.setVisible(false);
             createBtn.setVisible(false);
         });
+        
+        createBtn.setOnAction((v) -> {
+            System.out.println("efesfd");
+             byte[] sendData = new byte[1024];
+             byte[] receiveData = new byte[1024];
+            
+            String sentence = "CREATEPLAYER;" + nameField.getText();
+            System.out.println(sentence);
+            sendData = sentence.getBytes();
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+            try {
+                System.out.println("fuck");
+                clientSocket.send(sendPacket);
+                System.out.println("Fick");
+//        DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+//        clientSocket.receive(receivePacket);
+//        String modifiedSentence = new String(receivePacket.getData());
+//        System.out.println("FROM SERVER:" + modifiedSentence);
+//        clientSocket.close();
+//            System.out.println(output);
+            } catch (IOException ex) {
+                System.out.println("Pizza");
+                System.out.println(ex);
+            }
+        });
 
         Button leftbtn = new Button("Previous");
 
@@ -100,12 +140,14 @@ public class Launcher extends Application {
         hb1.getChildren().addAll(createPlayerBtn);
         hb2.getChildren().addAll(vb1, vb2, vb3);
         
+        
+        
         pane.setTop(hb0);
         pane.setCenter(hb1);
         pane.setBottom(hb2);
 
         root.getChildren().addAll(pane);
-        Scene scene = new Scene(root, width, height);
+        Scene scene = new Scene(root, width, height, Color.GAINSBORO);
 
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -114,7 +156,11 @@ public class Launcher extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SocketException, UnknownHostException {
         Application.launch(args);
+        
+ 
+        
+        
     }
 }
