@@ -44,19 +44,26 @@ public class Launcher extends Application {
 
         // fonts
         Font font1 = Font.font("Serif", 40);
-        Font font2 = Font.font("Time New Roman", 10);
+        Font font2 = Font.font("Time New Roman", 12);
 
         // create buttons
         Button createPlayerBtn = new Button("Create Player");
+        createPlayerBtn.setFont(font2);
         createPlayerBtn.setVisible(true);
 
         Button backBtn = new Button("Back");
+        backBtn.setFont(font2);
         backBtn.setVisible(false);
 
         Button createBtn = new Button("Create");
+        createBtn.setFont(font2);
         createBtn.setVisible(false);
 
         Button quitBtn = new Button("Quit");
+        quitBtn.setFont(font2);
+
+        Button helpBtn = new Button("Help");
+        quitBtn.setFont(font2);
 
         // create textfields
         TextField nameField = new TextField();
@@ -87,6 +94,11 @@ public class Launcher extends Application {
             primaryStage.close();
         });
 
+        // quit button action
+        helpBtn.setOnAction((v) -> {
+            // show help dialog box
+        });
+
         // back button action
         backBtn.setOnAction((v) -> {
             createPlayerBtn.setVisible(true);
@@ -105,8 +117,10 @@ public class Launcher extends Application {
             try {
                 launcher.CreatePlayer(output, IPAddress, clientSocket);
                 feedbackLabel.setText("Player Created");
+                feedbackLabel.setVisible(true);
             } catch (Exception e) {
                 feedbackLabel.setText("Error");
+                feedbackLabel.setVisible(true);
             }
             nameField.clear();
         });
@@ -114,6 +128,7 @@ public class Launcher extends Application {
         Label label = new Label(this.getClass().getName());
         pane.setCenter(label);
 
+        // Arrangement of nodes
         HBox hb0 = new HBox(15);
         HBox hb1 = new HBox(15);
         HBox hb2 = new HBox(15);
@@ -122,13 +137,13 @@ public class Launcher extends Application {
         VBox vb2 = new VBox();
         VBox vb3 = new VBox();
 
-        vb1.getChildren().addAll();
+        vb1.getChildren().addAll(helpBtn, quitBtn);
         vb2.getChildren().addAll(nameLabel, nameField, createBtn, backBtn);
         vb3.getChildren().addAll(feedbackLabel);
 
         hb0.getChildren().addAll(titelLabel);
-        hb1.getChildren().addAll(createPlayerBtn);
-        hb2.getChildren().addAll(vb1, vb2, vb3, quitBtn);
+        hb1.getChildren().addAll(createPlayerBtn, vb2);
+        hb2.getChildren().addAll(vb1, vb3);
 
         pane.setTop(hb0);
         pane.setCenter(hb1);

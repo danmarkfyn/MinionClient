@@ -25,14 +25,13 @@ public class LauncherLogic {
         tempPlayer = tempPlayer.replaceAll(" ", "");
         
         if (tempPlayer.contains("ø") || tempPlayer.contains("å")
-        || tempPlayer.contains("æ") || tempPlayer.length() < 1 || tempPlayer.length() > 8){
+        || tempPlayer.contains("æ") || tempPlayer.contains(";") ||tempPlayer.length() < 1 || tempPlayer.length() > 10){
             return null;
         }else{
         player = token + tempPlayer;
         }
         return player;
     }
-    
     
     public void CreatePlayer (String playerInfo, InetAddress IPAddress, DatagramSocket clientSocket) throws IOException{
         byte[] sendData = new byte[1024];   
@@ -41,9 +40,4 @@ public class LauncherLogic {
            
                 clientSocket.send(sendPacket);
     }
-    
-    
-    
-    
-    
 }
