@@ -5,6 +5,7 @@ package minioning.core;
  * @author Jakob
  */
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -22,12 +23,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.openide.util.Exceptions;
 
 public class Launcher extends Application {
 
     public static Launcher launcher = null;
 
-    private final int height = 180;
+    private final int height = 300;
     private final int width = 250;
 
     @Override
@@ -37,16 +39,31 @@ public class Launcher extends Application {
 
         final BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
         final DatagramSocket clientSocket = new DatagramSocket();
-        final InetAddress IPAddress = InetAddress.getByName("localhost");
+        final InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
 
         Group root = new Group();
         BorderPane pane = new BorderPane();
 
+        
+        
+        
+        
         // fonts
         Font font1 = Font.font("Serif", 40);
         Font font2 = Font.font("Time New Roman", 12);
 
         // create buttons
+        Button loginBtn = new Button("Login");
+
+        HBox hb0 = new HBox(15);
+        HBox hb1 = new HBox(15);
+        HBox hb2 = new HBox(15);
+
+        VBox vb1 = new VBox();
+        VBox vb2 = new VBox();
+        VBox vb3 = new VBox();
+        VBox vb4 = new VBox();
+
         Button createPlayerBtn = new Button("Create Player");
         createPlayerBtn.setFont(font2);
         createPlayerBtn.setVisible(true);
@@ -64,10 +81,21 @@ public class Launcher extends Application {
 
         Button helpBtn = new Button("Help");
         quitBtn.setFont(font2);
+        helpBtn.setVisible(false);
+
+        Button requestLoginBtn = new Button("Login");
+        quitBtn.setFont(font2);
+        requestLoginBtn.setVisible(false);
 
         // create textfields
         TextField nameField = new TextField();
         nameField.setVisible(false);
+
+        TextField usernameField = new TextField();
+        usernameField.setVisible(false);
+
+        TextField passwordField = new TextField();
+        passwordField.setVisible(false);
 
         // create labels
         Label nameLabel = new Label("Name: ");
@@ -87,6 +115,26 @@ public class Launcher extends Application {
             nameLabel.setVisible(true);
             createBtn.setVisible(true);
             quitBtn.setVisible(true);
+            loginBtn.setVisible(false);
+            usernameField.setVisible(false);
+            passwordField.setVisible(false);
+            helpBtn.setVisible(true);
+                    
+        });
+
+        // login button action
+        loginBtn.setOnAction((v) -> {
+            createPlayerBtn.setVisible(false);
+            backBtn.setVisible(true);
+            nameField.setVisible(false);
+            nameLabel.setVisible(false);
+            createBtn.setVisible(false);
+            quitBtn.setVisible(true);
+            loginBtn.setVisible(false);
+            usernameField.setVisible(true);
+            passwordField.setVisible(true);
+            requestLoginBtn.setVisible(true);
+
         });
 
         // quit button action
@@ -94,9 +142,9 @@ public class Launcher extends Application {
             primaryStage.close();
         });
 
-        // quit button action
+        // help button action
         helpBtn.setOnAction((v) -> {
-            // show help dialog box
+            launcher.promt("Enter a name. Your name can not contain ;, æ, ø, å or spaces", "Help");
         });
 
         // back button action
@@ -108,7 +156,24 @@ public class Launcher extends Application {
             createBtn.setVisible(false);
             feedbackLabel.setVisible(false);
             quitBtn.setVisible(true);
+            loginBtn.setVisible(true);
+            usernameField.setVisible(false);
+            passwordField.setVisible(false);
+            helpBtn.setVisible(false);
+
         });
+        
+        
+                // back button action
+         requestLoginBtn.setOnAction((v) -> {
+            try {
+                launcher.attemptLogin(usernameField.getText(),passwordField.getText(), IPAddress, clientSocket);
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+
+        });
+        
 
         // create button action
         createBtn.setOnAction((v) -> {
@@ -128,22 +193,14 @@ public class Launcher extends Application {
         Label label = new Label(this.getClass().getName());
         pane.setCenter(label);
 
-        // Arrangement of nodes
-        HBox hb0 = new HBox(15);
-        HBox hb1 = new HBox(15);
-        HBox hb2 = new HBox(15);
-
-        VBox vb1 = new VBox();
-        VBox vb2 = new VBox();
-        VBox vb3 = new VBox();
-
-        vb1.getChildren().addAll(helpBtn, quitBtn);
-        vb2.getChildren().addAll(nameLabel, nameField, createBtn, backBtn);
+        vb1.getChildren().addAll(helpBtn,requestLoginBtn, quitBtn,  backBtn);
+        vb2.getChildren().addAll(loginBtn, nameLabel, nameField, createBtn);
         vb3.getChildren().addAll(feedbackLabel);
+        vb4.getChildren().addAll(usernameField, passwordField);
 
         hb0.getChildren().addAll(titelLabel);
         hb1.getChildren().addAll(createPlayerBtn, vb2);
-        hb2.getChildren().addAll(vb1, vb3);
+        hb2.getChildren().addAll(vb1, vb3, vb4);
 
         pane.setTop(hb0);
         pane.setCenter(hb1);
@@ -162,4 +219,5 @@ public class Launcher extends Application {
     public static void main(String[] args) throws SocketException, UnknownHostException {
         Application.launch(args);
     }
+
 }
