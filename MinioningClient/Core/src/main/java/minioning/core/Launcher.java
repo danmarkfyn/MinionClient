@@ -23,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import static minioning.core.LauncherLogic.getDatagramSocket;
 import org.openide.util.Exceptions;
 
 public class Launcher extends Application {
@@ -35,13 +36,19 @@ public class Launcher extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        LauncherLogic launcher = new LauncherLogic();
 
-        final BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-        final DatagramSocket clientSocket = new DatagramSocket();
+//        final BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+        final DatagramSocket clientSocket = getDatagramSocket();
         final InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
-
+        
+        
+        
+        LauncherLogic launcher = new LauncherLogic();
+        
+        new Thread(launcher).start();
         Group root = new Group();
+        
+        
         BorderPane pane = new BorderPane();
 
         
@@ -144,7 +151,7 @@ public class Launcher extends Application {
 
         // help button action
         helpBtn.setOnAction((v) -> {
-            launcher.promt("Enter a name. Your name can not contain ;, æ, ø, å or spaces", "Help");
+            launcher.promt("Enter a name. Your name can not contain ;, Ã¦, Ã¸, Ã¥ or spaces", "Help");
         });
 
         // back button action
