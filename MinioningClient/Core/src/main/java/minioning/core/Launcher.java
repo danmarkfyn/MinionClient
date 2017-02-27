@@ -4,9 +4,7 @@ package minioning.core;
  *
  * @author Jakob
  */
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -25,36 +23,43 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import static minioning.core.LauncherLogic.getDatagramSocket;
 import org.openide.util.Exceptions;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.Tab;
 
 public class Launcher extends Application {
 
     public static Launcher launcher = null;
 
-    private final int height = 300;
+    private final int height = 175;
     private final int width = 250;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-
 //        final BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
         final DatagramSocket clientSocket = getDatagramSocket();
         final InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
-        
-        
-        
+
         LauncherLogic launcher = new LauncherLogic();
-        
+
         new Thread(launcher).start();
         Group root = new Group();
-        
-        
+
+        //tabs setup
+        //tap pane
+        TabPane tp = new TabPane();
+
+        // tap 1
+        Tab tab1 = new Tab("Login");
+
+        tab1.closableProperty().set(false);
+
+        // tap 2
+        Tab tab2 = new Tab("Create Player");
+        tab2.closableProperty().set(false);
+
         BorderPane pane = new BorderPane();
 
-        
-        
-        
-        
         // fonts
         Font font1 = Font.font("Serif", 40);
         Font font2 = Font.font("Time New Roman", 12);
@@ -62,51 +67,29 @@ public class Launcher extends Application {
         // create buttons
         Button loginBtn = new Button("Login");
 
-        HBox hb0 = new HBox(15);
-        HBox hb1 = new HBox(15);
-        HBox hb2 = new HBox(15);
-
-        VBox vb1 = new VBox();
-        VBox vb2 = new VBox();
-        VBox vb3 = new VBox();
-        VBox vb4 = new VBox();
-
-        Button createPlayerBtn = new Button("Create Player");
-        createPlayerBtn.setFont(font2);
-        createPlayerBtn.setVisible(true);
-
-        Button backBtn = new Button("Back");
-        backBtn.setFont(font2);
-        backBtn.setVisible(false);
+        Button createAvatarBtn = new Button("Create");
+        createAvatarBtn.setFont(font2);
 
         Button createBtn = new Button("Create");
         createBtn.setFont(font2);
         createBtn.setVisible(false);
 
-        Button quitBtn = new Button("Quit");
-        quitBtn.setFont(font2);
-
-        Button helpBtn = new Button("Help");
-        quitBtn.setFont(font2);
-        helpBtn.setVisible(false);
-
         Button requestLoginBtn = new Button("Login");
-        quitBtn.setFont(font2);
         requestLoginBtn.setVisible(false);
 
         // create textfields
-        TextField nameField = new TextField();
-        nameField.setVisible(false);
+        TextField avatarnameField = new TextField();
 
         TextField usernameField = new TextField();
-        usernameField.setVisible(false);
 
         TextField passwordField = new TextField();
-        passwordField.setVisible(false);
 
         // create labels
-        Label nameLabel = new Label("Name: ");
-        nameLabel.setVisible(false);
+        Label usernameLabel = new Label("Username: ");
+
+        Label passwordLabel = new Label("Password: ");
+
+        Label avatarnameLabel = new Label("Avatar Name:");
 
         Label titelLabel = new Label("The Minioning");
         titelLabel.setFont(font1);
@@ -114,78 +97,29 @@ public class Launcher extends Application {
 
         Label feedbackLabel = new Label();
 
-        // createplayer button action
-        createPlayerBtn.setOnAction((v) -> {
-            createPlayerBtn.setVisible(false);
-            backBtn.setVisible(true);
-            nameField.setVisible(true);
-            nameLabel.setVisible(true);
-            createBtn.setVisible(true);
-            quitBtn.setVisible(true);
-            loginBtn.setVisible(false);
-            usernameField.setVisible(false);
-            passwordField.setVisible(false);
-            helpBtn.setVisible(true);
-                    
-        });
-
         // login button action
         loginBtn.setOnAction((v) -> {
-            createPlayerBtn.setVisible(false);
-            backBtn.setVisible(true);
-            nameField.setVisible(false);
-            nameLabel.setVisible(false);
-            createBtn.setVisible(false);
-            quitBtn.setVisible(true);
-            loginBtn.setVisible(false);
-            usernameField.setVisible(true);
-            passwordField.setVisible(true);
-            requestLoginBtn.setVisible(true);
 
-        });
+            String username = launcher.nameCheck(usernameField.getText());
 
-        // quit button action
-        quitBtn.setOnAction((v) -> {
-            primaryStage.close();
-        });
+            String password = launcher.nameCheck(passwordField.getText());
 
-        // help button action
-        helpBtn.setOnAction((v) -> {
-            launcher.promt("Enter a name. Your name can not contain ;, Ã¦, Ã¸, Ã¥ or spaces", "Help");
-        });
+            if (username != null && password != null) {
 
-        // back button action
-        backBtn.setOnAction((v) -> {
-            createPlayerBtn.setVisible(true);
-            backBtn.setVisible(false);
-            nameField.setVisible(false);
-            nameLabel.setVisible(false);
-            createBtn.setVisible(false);
-            feedbackLabel.setVisible(false);
-            quitBtn.setVisible(true);
-            loginBtn.setVisible(true);
-            usernameField.setVisible(false);
-            passwordField.setVisible(false);
-            helpBtn.setVisible(false);
-
-        });
-        
-        
-                // back button action
-         requestLoginBtn.setOnAction((v) -> {
-            try {
-                launcher.attemptLogin(usernameField.getText(),passwordField.getText(), IPAddress, clientSocket);
-            } catch (IOException ex) {
-                Exceptions.printStackTrace(ex);
+                try {
+                    launcher.attemptLogin(username, password, IPAddress, clientSocket);
+                } catch (IOException ex) {
+                    Exceptions.printStackTrace(ex);
+                }
             }
-
         });
-        
 
         // create button action
-        createBtn.setOnAction((v) -> {
-            String s = nameField.getText();
+        createAvatarBtn.setOnAction((v) -> {
+            String s = avatarnameField.getText();
             String output = launcher.nameCheck(s);
+            
+            if(output != null){
             try {
                 launcher.CreatePlayer(output, IPAddress, clientSocket);
                 feedbackLabel.setText("Player Created");
@@ -194,24 +128,36 @@ public class Launcher extends Application {
                 feedbackLabel.setText("Error");
                 feedbackLabel.setVisible(true);
             }
-            nameField.clear();
+            avatarnameField.clear();
+            }
         });
 
-        Label label = new Label(this.getClass().getName());
-        pane.setCenter(label);
+        // setup tab 1 content
+        HBox t1_hb1 = new HBox(15);
+        HBox t1_hb2 = new HBox(15);
 
-        vb1.getChildren().addAll(helpBtn,requestLoginBtn, quitBtn,  backBtn);
-        vb2.getChildren().addAll(loginBtn, nameLabel, nameField, createBtn);
-        vb3.getChildren().addAll(feedbackLabel);
-        vb4.getChildren().addAll(usernameField, passwordField);
+        VBox t1_vb1 = new VBox();
 
-        hb0.getChildren().addAll(titelLabel);
-        hb1.getChildren().addAll(createPlayerBtn, vb2);
-        hb2.getChildren().addAll(vb1, vb3, vb4);
+        t1_hb1.getChildren().addAll(usernameLabel, usernameField);
+        t1_hb2.getChildren().addAll(passwordLabel, passwordField);
 
-        pane.setTop(hb0);
-        pane.setCenter(hb1);
-        pane.setBottom(hb2);
+        t1_vb1.getChildren().addAll(t1_hb1, t1_hb2, loginBtn);
+
+        // setup tab 2 content
+        HBox t2_hb1 = new HBox(15);
+
+        VBox t2_vb1 = new VBox();
+
+        t2_hb1.getChildren().addAll(avatarnameLabel, avatarnameField);
+
+        t2_vb1.getChildren().addAll(t2_hb1, createAvatarBtn);
+
+        tab1.setContent(t1_vb1);
+        tab2.setContent(t2_vb1);
+        tp.getTabs().addAll(tab1, tab2);
+
+        pane.setTop(titelLabel);
+        pane.setBottom(tp);
 
         root.getChildren().addAll(pane);
         Scene scene = new Scene(root, width, height, Color.GAINSBORO);

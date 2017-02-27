@@ -47,16 +47,21 @@ public final class LauncherLogic implements Runnable {
                 || tempPlayer.contains("æ") || tempPlayer.contains(";") || tempPlayer.length() < 1 || tempPlayer.length() > 10) {
             return null;
         } else {
-            player = createPlayerToken + tempPlayer;
+            player = tempPlayer;
         }
         return player;
     }
 
     public final void CreatePlayer(String playerInfo, InetAddress IPAddress, DatagramSocket clientSocket) throws IOException {
         byte[] sendData = new byte[1024];
-        sendData = playerInfo.getBytes();
+        
+        String output = createPlayerToken + playerInfo;
+        
+        System.out.println(output);
+        
+        sendData = output.getBytes();
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
-
+  
         clientSocket.send(sendPacket);
     }
 
