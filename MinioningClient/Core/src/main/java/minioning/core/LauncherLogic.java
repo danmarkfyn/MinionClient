@@ -30,6 +30,7 @@ public final class LauncherLogic implements Runnable {
     private static final String loginToken = "LOGIN;";
     public static DatagramSocket cSocket;
 
+    // implements singleton
     public static DatagramSocket getDatagramSocket() throws SocketException{
         if(cSocket == null){
             cSocket = new DatagramSocket();
@@ -38,7 +39,6 @@ public final class LauncherLogic implements Runnable {
     }
     
     public String nameCheck(String input) {
-
         String player = null;
         String tempPlayer = input.trim();
         tempPlayer = tempPlayer.replaceAll(" ", "");
@@ -78,7 +78,6 @@ public final class LauncherLogic implements Runnable {
     }
 
     public final void promt(String s1, String s2) {
-
         // prompt message 
         Stage dialog = new Stage();
         dialog.initStyle(StageStyle.UTILITY);
@@ -114,7 +113,6 @@ public final class LauncherLogic implements Runnable {
     @Override
     public void run() {
 
-        
         byte[] sData = null;
         DatagramPacket sPacket = null;
 

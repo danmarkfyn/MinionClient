@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,152 +26,141 @@ import static minioning.core.LauncherLogic.getDatagramSocket;
 import org.openide.util.Exceptions;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.BooleanProperty;
 
 public class Launcher extends Application {
-
+    
     public static Launcher launcher = null;
-
+    
     private final int height = 175;
     private final int width = 250;
-
+    private final BooleanProperty serverToken = new SimpleBooleanProperty();    
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-//        final BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+        
+        serverToken.setValue(Boolean.TRUE);
+        
+        
         final DatagramSocket clientSocket = getDatagramSocket();
         final InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
-
+        
         LauncherLogic launcher = new LauncherLogic();
-
+        
         new Thread(launcher).start();
         Group root = new Group();
 
-        //tabs setup
+        //***TAB SETUP***
         //tap pane
         TabPane tp = new TabPane();
 
         // tap 1
         Tab tab1 = new Tab("Login");
-
+//        tab1.setDisable(true);
         tab1.closableProperty().set(false);
 
         // tap 2
         Tab tab2 = new Tab("Create Player");
         tab2.closableProperty().set(false);
-
+        
+        tab2.disableProperty().bind(serverToken);
+        
         BorderPane pane = new BorderPane();
 
         // fonts
         Font font1 = Font.font("Serif", 40);
         Font font2 = Font.font("Time New Roman", 12);
 
-        // create buttons
+        // Buttons
         Button loginBtn = new Button("Login");
-
+        
         Button createAvatarBtn = new Button("Create");
         createAvatarBtn.setFont(font2);
 
-        Button createBtn = new Button("Create");
-        createBtn.setFont(font2);
-        createBtn.setVisible(false);
-
-        Button requestLoginBtn = new Button("Login");
-        requestLoginBtn.setVisible(false);
-
-        // create textfields
+        // Textfields
         TextField avatarnameField = new TextField();
-
         TextField usernameField = new TextField();
-
         TextField passwordField = new TextField();
 
-        // create labels
+        // Labels
         Label usernameLabel = new Label("Username: ");
-
         Label passwordLabel = new Label("Password: ");
-
         Label avatarnameLabel = new Label("Avatar Name:");
-
         Label titelLabel = new Label("The Minioning");
         titelLabel.setFont(font1);
-        titelLabel.setVisible(true);
 
-        Label feedbackLabel = new Label();
-
+        // ***OnAction***
         // login button action
         loginBtn.setOnAction((v) -> {
-
+            
             String username = launcher.nameCheck(usernameField.getText());
-
+            
             String password = launcher.nameCheck(passwordField.getText());
-
+            
             if (username != null && password != null) {
-
+                
                 try {
                     launcher.attemptLogin(username, password, IPAddress, clientSocket);
+                serverToken.setValue(Boolean.FALSE);
                 } catch (IOException ex) {
                     Exceptions.printStackTrace(ex);
                 }
             }
         });
-
+        
         // create button action
         createAvatarBtn.setOnAction((v) -> {
             String s = avatarnameField.getText();
             String output = launcher.nameCheck(s);
             
-            if(output != null){
-            try {
-                launcher.CreatePlayer(output, IPAddress, clientSocket);
-                feedbackLabel.setText("Player Created");
-                feedbackLabel.setVisible(true);
-            } catch (Exception e) {
-                feedbackLabel.setText("Error");
-                feedbackLabel.setVisible(true);
-            }
-            avatarnameField.clear();
+            if (output != null) {
+                try {
+                    launcher.CreatePlayer(output, IPAddress, clientSocket);
+                } catch (Exception e) {
+                }
+                avatarnameField.clear();
             }
         });
 
         // setup tab 1 content
         HBox t1_hb1 = new HBox(15);
         HBox t1_hb2 = new HBox(15);
-
+        
         VBox t1_vb1 = new VBox();
-
+        
         t1_hb1.getChildren().addAll(usernameLabel, usernameField);
         t1_hb2.getChildren().addAll(passwordLabel, passwordField);
-
+        
         t1_vb1.getChildren().addAll(t1_hb1, t1_hb2, loginBtn);
 
         // setup tab 2 content
         HBox t2_hb1 = new HBox(15);
-
+        
         VBox t2_vb1 = new VBox();
-
+        
         t2_hb1.getChildren().addAll(avatarnameLabel, avatarnameField);
-
+        
         t2_vb1.getChildren().addAll(t2_hb1, createAvatarBtn);
-
+        
         tab1.setContent(t1_vb1);
         tab2.setContent(t2_vb1);
         tp.getTabs().addAll(tab1, tab2);
-
+        
         pane.setTop(titelLabel);
         pane.setBottom(tp);
-
+        
         root.getChildren().addAll(pane);
         Scene scene = new Scene(root, width, height, Color.GAINSBORO);
-
+        
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.setTitle(this.getClass().getName());
-
+        
         primaryStage.show();
     }
-
+    
     public static void main(String[] args) throws SocketException, UnknownHostException {
         Application.launch(args);
     }
-
 }
