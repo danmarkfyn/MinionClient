@@ -28,11 +28,11 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.BooleanProperty;
+import javafx.scene.effect.BlendMode;
 
 public class Launcher extends Application {
     
     public static Launcher launcher = null;
-    
     private final int height = 175;
     private final int width = 250;
     private final BooleanProperty serverToken = new SimpleBooleanProperty();    
@@ -44,7 +44,8 @@ public class Launcher extends Application {
         
         
         final DatagramSocket clientSocket = getDatagramSocket();
-        final InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
+//        final InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
+        final InetAddress IPAddress = InetAddress.getByName("localhost");
         
         LauncherLogic launcher = new LauncherLogic();
         
@@ -52,20 +53,19 @@ public class Launcher extends Application {
         Group root = new Group();
 
         //***TAB SETUP***
-        //tap pane
+        //Tap pane
         TabPane tp = new TabPane();
 
-        // tap 1
+        // Tap 1
         Tab tab1 = new Tab("Login");
-//        tab1.setDisable(true);
         tab1.closableProperty().set(false);
 
-        // tap 2
+        // Tap 2
         Tab tab2 = new Tab("Create Player");
         tab2.closableProperty().set(false);
         
-        tab2.disableProperty().bind(serverToken);
-        
+      
+        // Pane
         BorderPane pane = new BorderPane();
 
         // fonts
@@ -74,6 +74,8 @@ public class Launcher extends Application {
 
         // Buttons
         Button loginBtn = new Button("Login");
+        
+        Button logoutBtn = new Button("Logout");
         
         Button createAvatarBtn = new Button("Create");
         createAvatarBtn.setFont(font2);
@@ -85,13 +87,26 @@ public class Launcher extends Application {
 
         // Labels
         Label usernameLabel = new Label("Username: ");
-        Label passwordLabel = new Label("Password: ");
+        Label passwordLabel = new Label("Password:  ");
         Label avatarnameLabel = new Label("Avatar Name:");
         Label titelLabel = new Label("The Minioning");
         titelLabel.setFont(font1);
 
+        
+        //Color
+        titelLabel.setTextFill(Color.CADETBLUE);
+        
         // ***OnAction***
-        // login button action
+        
+        
+        // Logout button action
+        logoutBtn.setOnAction((v) ->{
+            
+            serverToken.setValue(Boolean.TRUE);
+            
+        });
+        
+        // Login button action
         loginBtn.setOnAction((v) -> {
             
             String username = launcher.nameCheck(usernameField.getText());
@@ -99,7 +114,6 @@ public class Launcher extends Application {
             String password = launcher.nameCheck(passwordField.getText());
             
             if (username != null && password != null) {
-                
                 try {
                     launcher.attemptLogin(username, password, IPAddress, clientSocket);
                 serverToken.setValue(Boolean.FALSE);
@@ -107,6 +121,8 @@ public class Launcher extends Application {
                     Exceptions.printStackTrace(ex);
                 }
             }
+            usernameField.clear();
+            passwordField.clear();
         });
         
         // create button action
@@ -132,8 +148,17 @@ public class Launcher extends Application {
         t1_hb1.getChildren().addAll(usernameLabel, usernameField);
         t1_hb2.getChildren().addAll(passwordLabel, passwordField);
         
-        t1_vb1.getChildren().addAll(t1_hb1, t1_hb2, loginBtn);
+        t1_vb1.getChildren().addAll(t1_hb1, t1_hb2, loginBtn, logoutBtn);
 
+        
+        // binds
+        tab2.disableProperty().bind(serverToken);
+        usernameField.disableProperty().bind(serverToken.not());
+        passwordField.disableProperty().bind(serverToken.not());
+        loginBtn.disableProperty().bind(serverToken.not());
+        
+        logoutBtn.disableProperty().bind(serverToken);
+        
         // setup tab 2 content
         HBox t2_hb1 = new HBox(15);
         
@@ -152,6 +177,10 @@ public class Launcher extends Application {
         
         root.getChildren().addAll(pane);
         Scene scene = new Scene(root, width, height, Color.GAINSBORO);
+        
+        primaryStage.setOnCloseRequest((v) ->{
+            System.out.println("Closing");
+        });
         
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
