@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Layer: minioning/silentupdate/layer.xml
+OpenIDE-Module-Localizing-Bundle: minioning/silentupdate/Bundle.properties
+OpenIDE-Module-Install: minioning/silentupdate/UpdateActivator.class

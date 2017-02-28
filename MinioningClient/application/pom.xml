@@ -46,14 +46,9 @@
         </dependency>
         -->
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>Core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>Common</artifactId>
-            <version>${project.version}</version>
+            <groupId>dk.sdu.mmmi.cbse</groupId>
+            <artifactId>SilentUpdate</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -91,8 +86,6 @@
                                 <id>extra</id>
                                 <goals>
                                     <goal>autoupdate</goal>
-                                    <goal>webstart-app</goal>
-                                    <goal>build-installers</goal>
                                 </goals>
                             </execution>
                         </executions>

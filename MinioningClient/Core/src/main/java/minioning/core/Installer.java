@@ -13,10 +13,14 @@ import org.openide.modules.ModuleInstall;
  */
 public class Installer extends ModuleInstall {
 
+    static Thread t;
     
     @Override
     public void restored() {
 
+//        this.run();
+//        t = new Thread((Runnable) this);
+        
         runLauncher();
 //        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 //        executor.scheduleAtFixedRate(gameServer.run(), initialDelay, period, TimeUnit.MILLISECONDS);
@@ -26,18 +30,26 @@ public class Installer extends ModuleInstall {
 
     @Override
     public void uninstalled() {
+        
+        
+//        t.stop();
         super.uninstalled(); //To change body of generated methods, choose Tools | Templates.
 
+        
     }
 
     private static void runLauncher() {
-
+        t.run();
         new Thread() {
             @Override
             public void run() {
                 javafx.application.Application.launch(Launcher.class);
             }
         }.start();
-
+t.start();
     }
+//     public void run() {
+//                javafx.application.Application.launch(Launcher.class);
+//            }
+
 }
