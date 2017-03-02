@@ -13,7 +13,7 @@ import org.openide.modules.ModuleInstall;
  */
 public class Installer extends ModuleInstall {
 
-    static Thread t;
+//    static Thread t;
     
     @Override
     public void restored() {
@@ -39,14 +39,14 @@ public class Installer extends ModuleInstall {
     }
 
     private static void runLauncher() {
-        t.run();
+//        t.run();
         new Thread() {
             @Override
             public void run() {
                 javafx.application.Application.launch(Launcher.class);
             }
         }.start();
-t.start();
+//t.start();
     }
 //     public void run() {
 //                javafx.application.Application.launch(Launcher.class);

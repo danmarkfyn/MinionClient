@@ -6,10 +6,14 @@
 package minioning.core;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import minioning.common.data.Entity;
 import minioning.common.services.IPluginService;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
@@ -17,20 +21,23 @@ import org.openide.util.LookupListener;
 
 public class Core implements ApplicationListener {
 
+    private Map<String, Entity> world = new ConcurrentHashMap<>();
+    private ShapeRenderer sr;
     private final Lookup lookup = Lookup.getDefault();
     private List<IPluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private Lookup.Result<IPluginService> result;
 
     @Override
     public void create() {
-
-  
-
+        sr = new ShapeRenderer();
 
         Lookup.Result<IPluginService> result = lookup.lookupResult(IPluginService.class);
         result.addLookupListener(lookupListener);
         gamePlugins = new ArrayList<>(result.allInstances());
         result.allItems();
+
+        Entity player = new Entity("Player", 200, 200);
+        world.put(player.getName(), player);
 
         for (IPluginService plugin : gamePlugins) {
             plugin.start();
@@ -41,7 +48,16 @@ public class Core implements ApplicationListener {
 
     @Override
     public void render() {
-      
+        for (Entity entity : world.values()) {
+
+            sr.setColor(0, 1, 1, 0);
+
+            sr.begin(ShapeRenderer.ShapeType.Line);
+
+            sr.circle(entity.getX(), entity.getY(), 100);
+
+            sr.end();
+        }
     }
 
     private void update() {
@@ -75,7 +91,6 @@ public class Core implements ApplicationListener {
 //    private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
 //        return lookup.lookupAll(IEntityProcessingService.class);
 //    }
-
     private final LookupListener lookupListener = new LookupListener() {
         @Override
         public void resultChanged(LookupEvent le) {

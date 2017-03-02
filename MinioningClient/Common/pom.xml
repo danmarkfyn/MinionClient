@@ -18,6 +18,7 @@
                     <useOSGiDependencies>true</useOSGiDependencies>
                     <publicPackages>
                         <publicPackage>minioning.common.services</publicPackage>
+                        <publicPackage>minioning.common.data</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>
