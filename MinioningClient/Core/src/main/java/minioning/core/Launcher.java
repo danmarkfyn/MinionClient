@@ -10,7 +10,6 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import javafx.application.Application;
-import javafx.beans.InvalidationListener;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,12 +22,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import static minioning.core.LauncherLogic.getDatagramSocket;
-import org.openide.util.Exceptions;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.BooleanProperty;
-import javafx.scene.effect.BlendMode;
 
 public class Launcher extends Application {
     
@@ -117,8 +114,7 @@ public class Launcher extends Application {
                 try {
                     launcher.attemptLogin(username, password, IPAddress, clientSocket);
                 serverToken.setValue(Boolean.FALSE);
-                } catch (IOException ex) {
-                    Exceptions.printStackTrace(ex);
+                } catch (IOException e) {
                 }
             }
             usernameField.clear();
