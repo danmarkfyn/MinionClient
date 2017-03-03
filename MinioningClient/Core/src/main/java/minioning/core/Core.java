@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import minioning.common.data.Entity;
 import minioning.common.services.IPluginService;
+import minioning.common.services.IProcessingService;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
@@ -42,12 +43,13 @@ public class Core implements ApplicationListener {
         for (IPluginService plugin : gamePlugins) {
             plugin.start();
         }
-//        update();
-//        System.out.println(lookup.lookupAll(IEntityProcessingService.class).size() + " entity processors was found");
+        update();
+        System.out.println(lookup.lookupAll(IProcessingService.class).size() + " entity processors was found");
     }
 
     @Override
     public void render() {
+        update();
         for (Entity entity : world.values()) {
 
             sr.setColor(0, 1, 1, 0);
@@ -62,11 +64,11 @@ public class Core implements ApplicationListener {
 
     private void update() {
 //        //Update
-//        for (IEntityProcessingService entityProcessorService : getEntityProcessingServices()) {
-//            for (Entity e : world.values()) {
-//                entityProcessorService.process(gameData, world, e);
-//            }
-//        }
+        for (IProcessingService processorService : getProcessingServices()) {
+            for (Entity e : world.values()) {
+                processorService.process(world, e);
+            }
+        }
     }
 
     private void draw() {
@@ -88,30 +90,30 @@ public class Core implements ApplicationListener {
     public void dispose() {
     }
 
-//    private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
-//        return lookup.lookupAll(IEntityProcessingService.class);
-//    }
+    private Collection<? extends IProcessingService> getProcessingServices() {
+        return lookup.lookupAll(IProcessingService.class);
+    }
     private final LookupListener lookupListener = new LookupListener() {
         @Override
         public void resultChanged(LookupEvent le) {
 
-            Collection<? extends IPluginService> updated = result.allInstances();
-
-            for (IPluginService us : updated) {
-                // Found modules
-                if (!gamePlugins.contains(us)) {
-                    us.start();
-                    gamePlugins.add(us);
-                }
-            }
-
-            // Uninstall modules
-            for (IPluginService gs : gamePlugins) {
-                if (!updated.contains(gs)) {
-                    gs.stop();
-                    gamePlugins.remove(gs);
-                }
-            }
+//            Collection<? extends IPluginService> updated = result.allInstances();
+//
+//            for (IPluginService us : updated) {
+//                // Found modules
+//                if (!gamePlugins.contains(us)) {
+//                    us.start();
+//                    gamePlugins.add(us);
+//                }
+//            }
+//
+//            // Uninstall modules
+//            for (IPluginService gs : gamePlugins) {
+//                if (!updated.contains(gs)) {
+//                    gs.stop();
+//                    gamePlugins.remove(gs);
+//                }
+//            }
         }
     };
 }

@@ -63,6 +63,7 @@
         <module>SilentUpdate</module>
         <module>dk.sdu.mmmi.cbse_SilentUpdate_nbm_1.0-SNAPSHOT</module>
         <module>Common</module>
+        <module>Visualization</module>
     </modules>
 
     <properties>
