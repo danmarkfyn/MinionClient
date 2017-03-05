@@ -19,6 +19,9 @@ import minioning.common.services.IProcessingService;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+
 
 public class Core implements ApplicationListener {
 
@@ -39,7 +42,7 @@ public class Core implements ApplicationListener {
 
         Entity player = new Entity("Player", 500, 200);
         world.put(player.getName(), player);
-
+       
         for (IPluginService plugin : gamePlugins) {
             plugin.start();
         }
@@ -50,6 +53,12 @@ public class Core implements ApplicationListener {
     @Override
     public void render() {
         update();
+        
+        //input test
+          if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+              System.out.println("X= " + Gdx.input.getX() + " og Y= " + Gdx.input.getY());
+          }
+        
         for (Entity entity : world.values()) {
 
             sr.setColor(0, 1, 1, 0);

@@ -134,6 +134,8 @@ public class Launcher extends Application {
             cfg.resizable = false;
 
             new LwjglApplication(new Core(), cfg);
+            
+            
 
             primaryStage.close();
 
