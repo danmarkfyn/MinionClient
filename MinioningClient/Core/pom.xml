@@ -53,11 +53,6 @@
             <artifactId>org-openide-util-lookup</artifactId>
             <version>RELEASE81</version>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>Common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
                 <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-platform</artifactId>
@@ -75,6 +70,11 @@
             <artifactId>gdx-backend-lwjgl</artifactId>
             <version>1.9.2</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>Common</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <properties>

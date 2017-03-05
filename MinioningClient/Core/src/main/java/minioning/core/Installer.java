@@ -13,11 +13,15 @@ import org.openide.modules.ModuleInstall;
  */
 public class Installer extends ModuleInstall {
 
-//    static Thread t;
+    
+//    Test t = new Test();
     
     @Override
     public void restored() {
 
+//        while(true){
+//        t.run();
+//        }
 //        this.run();
 //        t = new Thread((Runnable) this);
         

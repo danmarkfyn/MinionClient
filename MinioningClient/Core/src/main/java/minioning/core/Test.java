@@ -5,8 +5,6 @@
  */
 package minioning.core;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,17 +18,18 @@ import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
-public class Core implements ApplicationListener {
+/**
+ *
+ * @author Jakob
+ */
+public class Test implements Runnable {
 
     private Map<String, Entity> world = new ConcurrentHashMap<>();
-    private ShapeRenderer sr;
     private final Lookup lookup = Lookup.getDefault();
     private List<IPluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private Lookup.Result<IPluginService> result;
 
-    @Override
-    public void create() {
-        sr = new ShapeRenderer();
+    public Test() {
 
         Lookup.Result<IPluginService> result = lookup.lookupResult(IPluginService.class);
         result.addLookupListener(lookupListener);
@@ -43,77 +42,32 @@ public class Core implements ApplicationListener {
         for (IPluginService plugin : gamePlugins) {
             plugin.start();
         }
-        update();
+
         System.out.println(lookup.lookupAll(IProcessingService.class).size() + " entity processors was found");
     }
 
-    @Override
-    public void render() {
-        update();
-        for (Entity entity : world.values()) {
-
-            sr.setColor(0, 1, 1, 0);
-
-            sr.begin(ShapeRenderer.ShapeType.Line);
-
-            sr.circle(entity.getX(), entity.getY(), 100);
-
-            sr.end();
-        }
-    }
-
-    private void update() {
-//        //Update
-        for (IProcessingService processorService : getProcessingServices()) {
+    
+    public void update(){
+                for (IProcessingService processorService : getProcessingServices()) {
             for (Entity e : world.values()) {
                 processorService.process(world, e);
             }
         }
     }
-
-    private void draw() {
-    }
-
+    
     @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void dispose() {
+    public void run() {
+      update();
     }
 
     private Collection<? extends IProcessingService> getProcessingServices() {
         return lookup.lookupAll(IProcessingService.class);
     }
+
     private final LookupListener lookupListener = new LookupListener() {
         @Override
         public void resultChanged(LookupEvent le) {
 
-//            Collection<? extends IPluginService> updated = result.allInstances();
-//
-//            for (IPluginService us : updated) {
-//                // Found modules
-//                if (!gamePlugins.contains(us)) {
-//                    us.start();
-//                    gamePlugins.add(us);
-//                }
-//            }
-//
-//            // Uninstall modules
-//            for (IPluginService gs : gamePlugins) {
-//                if (!updated.contains(gs)) {
-//                    gs.stop();
-//                    gamePlugins.remove(gs);
-//                }
-//            }
         }
     };
 }
