@@ -21,10 +21,13 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import minioning.common.data.EventData;
+import minioning.common.data.Events;
 
 
 public class Core implements ApplicationListener {
-
+    
+    private EventData ed;
     private Map<String, Entity> world = new ConcurrentHashMap<>();
     private ShapeRenderer sr;
     private final Lookup lookup = Lookup.getDefault();
@@ -56,7 +59,10 @@ public class Core implements ApplicationListener {
         
         //input test
           if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
-              System.out.println("X= " + Gdx.input.getX() + " og Y= " + Gdx.input.getY());
+//              System.out.println("X= " + Gdx.input.getX() + " og Y= " + Gdx.input.getY());
+              String movement = ";" + Gdx.input.getX() + ";" + Gdx.input.getY();
+              ed.addEvent(Events.MOVEMENT, movement);
+              System.out.println(movement);
           }
         
         for (Entity entity : world.values()) {
