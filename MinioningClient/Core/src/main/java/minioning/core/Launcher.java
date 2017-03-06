@@ -4,13 +4,12 @@ package minioning.core;
  *
  * @author Jakob
  */
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Collection;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -28,6 +27,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.BooleanProperty;
+import minioning.common.services.IProcessingService;
 
 public class Launcher extends Application {
 
@@ -126,21 +126,21 @@ public class Launcher extends Application {
 
         // Play button action
         playBtn.setOnAction((v) -> {
-            LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-            cfg.title = this.getClass().getName();
-            cfg.width = 1024;
-            cfg.height = 576;
-            cfg.useGL30 = false;
-            cfg.resizable = false;
+//            LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+//            cfg.title = this.getClass().getName();
+//            cfg.width = 1024;
+//            cfg.height = 576;
+//            cfg.useGL30 = false;
+//            cfg.resizable = false;
+//
+//            new LwjglApplication(new Core(), cfg);
 
-            new LwjglApplication(new Core(), cfg);
+            new Thread(new Test()).start();
             
-            
-
             primaryStage.close();
 
         });
-
+        
         // create button action
         createAvatarBtn.setOnAction((v) -> {
             String s = avatarnameField.getText();

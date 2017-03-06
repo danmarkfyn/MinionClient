@@ -27,7 +27,6 @@ public class GameInstaller extends ModuleInstall{
 //            cfg.resizable = false;
 //            
 //            
-//         System.out.println("dsgfdsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
 //            new LwjglApplication(new VisualProcess(), cfg);
 }
         @Override

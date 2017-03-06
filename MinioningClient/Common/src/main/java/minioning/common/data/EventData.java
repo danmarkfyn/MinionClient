@@ -19,11 +19,17 @@ public class EventData {
 
     public EventData() {
         eventData = new ConcurrentHashMap<>();
-
     }
-
-    public void addEvent(Events event, String s) {
-
-        eventData.put(event, s);
+    
+    public static Map<Events, String> getEventData(){
+        if(eventData == null){
+            eventData = new ConcurrentHashMap<>();
+        }
+        return eventData;
     }
+    
+
+//    public void addEvent(Events event, String s) {
+//        eventData.put(event, s);
+//    }
 }

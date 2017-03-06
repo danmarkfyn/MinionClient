@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import minioning.common.data.Entity;
+import minioning.common.services.IGameInitializer;
 import minioning.common.services.IPluginService;
 import minioning.common.services.IProcessingService;
 import org.openide.util.Lookup;
@@ -44,24 +45,36 @@ public class Test implements Runnable {
         }
 
         System.out.println(lookup.lookupAll(IProcessingService.class).size() + " entity processors was found");
+
+        //runs once to install visualisation
+        System.out.println("Looking for IGameInitializer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        for (IGameInitializer installService : getGameInitializer()) {
+            System.out.println("Found IGameInitializer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            installService.install();
+        }
     }
 
-    
-    public void update(){
-                for (IProcessingService processorService : getProcessingServices()) {
+    public void update() {
+        for (IProcessingService processorService : getProcessingServices()) {
             for (Entity e : world.values()) {
                 processorService.process(world, e);
             }
         }
     }
-    
+
     @Override
     public void run() {
-      update();
+        while (true) {
+            update();
+        }
     }
 
     private Collection<? extends IProcessingService> getProcessingServices() {
         return lookup.lookupAll(IProcessingService.class);
+    }
+
+    private Collection<? extends IGameInitializer> getGameInitializer() {
+        return lookup.lookupAll(IGameInitializer.class);
     }
 
     private final LookupListener lookupListener = new LookupListener() {

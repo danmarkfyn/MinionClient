@@ -28,31 +28,12 @@ private ShapeRenderer sr;
     public void process(Map<String, Entity> world, Entity entity) {
                 Entity player = new Entity("Player", 500, 200);
         world.put(player.getName(), player);
-//        System.out.println("RUNNNNNNNINGINGINSOIJGSDOIÆPGFJLOÆDISJFLÆIKSDJGLÆKISDJGLÆKSDGJ");
         
-        render();
+//        render();
         
     
         
     }
-
-//    @Override
-//    public void process(Map<String, Entity> world, ShapeRenderer sr) {
-//               System.out.println("LOLOLOLOLOLOLLOLOLOLOLOLOLLOLOLOLOLOLOLLOLOLOLOLOLOLLOLOLOLOLOLOLLOLOLOLOLOLOL");
-//        
-//                for (Entity entity : world.values()) {
-//
-//            sr.setColor(0, 1, 1, 0);
-//
-//            sr.begin(ShapeRenderer.ShapeType.Line);
-//
-//            sr.circle(entity.getX(), entity.getY(), 100);
-//
-//            sr.end();
-//    }
-//
-//
-//}
 
     @Override
     public void create() {
@@ -66,7 +47,11 @@ private ShapeRenderer sr;
 
     @Override
     public void render() {
-        
+          Entity player = new Entity("Player", 500, 200);
+           Entity flayer = new Entity("Flayer", 400, 200);
+        world.put(player.getName(), player);
+        world.put(flayer.getName(), flayer);
+//        System.out.println(world.values().size());
             for (Entity entity : world.values()) {
 
             sr.setColor(0, 1, 1, 0);

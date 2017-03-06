@@ -22,21 +22,24 @@ import org.openide.util.LookupListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import minioning.common.data.EventData;
+import static minioning.common.data.EventData.getEventData;
 import minioning.common.data.Events;
 
 
 public class Core implements ApplicationListener {
     
-    private EventData ed;
+    private static EventData ed;
     private Map<String, Entity> world = new ConcurrentHashMap<>();
     private ShapeRenderer sr;
     private final Lookup lookup = Lookup.getDefault();
     private List<IPluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private Lookup.Result<IPluginService> result;
-
+    
+    
+    
     @Override
     public void create() {
-        sr = new ShapeRenderer();
+//        sr = new ShapeRenderer();
 
         Lookup.Result<IPluginService> result = lookup.lookupResult(IPluginService.class);
         result.addLookupListener(lookupListener);
@@ -61,20 +64,20 @@ public class Core implements ApplicationListener {
           if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
 //              System.out.println("X= " + Gdx.input.getX() + " og Y= " + Gdx.input.getY());
               String movement = ";" + Gdx.input.getX() + ";" + Gdx.input.getY();
-              ed.addEvent(Events.MOVEMENT, movement);
+              getEventData().put(Events.LOGIN, movement);
               System.out.println(movement);
           }
         
-        for (Entity entity : world.values()) {
-
-            sr.setColor(0, 1, 1, 0);
-
-            sr.begin(ShapeRenderer.ShapeType.Line);
-
-            sr.circle(entity.getX(), entity.getY(), 100);
-
-            sr.end();
-        }
+//        for (Entity entity : world.values()) {
+//
+//            sr.setColor(0, 1, 1, 0);
+//
+//            sr.begin(ShapeRenderer.ShapeType.Line);
+//
+//            sr.circle(entity.getX(), entity.getY(), 100);
+//
+//            sr.end();
+//        }
     }
 
     private void update() {
