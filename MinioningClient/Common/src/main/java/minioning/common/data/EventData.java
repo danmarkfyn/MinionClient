@@ -27,7 +27,11 @@ public class EventData {
         }
         return eventData;
     }
-    
+     public static void clearEventData(){
+         
+         eventData.clear();
+         
+     }
 
 //    public void addEvent(Events event, String s) {
 //        eventData.put(event, s);

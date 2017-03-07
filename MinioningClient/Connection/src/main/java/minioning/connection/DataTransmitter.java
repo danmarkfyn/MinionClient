@@ -8,13 +8,27 @@ package minioning.connection;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.Map;
+import minioning.common.data.Entity;
+import minioning.common.services.IProcessingService;
+import java.util.Map;
+import minioning.common.data.Entity;
+import minioning.common.services.IProcessingService;
+import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
  * @author Jakob
  */
-public class DataTransmitter {
-    
+
+    @ServiceProvider(service = IProcessingService.class)
+public class DataTransmitter  implements IProcessingService{
+
+    @Override
+    public void process(Map<String, Entity> world, Entity entity) {
+       
+        
+        
 //        public static DatagramSocket cSocket;
 //        byte[] sData = null;
 //        DatagramPacket sPacket = null;
@@ -40,5 +54,5 @@ public class DataTransmitter {
 //                System.out.println(e);
 //            }
 //        }
-    
+    }
 }

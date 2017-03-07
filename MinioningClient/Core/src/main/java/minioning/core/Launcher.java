@@ -29,31 +29,24 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.scene.control.PasswordField;
+import static minioning.common.data.EventData.clearEventData;
 import minioning.common.data.LocalData;
+import org.lwjgl.input.Controllers;
 import org.openide.util.Exceptions;
 
 public class Launcher extends Application {
 
     public static Launcher launcher = null;
-    private final int height = 175;
+    private final int height = 200;
     private final int width = 250;
     private static final BooleanProperty serverToken = new SimpleBooleanProperty();
     private static UUID ClientID = null;
+    private static StringProperty name = new SimpleStringProperty();
 
-    
-    
-    
-//    public static void setID(UUID ID){
-//        launcher.ClientID = ID;
-//        System.out.println(ClientID);
-//            launcher.serverToken.setValue(Boolean.FALSE);
-//        
-//    }
-    
-    
-    
-    
-    
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -104,13 +97,17 @@ public class Launcher extends Application {
         // Textfields
         TextField avatarnameField = new TextField();
         TextField usernameField = new TextField();
-        TextField passwordField = new TextField();
+        PasswordField passwordField = new PasswordField();
+
+        usernameField.setText("hit");
+        passwordField.setText("me");
 
         // Labels
         Label usernameLabel = new Label("Username: ");
         Label passwordLabel = new Label("Password:  ");
         Label avatarnameLabel = new Label("Avatar Name:");
         Label titelLabel = new Label("The Minioning");
+        Label nameLabel = new Label(name.getValue());
         titelLabel.setFont(font1);
 
         //Color
@@ -120,13 +117,15 @@ public class Launcher extends Application {
         // Logout button action
         logoutBtn.setOnAction((v) -> {
 
-            try{
-                 serverToken.setValue(Boolean.TRUE);
-                 LocalData.setClientID(null);
-            }catch(Exception e){
-                
+            try {
+                name.setValue("");
+                serverToken.setValue(Boolean.TRUE);
+                LocalData.setClientID(null);
+                clearEventData();
+
+            } catch (Exception e) {
+
             }
-           
 
         });
 
@@ -140,15 +139,19 @@ public class Launcher extends Application {
             if (username != null && password != null) {
                 try {
                     launcher.attemptLogin(username, password, IPAddress, clientSocket);
-//                    serverToken.setValue(Boolean.FALSE);
-                TimeUnit.SECONDS.sleep(1);
-                if(LocalData.getClientID() != null){
-                    System.out.println("Hej");
-                    serverToken.setValue(Boolean.FALSE);
-                }else{
-                    System.out.println("Nej");
-                    serverToken.setValue(Boolean.TRUE);
-                }
+//                    
+                    TimeUnit.MILLISECONDS.sleep(500);
+
+                    if (LocalData.getClientID() != null) {
+                        serverToken.setValue(Boolean.FALSE);
+                        name.setValue("Logged in as " + username);
+
+                    } else {
+
+                        launcher.promt("Login Timeout", "Error");
+                        serverToken.setValue(Boolean.TRUE);
+
+                    }
                 } catch (IOException e) {
                 } catch (InterruptedException ex) {
                     Exceptions.printStackTrace(ex);
@@ -160,21 +163,13 @@ public class Launcher extends Application {
 
         // Play button action
         playBtn.setOnAction((v) -> {
-//            LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-//            cfg.title = this.getClass().getName();
-//            cfg.width = 1024;
-//            cfg.height = 576;
-//            cfg.useGL30 = false;
-//            cfg.resizable = false;
-//
-//            new LwjglApplication(new Core(), cfg);
 
             new Thread(new Test()).start();
-            
+
             primaryStage.close();
 
         });
-        
+
         // create button action
         createAvatarBtn.setOnAction((v) -> {
             String s = avatarnameField.getText();
@@ -194,12 +189,12 @@ public class Launcher extends Application {
         HBox t1_hb2 = new HBox(15);
 
         VBox t1_vb1 = new VBox();
-
+        
         t1_hb1.getChildren().addAll(usernameLabel, usernameField);
         t1_hb2.getChildren().addAll(passwordLabel, passwordField);
 
-        t1_vb1.getChildren().addAll(t1_hb1, t1_hb2, loginBtn, logoutBtn);
-        
+        t1_vb1.getChildren().addAll(t1_hb1, t1_hb2, loginBtn, nameLabel, logoutBtn);
+
         // binds
         tab2.disableProperty().bind(serverToken);
         tab3.disableProperty().bind(serverToken);
@@ -208,6 +203,8 @@ public class Launcher extends Application {
         loginBtn.disableProperty().bind(serverToken.not());
 
         logoutBtn.disableProperty().bind(serverToken);
+
+        nameLabel.textProperty().bind(name);
 
         // setup tab 2 content
         HBox t2_hb1 = new HBox(15);
@@ -232,6 +229,7 @@ public class Launcher extends Application {
 
         primaryStage.setOnCloseRequest((v) -> {
             System.out.println("Closing");
+            
         });
 
         primaryStage.setScene(scene);
@@ -243,6 +241,6 @@ public class Launcher extends Application {
 
     public static void main(String[] args) throws SocketException, UnknownHostException {
         Application.launch(args);
-        
+
     }
 }

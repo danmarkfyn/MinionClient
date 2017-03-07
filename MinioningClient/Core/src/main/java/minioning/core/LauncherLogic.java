@@ -86,7 +86,7 @@ public final class LauncherLogic implements Runnable {
         dialog.initStyle(StageStyle.UTILITY);
         Group root2 = new Group();
         Label promptMessage = new Label(s1);
-        promptMessage.setMaxSize(promptMessage.getText().length() * 6, 40);
+        promptMessage.setMaxSize(promptMessage.getText().length() * 8, 40);
 
         GridPane promptGP = new GridPane();
 
@@ -102,7 +102,7 @@ public final class LauncherLogic implements Runnable {
         promptGP.add(promptHbox, 0, 1);
         promptGP.add(promptVbox, 0, 0);
         promptGP.add(promptMessage, 1, 0);
-
+        
         root2.getChildren().add(promptGP);
 
         Scene prompt = new Scene(root2, promptMessage.getMaxWidth(), 40);
