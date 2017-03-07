@@ -4,11 +4,14 @@ package minioning.core;
  *
  * @author Jakob
  */
+import com.badlogic.gdx.scenes.scene2d.actions.AddListenerAction;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -26,22 +29,39 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.BooleanProperty;
+import minioning.common.data.LocalData;
+import org.openide.util.Exceptions;
 
 public class Launcher extends Application {
 
     public static Launcher launcher = null;
     private final int height = 175;
     private final int width = 250;
-    private final BooleanProperty serverToken = new SimpleBooleanProperty();
+    private static final BooleanProperty serverToken = new SimpleBooleanProperty();
+    private static UUID ClientID = null;
 
+    
+    
+    
+//    public static void setID(UUID ID){
+//        launcher.ClientID = ID;
+//        System.out.println(ClientID);
+//            launcher.serverToken.setValue(Boolean.FALSE);
+//        
+//    }
+    
+    
+    
+    
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         serverToken.setValue(Boolean.TRUE);
 
         final DatagramSocket clientSocket = getDatagramSocket();
-//        final InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
-        final InetAddress IPAddress = InetAddress.getByName("localhost");
+        final InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
+//        final InetAddress IPAddress = InetAddress.getByName("localhost");
 
         LauncherLogic launcher = new LauncherLogic();
 
@@ -100,7 +120,13 @@ public class Launcher extends Application {
         // Logout button action
         logoutBtn.setOnAction((v) -> {
 
-            serverToken.setValue(Boolean.TRUE);
+            try{
+                 serverToken.setValue(Boolean.TRUE);
+                 LocalData.setClientID(null);
+            }catch(Exception e){
+                
+            }
+           
 
         });
 
@@ -114,8 +140,18 @@ public class Launcher extends Application {
             if (username != null && password != null) {
                 try {
                     launcher.attemptLogin(username, password, IPAddress, clientSocket);
+//                    serverToken.setValue(Boolean.FALSE);
+                TimeUnit.SECONDS.sleep(1);
+                if(LocalData.getClientID() != null){
+                    System.out.println("Hej");
                     serverToken.setValue(Boolean.FALSE);
+                }else{
+                    System.out.println("Nej");
+                    serverToken.setValue(Boolean.TRUE);
+                }
                 } catch (IOException e) {
+                } catch (InterruptedException ex) {
+                    Exceptions.printStackTrace(ex);
                 }
             }
             usernameField.clear();
@@ -163,7 +199,7 @@ public class Launcher extends Application {
         t1_hb2.getChildren().addAll(passwordLabel, passwordField);
 
         t1_vb1.getChildren().addAll(t1_hb1, t1_hb2, loginBtn, logoutBtn);
-
+        
         // binds
         tab2.disableProperty().bind(serverToken);
         tab3.disableProperty().bind(serverToken);
@@ -207,5 +243,6 @@ public class Launcher extends Application {
 
     public static void main(String[] args) throws SocketException, UnknownHostException {
         Application.launch(args);
+        
     }
 }

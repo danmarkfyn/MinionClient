@@ -10,6 +10,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.UUID;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -19,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import static minioning.common.data.LocalData.setClientID;
 
 /**
  *
@@ -29,7 +31,8 @@ public final class LauncherLogic implements Runnable {
     private static final String createPlayerToken = "CREATEPLAYER;";
     private static final String loginToken = "LOGIN;";
     public static DatagramSocket cSocket;
-
+    private static UUID ClientID;
+    
     // implements singleton
     public static DatagramSocket getDatagramSocket() throws SocketException{
         if(cSocket == null){
@@ -142,8 +145,21 @@ public final class LauncherLogic implements Runnable {
     
     
     public void processPackage(DatagramPacket dp) {
-
+        
         String modifiedSentence = new String(dp.getData());
         System.out.println("Received:" + modifiedSentence);
+        setUUID(modifiedSentence.trim());
     }
+    
+    public void setUUID(String raw){
+        
+        
+        
+        UUID ID = UUID.fromString(raw);
+        System.out.println(ID);
+        setClientID(ID);
+      
+        
+    }
+    
 }
