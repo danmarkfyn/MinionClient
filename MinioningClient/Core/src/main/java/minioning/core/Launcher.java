@@ -9,7 +9,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Collection;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -27,7 +26,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.BooleanProperty;
-import minioning.common.services.IProcessingService;
 
 public class Launcher extends Application {
 
