@@ -5,54 +5,80 @@
  */
 package minioning.connection;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Map;
 import minioning.common.data.Entity;
 import minioning.common.services.IProcessingService;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.Entity;
+import static minioning.common.data.EventData.getData;
+import static minioning.common.data.EventData.getEventData;
+import minioning.common.data.Events;
+import static minioning.common.data.Events.MOVEMENT;
 import minioning.common.services.IProcessingService;
+import org.openide.util.Exceptions;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
  * @author Jakob
  */
+@ServiceProvider(service = IProcessingService.class)
+public class DataTransmitter implements IProcessingService {
 
-    @ServiceProvider(service = IProcessingService.class)
-public class DataTransmitter  implements IProcessingService{
+    private static DatagramSocket cEventSocket;
+    private byte[] sendData = new byte[1024];
+
+    public static DatagramSocket getDatagramSocket() throws SocketException {
+        if (cEventSocket == null) {
+            cEventSocket = new DatagramSocket();
+        }
+        return cEventSocket;
+    }
 
     @Override
     public void process(Map<String, Entity> world, Entity entity) {
-       
+
+        System.out.println(getEventData().size());
+
+        if (getEventData().size() > 0) {
+//             System.out.println("123456");
+            for (int i = 0; i < getEventData().size(); i++) {
+
+//             System.out.println("pppppppppppp");
+                String data = getData(MOVEMENT);
+
+                System.out.println("Current event: " + data);
+//           
+                try {
+                    sendEvent(data);
+                } catch (IOException ex) {
+                    Exceptions.printStackTrace(ex);
+                }
+
+            }
+        }
+
+    }
+
+    private void sendEvent(String data) throws IOException {
+        InetAddress IPAddress = InetAddress.getByName("localhost");
+        cEventSocket = getDatagramSocket();
         
-        
-//        public static DatagramSocket cSocket;
-//        byte[] sData = null;
-//        DatagramPacket sPacket = null;
-//
-// 
-//            try {
-//                cSocket = getDatagramSocket();
-//                sData = new byte[1024];
-//                sPacket = new DatagramPacket(sData, sData.length);
-//
-//                sData = new byte[1024];
-//                sPacket = new DatagramPacket(sData, sData.length);
-//
-//                System.out.println("virker");
-//            } catch (SocketException e) {
-//                System.out.println(e);
-//            }
-//
-//            try {
-//                cSocket.receive(sPacket);
-//                processPackage(sPacket);
-//            } catch (Exception e) {
-//                System.out.println(e);
-//            }
-//        }
+        sendData = data.getBytes();
+        System.out.println(sendData);
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+
+        if (sendData != null) {
+
+            DataTransmitter.cEventSocket.send(sendPacket);
+            System.out.println("Package Sent");
+        }
     }
 }

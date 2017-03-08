@@ -15,8 +15,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.concurrent.ConcurrentHashMap;
+import minioning.common.data.EventData;
+import static minioning.common.data.EventData.addEvent;
 import static minioning.common.data.EventData.getEventData;
 import minioning.common.data.Events;
+import static minioning.common.data.Events.MOVEMENT;
 
 /**
  *
@@ -51,8 +54,12 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 //              System.out.println("X= " + Gdx.input.getX() + " og Y= " + Gdx.input.getY());
             String movement = ";" + Gdx.input.getX() + ";" + Gdx.input.getY();
-            getEventData().put(Events.LOGIN, movement);
-            System.out.println(movement);
+            getEventData().put(Events.MOVEMENT, movement);
+            
+            
+            
+//            addEvent(MOVEMENT, movement);
+//            System.out.println(movement);
         }
 
         Entity player = new Entity("Player", 500, 200);
