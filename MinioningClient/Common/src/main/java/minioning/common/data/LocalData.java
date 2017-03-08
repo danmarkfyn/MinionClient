@@ -14,7 +14,25 @@ import java.util.UUID;
 public class LocalData {
     
      private static UUID ClientID = null;
+     private static int height = 576;
+     private static int width = 1024;
 
+    public static int getHeight() {
+        return height;
+    }
+
+    public static void setHeight(int height) {
+        LocalData.height = height;
+    }
+
+    public static int getWidth() {
+        return width;
+    }
+
+    public static void setWidth(int width) {
+        LocalData.width = width;
+    }
+     
     public static UUID getClientID() {
         return ClientID;
     }

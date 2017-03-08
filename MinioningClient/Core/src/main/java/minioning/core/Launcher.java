@@ -166,7 +166,7 @@ public class Launcher extends Application {
                     } else {
 
                         launcher.promt("Login Timeout", "Error");
-                        serverToken.setValue(Boolean.TRUE);
+                        serverToken.setValue(Boolean.FALSE);
                     }
 
                 } catch (IOException e) {

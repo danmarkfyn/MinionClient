@@ -21,6 +21,9 @@ import static minioning.common.data.EventData.getEventData;
 import minioning.common.data.Events;
 import static minioning.common.data.Events.MOVEMENT;
 
+import static minioning.common.data.LocalData.getWidth;
+import static minioning.common.data.LocalData.getHeight;
+
 /**
  *
  * @author Jakob
@@ -35,7 +38,6 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
         Entity player = new Entity("Player", 500, 200);
         world.put(player.getName(), player);
 
-//        render();
     }
 
     @Override
@@ -52,21 +54,31 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
     public void render() {
 
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-//              System.out.println("X= " + Gdx.input.getX() + " og Y= " + Gdx.input.getY());
-            String movement = ";" + Gdx.input.getX() + ";" + Gdx.input.getY();
+
+            double x = Gdx.input.getX();
+            double y = Gdx.input.getY();
+
+            if (x < 0) {
+                x = 1;
+            } else if (x > getWidth()) {
+                x = getWidth();
+            }
+            if (y < 0) {
+                y = 1;
+            } else if (y > getHeight()) {
+                y = getHeight();
+            }
+
+            String movement = ";" + x + ";" + y;
             getEventData().put(Events.MOVEMENT, movement);
-            
-            
-            
-//            addEvent(MOVEMENT, movement);
-//            System.out.println(movement);
+
         }
 
         Entity player = new Entity("Player", 500, 200);
         Entity flayer = new Entity("Flayer", 400, 200);
         world.put(player.getName(), player);
         world.put(flayer.getName(), flayer);
-//        System.out.println(world.values().size());
+        
         for (Entity entity : world.values()) {
 
             sr.setColor(0, 1, 1, 0);

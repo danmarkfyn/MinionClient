@@ -9,6 +9,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import minioning.common.services.IGameInitializer;
 import org.openide.util.lookup.ServiceProvider;
+import static minioning.common.data.LocalData.getWidth;
+import static minioning.common.data.LocalData.getHeight;
 
 /**
  *
@@ -22,8 +24,8 @@ public class GameInitializer implements IGameInitializer {
         System.out.println("Install running in Vizualisation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 
-        cfg.width = 1024;
-        cfg.height = 576;
+        cfg.width = getWidth();
+        cfg.height = getHeight();
         cfg.useGL30 = false;
         cfg.resizable = false;
 
