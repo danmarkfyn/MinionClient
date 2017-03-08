@@ -44,7 +44,7 @@ public class EventData {
     
     
     
-    public static void removeData(int i){
-        eventData.remove(i);
+    public static void removeData(Events event){
+        eventData.remove(event);
     }
 }

@@ -10,16 +10,11 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Map;
-import minioning.common.data.Entity;
-import minioning.common.services.IProcessingService;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.Entity;
 import static minioning.common.data.EventData.getData;
 import static minioning.common.data.EventData.getEventData;
-import minioning.common.data.Events;
+import static minioning.common.data.EventData.removeData;
 import static minioning.common.data.Events.MOVEMENT;
 import minioning.common.services.IProcessingService;
 import org.openide.util.Exceptions;
@@ -45,32 +40,27 @@ public class DataTransmitter implements IProcessingService {
     @Override
     public void process(Map<String, Entity> world, Entity entity) {
 
-        System.out.println(getEventData().size());
-
         if (getEventData().size() > 0) {
-//             System.out.println("123456");
             for (int i = 0; i < getEventData().size(); i++) {
 
-//             System.out.println("pppppppppppp");
                 String data = getData(MOVEMENT);
-
+                System.out.println(getEventData().size());
                 System.out.println("Current event: " + data);
-//           
+
                 try {
-                    sendEvent(data);
+                    sendEvent(data, i);
                 } catch (IOException ex) {
                     Exceptions.printStackTrace(ex);
                 }
-
+                removeData(MOVEMENT);
             }
         }
-
     }
 
-    private void sendEvent(String data) throws IOException {
+    private void sendEvent(String data, int i) throws IOException {
         InetAddress IPAddress = InetAddress.getByName("localhost");
         cEventSocket = getDatagramSocket();
-        
+
         sendData = data.getBytes();
         System.out.println(sendData);
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
@@ -78,7 +68,9 @@ public class DataTransmitter implements IProcessingService {
         if (sendData != null) {
 
             DataTransmitter.cEventSocket.send(sendPacket);
+
             System.out.println("Package Sent");
         }
+
     }
 }

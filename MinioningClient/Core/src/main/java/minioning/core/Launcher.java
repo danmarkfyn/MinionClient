@@ -32,6 +32,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.SingleSelectionModel;
 import static minioning.common.data.EventData.clearEventData;
 import minioning.common.data.LocalData;
 import org.lwjgl.input.Controllers;
@@ -65,6 +66,9 @@ public class Launcher extends Application {
         //Tap pane
         TabPane tp = new TabPane();
 
+        //Tap selector
+        SingleSelectionModel<Tab> selectionModel = tp.getSelectionModel();
+        
         // Tap 1
         Tab tab1 = new Tab("Login");
         tab1.closableProperty().set(false);
@@ -75,7 +79,7 @@ public class Launcher extends Application {
 
         // Tap 3
         Tab tab3 = new Tab("Play Minioning");
-        tab2.closableProperty().set(false);
+        tab3.closableProperty().set(false);
 
         // Pane
         BorderPane pane = new BorderPane();
@@ -92,8 +96,8 @@ public class Launcher extends Application {
         Button createAvatarBtn = new Button("Create");
         createAvatarBtn.setFont(font2);
 
-        Button playBtn = new Button("Play");
-
+        Button playBtn = new Button("Play Minioning");
+        
         // Textfields
         TextField avatarnameField = new TextField();
         TextField usernameField = new TextField();
@@ -145,13 +149,14 @@ public class Launcher extends Application {
                     if (LocalData.getClientID() != null) {
                         serverToken.setValue(Boolean.FALSE);
                         name.setValue("Logged in as " + username);
+                        selectionModel.select(2);
 
                     } else {
 
                         launcher.promt("Login Timeout", "Error");
-                        serverToken.setValue(Boolean.FALSE);
-
+                        serverToken.setValue(Boolean.TRUE);
                     }
+                    
                 } catch (IOException e) {
                 } catch (InterruptedException ex) {
                     Exceptions.printStackTrace(ex);
@@ -224,6 +229,8 @@ public class Launcher extends Application {
         pane.setTop(titelLabel);
         pane.setBottom(tp);
 
+        playBtn.setPrefSize(this.width, 100);
+        
         root.getChildren().addAll(pane);
         Scene scene = new Scene(root, width, height, Color.GAINSBORO);
 
