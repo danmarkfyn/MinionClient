@@ -20,16 +20,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import minioning.common.data.Events;
+import static minioning.common.data.Events.CREATEPLAYER;
 import static minioning.common.data.LocalData.setClientID;
-
 /**
  *
  * @author Jakob
  */
 public final class LauncherLogic implements Runnable {
 
-    private static final String createPlayerToken = "CREATEPLAYER;";
-    private static final String loginToken = "LOGIN;";
+
     public static DatagramSocket cSocket;
     private static UUID ClientID;
     
@@ -58,7 +58,7 @@ public final class LauncherLogic implements Runnable {
     public final void CreatePlayer(String playerInfo, InetAddress IPAddress, DatagramSocket clientSocket) throws IOException {
         byte[] sendData = new byte[1024];
         
-        String output = createPlayerToken + playerInfo;
+        String output = CREATEPLAYER +";"+ playerInfo;
         
         System.out.println(output);
         
@@ -68,10 +68,10 @@ public final class LauncherLogic implements Runnable {
         clientSocket.send(sendPacket);
     }
 
-    public final void attemptLogin(String username, String password, InetAddress IPAddress, DatagramSocket clientSocket) throws IOException {
+    public final void accountQuery(Events event, String username, String password, InetAddress IPAddress, DatagramSocket clientSocket) throws IOException {
         byte[] sendData = new byte[1024];
 
-        String login = loginToken + username + ";" + password;
+        String login = event + ";"+ username + ";" + password;
 
         sendData = login.getBytes();
         System.out.println(login);

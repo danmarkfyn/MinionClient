@@ -13,5 +13,7 @@ public enum Events {
     
     MOVEMENT,
     CREATEPLAYER,
+    CREATEACCOUNT,
     LOGIN;
+    
 }
