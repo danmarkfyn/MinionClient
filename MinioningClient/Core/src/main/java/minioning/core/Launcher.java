@@ -156,7 +156,7 @@ public class Launcher extends Application {
                 try {
                     launcher.accountQuery(LOGIN, username, password, IPAddress, clientSocket);
 //                    
-                    TimeUnit.MILLISECONDS.sleep(500);
+                    TimeUnit.MILLISECONDS.sleep(1000);
 
                     if (LocalData.getClientID() != null) {
                         serverToken.setValue(Boolean.FALSE);
@@ -242,6 +242,7 @@ public class Launcher extends Application {
         t2_vb1.getChildren().addAll(t2_hb1, t2_hb2, createAccountBtn);
 
         // binds
+        tab2.disableProperty().bind(serverToken.not());
         tab3.disableProperty().bind(serverToken);
         tab4.disableProperty().bind(serverToken);
 

@@ -69,7 +69,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
                 y = getHeight();
             }
 
-            String movement = ";" + x + ";" + y;
+            String movement = x + ";" + y;
             getEventData().put(Events.MOVEMENT, movement);
 
         }

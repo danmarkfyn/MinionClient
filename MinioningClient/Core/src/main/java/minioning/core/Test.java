@@ -15,6 +15,7 @@ import minioning.common.data.Entity;
 import minioning.common.services.IGameInitializer;
 import minioning.common.services.IPluginService;
 import minioning.common.services.IProcessingService;
+import minioning.common.services.IWorldUpdate;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
@@ -59,6 +60,10 @@ public class Test implements Runnable {
             for (Entity e : world.values()) {
                 processorService.process(world, e);
             }
+        }for (IWorldUpdate worldUpdate : getWorldUpdate()) {
+          
+                worldUpdate.update(world);
+            
         }
     }
 
@@ -75,6 +80,9 @@ public class Test implements Runnable {
 
     private Collection<? extends IGameInitializer> getGameInitializer() {
         return lookup.lookupAll(IGameInitializer.class);
+    }
+        private Collection<? extends IWorldUpdate> getWorldUpdate() {
+        return lookup.lookupAll(IWorldUpdate.class);
     }
 
     private final LookupListener lookupListener = new LookupListener() {

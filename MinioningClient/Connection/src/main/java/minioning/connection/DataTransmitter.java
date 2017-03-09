@@ -16,6 +16,7 @@ import static minioning.common.data.EventData.getData;
 import static minioning.common.data.EventData.getEventData;
 import static minioning.common.data.EventData.removeData;
 import static minioning.common.data.Events.MOVEMENT;
+import static minioning.common.data.LocalData.getClientID;
 import minioning.common.services.IProcessingService;
 import org.openide.util.Exceptions;
 import org.openide.util.lookup.ServiceProvider;
@@ -43,12 +44,17 @@ public class DataTransmitter implements IProcessingService {
         if (getEventData().size() > 0) {
             for (int i = 0; i < getEventData().size(); i++) {
 
+                
+                
+                
                 String data = getData(MOVEMENT);
                 System.out.println(getEventData().size());
                 System.out.println("Current event: " + data);
-
+                
+                String allData = getClientID()+";"+MOVEMENT+";" + data;
+                
                 try {
-                    sendEvent(data, i);
+                    sendEvent(allData, i);
                 } catch (IOException ex) {
                     Exceptions.printStackTrace(ex);
                 }
@@ -58,7 +64,9 @@ public class DataTransmitter implements IProcessingService {
     }
 
     private void sendEvent(String data, int i) throws IOException {
-        InetAddress IPAddress = InetAddress.getByName("localhost");
+//        InetAddress IPAddress = InetAddress.getByName("localhost");
+
+        InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
         cEventSocket = getDatagramSocket();
 
         sendData = data.getBytes();
