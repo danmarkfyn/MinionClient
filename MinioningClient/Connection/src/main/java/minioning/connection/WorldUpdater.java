@@ -5,30 +5,50 @@
  */
 package minioning.connection;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 import java.util.Map;
 import minioning.common.data.Entity;
 import minioning.common.services.IWorldUpdate;
+import org.openide.util.Exceptions;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
  * @author Jakob
  */
-
-
 @ServiceProvider(service = IWorldUpdate.class)
-public class WorldUpdater implements IWorldUpdate{
- byte[] sData = null;
-        DatagramPacket sPacket = null;
+public class WorldUpdater implements IWorldUpdate {
 
-    @Override
-    public void update(Map<String, Entity> world) {
-       
-//            String[] s = modifiedSentence.split(";");
-            
-//            System.out.println(s[0]+"og"+s[1]+"og"+s[2]);
-            
+    byte[] sData = null;
+    public static DatagramSocket cSocket;
+    DatagramPacket sPacket = null;
+
+    public static DatagramSocket getDatagramSocket() throws SocketException {
+
+        if (cSocket == null) {
+            cSocket = new DatagramSocket();
+        }
+        return cSocket;
     }
-    
-}
+
+        @Override
+        public void update
+        (Map<String, Entity> world) {
+       
+            sPacket = new DatagramPacket(sData, sData.length);
+        try {
+            cSocket.receive(sPacket);
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+            String modifiedSentence = new String(sPacket.getData());
+            
+            String[] s = modifiedSentence.split(";");
+
+            System.out.println(s[0] + "og" + s[1] + "og" + s[2]);
+            
+        }
+    }
