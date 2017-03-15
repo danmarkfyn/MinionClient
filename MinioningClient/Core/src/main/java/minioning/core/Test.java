@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import minioning.common.data.Entity;
+import static minioning.common.data.LocalData.getClientID;
 import minioning.common.services.IGameInitializer;
 import minioning.common.services.IPluginService;
 import minioning.common.services.IProcessingService;
@@ -38,8 +39,8 @@ public class Test implements Runnable {
         gamePlugins = new ArrayList<>(result.allInstances());
         result.allItems();
 
-        Entity player = new Entity("Player", 500, 200);
-        world.put(player.getName(), player);
+//        Entity player = new Entity(getClientID(),"Player");
+//        world.put(player.getName(), player);
 
         for (IPluginService plugin : gamePlugins) {
             plugin.start();
@@ -60,11 +61,12 @@ public class Test implements Runnable {
             for (Entity e : world.values()) {
                 processorService.process(world, e);
             }
-        }for (IWorldUpdate worldUpdate : getWorldUpdate()) {
-          
-                worldUpdate.update(world);
-            
         }
+//        for (IWorldUpdate worldUpdate : getWorldUpdate()) {
+//          
+//                worldUpdate.update(world);
+//            
+//        }
     }
 
     @Override

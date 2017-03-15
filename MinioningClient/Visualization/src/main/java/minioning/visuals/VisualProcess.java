@@ -35,8 +35,8 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
     private Map<String, Entity> world = new ConcurrentHashMap<>();
 
     public void process(Map<String, Entity> world, Entity entity) {
-        Entity player = new Entity("Player", 500, 200);
-        world.put(player.getName(), player);
+//        Entity player = new Entity("Player", 500, 200);
+//        world.put(player.getName(), player);
 
     }
 
@@ -74,10 +74,10 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
         }
 
-        Entity player = new Entity("Player", 500, 200);
-        Entity flayer = new Entity("Flayer", 400, 200);
-        world.put(player.getName(), player);
-        world.put(flayer.getName(), flayer);
+//        Entity player = new Entity("Player", 500, 200);
+//        Entity flayer = new Entity("Flayer", 400, 200);
+//        world.put(player.getName(), player);
+//        world.put(flayer.getName(), flayer);
         
         for (Entity entity : world.values()) {
 

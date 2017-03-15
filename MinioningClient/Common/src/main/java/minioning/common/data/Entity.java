@@ -1,29 +1,58 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package minioning.common.data;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  *
- * @author Jakob
+ * @author Mogensen
  */
-public class Entity {
+public class Entity implements Serializable{
 
     private final UUID ID = UUID.randomUUID();
+    private UUID owner;
     private String name;
     private float x = 0;
     private float y = 0;
+    private float dx;
+    private float dy;
+    private float speed = 100;
 
-    public Entity(String name, float x, float y) {
+    public Entity(UUID owner, String name) {
+        this.owner = owner;
         this.name = name;
-        this.x = x;
-        this.y = y;
     }
 
+    public String toString(){
+        
+        String EntityString = ID+";"+owner+";"+name+";"+x+";"+";"+y+";"+dx+";"+dy+";"+speed+";";
+        
+        return EntityString;
+    }
+    
+    public UUID getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UUID owner) {
+        this.owner = owner;
+    }
+
+    public float getDx() {
+        return dx;
+    }
+
+    public void setDx(float dx) {
+        this.dx = dx;
+    }
+
+    public float getDy() {
+        return dy;
+    }
+
+    public void setDy(float dy) {
+        this.dy = dy;
+    }
 
     public String getName() {
         return name;
@@ -49,9 +78,16 @@ public class Entity {
         this.y = y;
     }
 
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
     public UUID getID() {
         return ID;
     }
 
 }
-

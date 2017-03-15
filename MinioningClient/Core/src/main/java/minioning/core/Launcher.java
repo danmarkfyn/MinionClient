@@ -54,8 +54,8 @@ public class Launcher extends Application {
         serverToken.setValue(Boolean.TRUE);
 
         final DatagramSocket clientSocket = getDatagramSocket();
-        final InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
-//        final InetAddress IPAddress = InetAddress.getByName("localhost");
+//        final InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
+        final InetAddress IPAddress = InetAddress.getByName("localhost");
 
         LauncherLogic launcher = new LauncherLogic();
 

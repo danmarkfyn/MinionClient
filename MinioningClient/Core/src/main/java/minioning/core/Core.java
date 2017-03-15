@@ -46,8 +46,8 @@ public class Core implements ApplicationListener {
         gamePlugins = new ArrayList<>(result.allInstances());
         result.allItems();
 
-        Entity player = new Entity("Player", 500, 200);
-        world.put(player.getName(), player);
+//        Entity player = new Entity(,"d");
+//        world.put(player.getName(), player);
        
         for (IPluginService plugin : gamePlugins) {
             plugin.start();
