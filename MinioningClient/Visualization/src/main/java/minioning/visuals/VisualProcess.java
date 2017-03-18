@@ -20,6 +20,7 @@ import static minioning.common.data.EventData.addEvent;
 import static minioning.common.data.EventData.getEventData;
 import minioning.common.data.Events;
 import static minioning.common.data.Events.MOVEMENT;
+import static minioning.common.data.LocalData.getClientID;
 
 import static minioning.common.data.LocalData.getWidth;
 import static minioning.common.data.LocalData.getHeight;
@@ -33,21 +34,28 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     private ShapeRenderer sr;
     private Map<String, Entity> world = new ConcurrentHashMap<>();
-    private Renderer renderer;
+    private Render render;
     
-    
+  @Override
     public void process(Map<String, Entity> world, Entity entity) {
-//        Entity player = new Entity("Player", 500, 200);
-//        world.put(player.getName(), player);
-        renderer.render();
+        System.out.println("Pr");
+        this.world = world;
+ 
+        
+//        Render render = new Render((ConcurrentHashMap<String, Entity>) world);
+        System.out.println("1");
+        render.render();
+        System.out.println("2");
 
     }
 
     @Override
     public void create() {
         sr = new ShapeRenderer();
-        renderer = new Renderer((ConcurrentHashMap<String, Entity>) world);
-        renderer.render();
+        render = new Render((ConcurrentHashMap<String, Entity>) world);
+               Entity player = new Entity(getClientID(),"Player");
+        world.put(player.getName(), player);
+        render.render();
 //        render();
     }
 

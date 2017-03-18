@@ -1,5 +1,6 @@
 package minioning.common.data;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -7,7 +8,7 @@ import java.util.UUID;
  *
  * @author Mogensen
  */
-public class Entity implements Serializable{
+public class Entity implements Serializable {
 
     private final UUID ID = UUID.randomUUID();
     private UUID owner;
@@ -17,19 +18,28 @@ public class Entity implements Serializable{
     private float dx;
     private float dy;
     private float speed = 100;
+    private Sprite sprite;
 
     public Entity(UUID owner, String name) {
         this.owner = owner;
         this.name = name;
     }
 
-    public String toString(){
-        
-        String EntityString = ID+";"+owner+";"+name+";"+x+";"+";"+y+";"+dx+";"+dy+";"+speed+";";
-        
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    public String toString() {
+
+        String EntityString = ID + ";" + owner + ";" + name + ";" + x + ";" + ";" + y + ";" + dx + ";" + dy + ";" + speed + ";";
+
         return EntityString;
     }
-    
+
     public UUID getOwner() {
         return owner;
     }

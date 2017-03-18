@@ -20,7 +20,7 @@ import minioning.common.data.Entity;
  *
  * @author Jakob
  */
-public class Renderer {
+public class Render {
     
     private static final String RESOURCE_ROOT = "../../../Core/src/main/resources/";
 
@@ -29,8 +29,8 @@ public class Renderer {
 //    private final OrthographicCamera cam;
     
 //    private final TiledMapRenderer mapRenderer;
-//    public Renderer(ConcurrentHashMap<String, Entity> world, OrthographicCamera cam) {
-    public Renderer(ConcurrentHashMap<String, Entity> world) {
+//    public Render(ConcurrentHashMap<String, Entity> world, OrthographicCamera cam) {
+    public Render(ConcurrentHashMap<String, Entity> world) {
         this.world = world;
 //        this.cam = cam;
 //        this.mapRenderer = new OrthogonalTiledMapRenderer((TiledMap) gameData.getMap());
@@ -50,7 +50,7 @@ public class Renderer {
         int[] bglayers = {0};
         int[] fglayers = {1, 2};
         
-        // Renderer everything
+        // Render everything
 //        mapRenderer.setView(cam);
 //        mapRenderer.render(bglayers);  // Background
         this.drawSprites();            // Sprites
@@ -61,22 +61,24 @@ public class Renderer {
     private void drawSprites() {
         SpriteBatch batch = new SpriteBatch();
         batch.begin();
+        System.out.println("fdesfse");
         for (Entity entity : world.values()) {
+            System.out.println("12332423");
 //            if (entity.getSpriteName() == null) continue;
 //            int width = entity.getWidth();
 //            int height = entity.getHeight();
 //            
 //            // Set entity sprite as texture from graphics folder with specified file name
 //            if(entity.getSprite() == null) {
-                Texture texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + entity.getSpriteName()));
-                Sprite sprite = new Sprite(texture, 0, 0, width, height);
+                Texture texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "coin.png"));
+                Sprite sprite = new Sprite(texture, 0, 0, 50, 50);
                 entity.setSprite(sprite);
 //            }
 
             // Set bounds and rotation
 //            Sprite sprite = entity.getSprite();
-            sprite.setBounds(entity.getX() - width / 2, entity.getY() - height / 2, width, height);
-            sprite.setRotation((float)Math.toDegrees(entity.getRadians()));
+//            sprite.setBounds(entity.getX() - width / 2, entity.getY() - height / 2, width, height);
+//            sprite.setRotation((float)Math.toDegrees(entity.getRadians()));
             sprite.draw(batch);
         }
         
