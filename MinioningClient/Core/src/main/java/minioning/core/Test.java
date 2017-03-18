@@ -69,8 +69,12 @@ public class Test implements Runnable {
 //        }
     }
 
+    
+    // main thread for the graphical application
     @Override
     public void run() {
+                       Entity player = new Entity(getClientID(),"Player");
+        world.put(player.getName(), player);
         while (true) {
             update();
         }

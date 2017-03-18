@@ -35,17 +35,19 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
     private ShapeRenderer sr;
     private Map<String, Entity> world = new ConcurrentHashMap<>();
     private Render render;
+
+    // Override render() i ApplicationListener i stedet for process (køres konstant)
     
-  @Override
+    @Override
     public void process(Map<String, Entity> world, Entity entity) {
-        System.out.println("Pr");
-        this.world = world;
- 
-        
-//        Render render = new Render((ConcurrentHashMap<String, Entity>) world);
-        System.out.println("1");
-        render.render();
-        System.out.println("2");
+//        System.out.println("Pr");
+//        this.world = world;
+// 
+//        
+////        Render render = new Render((ConcurrentHashMap<String, Entity>) world);
+//        System.out.println("1");
+//        
+//        System.out.println("2");
 
     }
 
@@ -53,7 +55,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
     public void create() {
         sr = new ShapeRenderer();
         render = new Render((ConcurrentHashMap<String, Entity>) world);
-               Entity player = new Entity(getClientID(),"Player");
+        Entity player = new Entity(getClientID(), "Player");
         world.put(player.getName(), player);
         render.render();
 //        render();
@@ -65,7 +67,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     @Override
     public void render() {
-
+        render.render();
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 
             double x = Gdx.input.getX();
@@ -83,6 +85,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
             }
 
             String movement = x + ";" + y;
+            System.out.println(movement);
             getEventData().put(Events.MOVEMENT, movement);
 
         }
@@ -91,7 +94,6 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 //        Entity flayer = new Entity("Flayer", 400, 200);
 //        world.put(player.getName(), player);
 //        world.put(flayer.getName(), flayer);
-        
         for (Entity entity : world.values()) {
 
             sr.setColor(0, 1, 1, 0);

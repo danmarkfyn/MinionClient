@@ -182,7 +182,7 @@ public class Launcher extends Application {
         playBtn.setOnAction((v) -> {
 
             new Thread(new Test()).start();
-
+            
             primaryStage.close();
 
         });

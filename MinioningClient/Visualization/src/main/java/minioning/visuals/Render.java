@@ -61,9 +61,7 @@ public class Render {
     private void drawSprites() {
         SpriteBatch batch = new SpriteBatch();
         batch.begin();
-        System.out.println("fdesfse");
         for (Entity entity : world.values()) {
-            System.out.println("12332423");
 //            if (entity.getSpriteName() == null) continue;
 //            int width = entity.getWidth();
 //            int height = entity.getHeight();
