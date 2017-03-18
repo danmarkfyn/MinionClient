@@ -33,17 +33,22 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     private ShapeRenderer sr;
     private Map<String, Entity> world = new ConcurrentHashMap<>();
-
+    private Renderer renderer;
+    
+    
     public void process(Map<String, Entity> world, Entity entity) {
 //        Entity player = new Entity("Player", 500, 200);
 //        world.put(player.getName(), player);
+        renderer.render();
 
     }
 
     @Override
     public void create() {
         sr = new ShapeRenderer();
-        render();
+        renderer = new Renderer((ConcurrentHashMap<String, Entity>) world);
+        renderer.render();
+//        render();
     }
 
     @Override
