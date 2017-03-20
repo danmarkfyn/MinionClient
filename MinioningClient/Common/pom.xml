@@ -38,10 +38,11 @@
             <artifactId>org-netbeans-api-annotations-common</artifactId>
             <version>${netbeans.version}</version>
         </dependency>
-               <dependency>
+        <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx</artifactId>
             <version>1.9.2</version>
+            <type>jar</type>
         </dependency>
     </dependencies>
     <properties>

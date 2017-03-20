@@ -13,8 +13,8 @@ public class Entity implements Serializable {
     private final UUID ID = UUID.randomUUID();
     private UUID owner;
     private String name;
-    private float x = 0;
-    private float y = 0;
+    private int x = 0;
+    private int y = 0;
     private float dx;
     private float dy;
     private float speed = 100;
@@ -23,6 +23,22 @@ public class Entity implements Serializable {
     public Entity(UUID owner, String name) {
         this.owner = owner;
         this.name = name;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public Sprite getSprite() {
@@ -72,21 +88,8 @@ public class Entity implements Serializable {
         this.name = name;
     }
 
-    public float getX() {
-        return x;
-    }
 
-    public void setX(float x) {
-        this.x = x;
-    }
 
-    public float getY() {
-        return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
 
     public float getSpeed() {
         return speed;

@@ -19,7 +19,5 @@ public class VisualTest implements IProcessingService{
 
     @Override
     public void process(Map<String, Entity> world, Entity entity) {
-        System.out.println("test1");
     }
-    
 }

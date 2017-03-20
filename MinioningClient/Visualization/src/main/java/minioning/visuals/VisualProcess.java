@@ -33,15 +33,23 @@ import static minioning.common.data.LocalData.getHeight;
 public class VisualProcess implements IProcessingService, ApplicationListener {
 
     private ShapeRenderer sr;
-    private Map<String, Entity> world = new ConcurrentHashMap<>();
-    private Render render;
+    private static Map<String, Entity> world = new ConcurrentHashMap<>();
+    private Render render = new Render();
 
     // Override render() i ApplicationListener i stedet for process (køres konstant)
     
     @Override
     public void process(Map<String, Entity> world, Entity entity) {
+        
+
 //        System.out.println("Pr");
 //        this.world = world;
+                
+//        render.drawSprites((ConcurrentHashMap<String, Entity>) world);
+//        render.render((ConcurrentHashMap<String, Entity>) world);
+        this.world = world;
+        
+
 // 
 //        
 ////        Render render = new Render((ConcurrentHashMap<String, Entity>) world);
@@ -54,10 +62,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
     @Override
     public void create() {
         sr = new ShapeRenderer();
-        render = new Render((ConcurrentHashMap<String, Entity>) world);
-        Entity player = new Entity(getClientID(), "Player");
-        world.put(player.getName(), player);
-        render.render();
+
 //        render();
     }
 
@@ -67,7 +72,11 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     @Override
     public void render() {
-        render.render();
+        
+//        System.out.println(world.size());
+        
+        render.render((ConcurrentHashMap<String, Entity>) world);
+        
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 
             double x = Gdx.input.getX();

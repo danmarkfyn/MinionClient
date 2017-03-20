@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import minioning.common.data.Entity;
+import minioning.common.data.LocalData;
 import static minioning.common.data.LocalData.getClientID;
 import minioning.common.services.IGameInitializer;
 import minioning.common.services.IPluginService;
@@ -57,6 +59,10 @@ public class Test implements Runnable {
     }
 
     public void update() {
+
+
+                
+                
         for (IProcessingService processorService : getProcessingServices()) {
             for (Entity e : world.values()) {
                 processorService.process(world, e);
@@ -73,8 +79,20 @@ public class Test implements Runnable {
     // main thread for the graphical application
     @Override
     public void run() {
-                       Entity player = new Entity(getClientID(),"Player");
+        
+        
+           Entity player = new Entity(getClientID(),"Player");
+           player.setX(200);
+           player.setY(LocalData.getHeight() - 150);
+           
+           UUID id =  UUID.randomUUID();
+           
+           Entity player2 = new Entity(id,"Player2");
+           player2.setX(100);
+           player2.setY(LocalData.getHeight() - 100);
+           
         world.put(player.getName(), player);
+        world.put(player2.getName(), player2);
         while (true) {
             update();
         }
