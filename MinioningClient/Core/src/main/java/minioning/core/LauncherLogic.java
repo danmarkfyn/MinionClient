@@ -156,16 +156,17 @@ String modifiedSentence = new String(dp.getData());
             System.out.println("Received:" + modifiedSentence);
             setUUID(modifiedSentence.trim());
         } catch (Exception e) {
-        }try{
-            
-            String[] s = modifiedSentence.split(";");
-            
-            System.out.println(s[0]+"og"+s[1]+"og"+s[2]);
-            
-            
-        }catch(Exception e){
-            
         }
+//        try{
+//            
+//            String[] s = modifiedSentence.split(";");
+//            
+//            System.out.println(s[0]+"og"+s[1]+"og"+s[2]);
+//            
+//            
+//        }catch(Exception e){
+//            
+//        }
 //        try {
 //            System.out.println("1");
 //            ByteArrayInputStream in = new ByteArrayInputStream(dp.getData());

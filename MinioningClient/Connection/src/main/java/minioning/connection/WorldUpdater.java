@@ -34,21 +34,20 @@ public class WorldUpdater implements IWorldUpdate {
         return cSocket;
     }
 
-        @Override
-        public void update
-        (Map<String, Entity> world) {
-       
-            sPacket = new DatagramPacket(sData, sData.length);
+    @Override
+    public void update(Map<String, Entity> world) {
+        System.out.println("jojojoj");
+        sPacket = new DatagramPacket(sData, sData.length);
         try {
             cSocket.receive(sPacket);
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
-            String modifiedSentence = new String(sPacket.getData());
-            
-            String[] s = modifiedSentence.split(";");
+        String modifiedSentence = new String(sPacket.getData());
 
-            System.out.println(s[0] + "og" + s[1] + "og" + s[2]);
-            
-        }
+        String[] s = modifiedSentence.split(";");
+
+        System.out.println(s[0] + "og" + s[1] + "og" + s[2] + "jajaj");
+
     }
+}

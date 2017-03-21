@@ -40,7 +40,7 @@ public class DataTransmitter implements IProcessingService {
 
     @Override
     public void process(Map<String, Entity> world, Entity entity) {
-
+        
         if (getEventData().size() > 0) {
             for (int i = 0; i < getEventData().size(); i++) {
 
@@ -64,19 +64,19 @@ public class DataTransmitter implements IProcessingService {
     }
 
     private void sendEvent(String data, int i) throws IOException {
-//        InetAddress IPAddress = InetAddress.getByName("localhost");
+        InetAddress IPAddress = InetAddress.getByName("localhost");
 
-        InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
+//        InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
         cEventSocket = getDatagramSocket();
 
         sendData = data.getBytes();
         System.out.println(sendData);
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9875);
 
         if (sendData != null) {
-
+            
             DataTransmitter.cEventSocket.send(sendPacket);
-
+            
             System.out.println("Package Sent");
         }
 

@@ -68,11 +68,11 @@ public class Test implements Runnable {
                 processorService.process(world, e);
             }
         }
-//        for (IWorldUpdate worldUpdate : getWorldUpdate()) {
-//          
-//                worldUpdate.update(world);
-//            
-//        }
+        for (IWorldUpdate worldUpdate : getWorldUpdate()) {
+          
+                worldUpdate.update(world);
+            
+        }
     }
 
     
