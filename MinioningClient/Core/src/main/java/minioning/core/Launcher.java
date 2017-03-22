@@ -32,9 +32,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.SingleSelectionModel;
+import minioning.common.data.Entity;
 import static minioning.common.data.EventData.clearEventData;
 import static minioning.common.data.Events.CREATEACCOUNT;
 import static minioning.common.data.Events.LOGIN;
+import static minioning.common.data.Events.PLAY;
 import minioning.common.data.LocalData;
 import org.openide.util.Exceptions;
 
@@ -47,7 +49,7 @@ public class Launcher extends Application {
     private static final BooleanProperty serverToken = new SimpleBooleanProperty();
     private static UUID ClientID = null;
     private static StringProperty name = new SimpleStringProperty();
-
+    private Thread t;
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -59,7 +61,7 @@ public class Launcher extends Application {
 
         LauncherLogic launcher = new LauncherLogic();
 
-        new Thread(launcher).start();
+        new Thread (launcher).start();
         Group root = new Group();
 
         //***TAB SETUP***
@@ -162,6 +164,7 @@ public class Launcher extends Application {
                         serverToken.setValue(Boolean.FALSE);
                         name.setValue("Logged in as " + username);
                         selectionModel.select(2);
+                        Thread.currentThread().isInterrupted();
 
                     } else {
 
@@ -182,6 +185,12 @@ public class Launcher extends Application {
         playBtn.setOnAction((v) -> {
 
             new Thread(new Test()).start();
+            try {
+                launcher.play(LocalData.getClientID(), PLAY, IPAddress, clientSocket);
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+            
             
             primaryStage.close();
 

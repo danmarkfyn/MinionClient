@@ -22,9 +22,9 @@ import org.openide.util.lookup.ServiceProvider;
 @ServiceProvider(service = IWorldUpdate.class)
 public class WorldUpdater implements IWorldUpdate {
 
-    byte[] sData = null;
+    byte[] sData = new byte[1024];
     public static DatagramSocket cSocket;
-    DatagramPacket sPacket = null;
+    DatagramPacket sPacket;
 
     public static DatagramSocket getDatagramSocket() throws SocketException {
 
@@ -39,7 +39,7 @@ public class WorldUpdater implements IWorldUpdate {
         System.out.println("jojojoj");
         sPacket = new DatagramPacket(sData, sData.length);
         try {
-            cSocket.receive(sPacket);
+            getDatagramSocket().receive(sPacket);
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }

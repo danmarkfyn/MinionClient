@@ -51,8 +51,8 @@ public final class LauncherLogic implements Runnable {
         String tempPlayer = input.trim();
         tempPlayer = tempPlayer.replaceAll(" ", "");
 
-        if (tempPlayer.contains("ø") || tempPlayer.contains("å")
-                || tempPlayer.contains("æ") || tempPlayer.contains(";") || tempPlayer.length() < 1 || tempPlayer.length() > 10) {
+        if (tempPlayer.contains("Ã¸") || tempPlayer.contains("Ã¥")
+                || tempPlayer.contains("Ã¦") || tempPlayer.contains(";") || tempPlayer.length() < 1 || tempPlayer.length() > 10) {
             return null;
         } else {
             player = tempPlayer;
@@ -117,6 +117,22 @@ public final class LauncherLogic implements Runnable {
         dialog.isFocused();
         dialog.setResizable(false);
     }
+    
+    
+    public final void play(UUID id , Events event, InetAddress IPAddress, DatagramSocket clientSocket)throws IOException{
+              byte[] sendData = new byte[1024];
+        String output = id + ";" + event;
+
+        System.out.println(output);
+
+        sendData = output.getBytes();
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+
+        clientSocket.send(sendPacket);
+        
+        
+    }
+    
 
     @Override
     public void run() {
@@ -155,6 +171,7 @@ String modifiedSentence = new String(dp.getData());
             
             System.out.println("Received:" + modifiedSentence);
             setUUID(modifiedSentence.trim());
+            
         } catch (Exception e) {
         }
 //        try{
