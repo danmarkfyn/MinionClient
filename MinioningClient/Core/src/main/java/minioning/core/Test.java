@@ -82,7 +82,7 @@ public class Test implements Runnable {
     public void run() {
         
         
-           Entity player = new Entity(getClientID(),"Player",200,LocalData.getHeight() - 150);
+//           Entity player = new Entity(getClientID(),"Player",200,LocalData.getHeight() - 150);
        
 //           
 //           UUID id =  UUID.randomUUID();

@@ -27,6 +27,7 @@ import javafx.stage.StageStyle;
 import minioning.common.data.Entity;
 import minioning.common.data.Events;
 import static minioning.common.data.Events.CREATEPLAYER;
+import minioning.common.data.LocalData;
 import static minioning.common.data.LocalData.setClientID;
 
 /**
@@ -37,6 +38,7 @@ public final class LauncherLogic implements Runnable {
 
     public static DatagramSocket cSocket;
     private static UUID ClientID;
+    private static boolean running = true;
 
     // implements singleton
     public static DatagramSocket getDatagramSocket() throws SocketException {
@@ -63,7 +65,7 @@ public final class LauncherLogic implements Runnable {
     public final void CreatePlayer(String playerInfo, InetAddress IPAddress, DatagramSocket clientSocket) throws IOException {
         byte[] sendData = new byte[1024];
 
-        String output = CREATEPLAYER + ";" + playerInfo;
+        String output = LocalData.getClientID() + ";" + CREATEPLAYER + ";" + playerInfo;
 
         System.out.println(output);
 
@@ -120,7 +122,8 @@ public final class LauncherLogic implements Runnable {
     
     
     public final void play(UUID id , Events event, InetAddress IPAddress, DatagramSocket clientSocket)throws IOException{
-              byte[] sendData = new byte[1024];
+        running = false;
+        byte[] sendData = new byte[1024];
         String output = id + ";" + event;
 
         System.out.println(output);
@@ -140,7 +143,7 @@ public final class LauncherLogic implements Runnable {
         byte[] sData = null;
         DatagramPacket sPacket = null;
 
-        while (!Thread.currentThread().isInterrupted()) {
+        while (running) {
 
             try {
                 cSocket = getDatagramSocket();
@@ -169,7 +172,7 @@ public final class LauncherLogic implements Runnable {
 String modifiedSentence = new String(dp.getData());
         try {
             
-            System.out.println("Received:" + modifiedSentence);
+            System.out.println("Received in launcherlogic:" + modifiedSentence);
             setUUID(modifiedSentence.trim());
             
         } catch (Exception e) {
