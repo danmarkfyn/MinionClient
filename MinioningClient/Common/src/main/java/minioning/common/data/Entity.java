@@ -20,9 +20,10 @@ public class Entity implements Serializable {
     private float speed = 100;
     private Sprite sprite;
 
-    public Entity(UUID owner, String name) {
+    public Entity(UUID owner, String name, int x, int y) {
         this.owner = owner;
         this.name = name;
+        this.x = x;
     }
 
     public int getX() {

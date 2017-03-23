@@ -59,19 +59,20 @@ public class Test implements Runnable {
     }
 
     public void update() {
-
-
-                
-                
+   
         for (IProcessingService processorService : getProcessingServices()) {
             for (Entity e : world.values()) {
                 processorService.process(world, e);
             }
         }
+        
+        
+   
+    }
+    
+    public void updateConnection(){
         for (IWorldUpdate worldUpdate : getWorldUpdate()) {
-          
                 worldUpdate.update(world);
-            
         }
     }
 
@@ -81,20 +82,20 @@ public class Test implements Runnable {
     public void run() {
         
         
-           Entity player = new Entity(getClientID(),"Player");
-           player.setX(200);
-           player.setY(LocalData.getHeight() - 150);
-           
-           UUID id =  UUID.randomUUID();
-           
-           Entity player2 = new Entity(id,"Player2");
-           player2.setX(100);
-           player2.setY(LocalData.getHeight() - 100);
-           
-        world.put(player.getName(), player);
-        world.put(player2.getName(), player2);
+           Entity player = new Entity(getClientID(),"Player",200,LocalData.getHeight() - 150);
+       
+//           
+//           UUID id =  UUID.randomUUID();
+//           
+//           Entity player2 = new Entity(id,"Player2");
+//           player2.setX(100);
+//           player2.setY(LocalData.getHeight() - 100);
+//           
+//        world.put(player.getName(), player);
+//        world.put(player2.getName(), player2);
         while (true) {
             update();
+            updateConnection();
         }
     }
 

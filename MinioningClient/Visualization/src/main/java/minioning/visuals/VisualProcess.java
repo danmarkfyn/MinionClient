@@ -94,7 +94,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
             }
 
             String movement = x + ";" + y;
-            System.out.println(movement);
+//            System.out.println(movement);
             getEventData().put(Events.MOVEMENT, movement);
 
         }

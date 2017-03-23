@@ -61,7 +61,9 @@ public class Launcher extends Application {
 
         LauncherLogic launcher = new LauncherLogic();
 
-        new Thread (launcher).start();
+        Thread t = new Thread (launcher);
+        t.start();
+        
         Group root = new Group();
 
         //***TAB SETUP***
@@ -164,7 +166,8 @@ public class Launcher extends Application {
                         serverToken.setValue(Boolean.FALSE);
                         name.setValue("Logged in as " + username);
                         selectionModel.select(2);
-                        Thread.currentThread().isInterrupted();
+//                        Thread.currentThread().isInterrupted();
+                        t.interrupt();
 
                     } else {
 
