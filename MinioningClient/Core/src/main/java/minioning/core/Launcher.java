@@ -38,6 +38,7 @@ import static minioning.common.data.Events.CREATEACCOUNT;
 import static minioning.common.data.Events.LOGIN;
 import static minioning.common.data.Events.PLAY;
 import minioning.common.data.LocalData;
+import static minioning.common.data.LocalData.setPlaying;
 import org.openide.util.Exceptions;
 
 
@@ -61,8 +62,8 @@ public class Launcher extends Application {
 
         LauncherLogic launcher = new LauncherLogic();
 
-        Thread t = new Thread (launcher);
-        t.start();
+//        Thread t = new Thread (launcher);
+//        t.start();
         
         Group root = new Group();
 
@@ -166,8 +167,7 @@ public class Launcher extends Application {
                         serverToken.setValue(Boolean.FALSE);
                         name.setValue("Logged in as " + username);
                         selectionModel.select(2);
-//                        Thread.currentThread().isInterrupted();
-                        t.interrupt();
+
 
                     } else {
 
@@ -190,6 +190,7 @@ public class Launcher extends Application {
             new Thread(new Test()).start();
             try {
                 launcher.play(LocalData.getClientID(), PLAY, IPAddress, clientSocket);
+                
             } catch (IOException ex) {
                 Exceptions.printStackTrace(ex);
             }

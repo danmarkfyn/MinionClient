@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
+OpenIDE-Module-Install: minioning/connection/Installer.class
 OpenIDE-Module-Localizing-Bundle: minioning/connection/Bundle.properties
 

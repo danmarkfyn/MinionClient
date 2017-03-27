@@ -15,9 +15,15 @@ import minioning.common.data.Entity;
 import static minioning.common.data.EventData.getData;
 import static minioning.common.data.EventData.getEventData;
 import static minioning.common.data.EventData.removeData;
+import minioning.common.data.Events;
 import static minioning.common.data.Events.MOVEMENT;
+import static minioning.common.data.Lists.*;
 import static minioning.common.data.LocalData.getClientID;
+import static minioning.common.data.LocalData.getPlaying;
+import static minioning.common.data.LocalData.getPort;
+import static minioning.common.data.LocalData.setPlaying;
 import minioning.common.services.IProcessingService;
+import static minioning.connection.Installer.getDatagramSocket;
 import org.openide.util.Exceptions;
 import org.openide.util.lookup.ServiceProvider;
 
@@ -25,60 +31,102 @@ import org.openide.util.lookup.ServiceProvider;
  *
  * @author Jakob
  */
-@ServiceProvider(service = IProcessingService.class)
-public class DataTransmitter implements IProcessingService {
+public class DataTransmitter implements Runnable {
 
     private static DatagramSocket cEventSocket;
     private byte[] sendData = new byte[1024];
+    private Boolean playing;
+    private Map<Events, String> output;
 
-    public static DatagramSocket getDatagramSocket() throws SocketException {
-        if (cEventSocket == null) {
-            cEventSocket = new DatagramSocket();
-        }
-        return cEventSocket;
-    }
-
+//    public static DatagramSocket getDatagramSocket() throws SocketException {
+//        if (cEventSocket == null) {
+//            cEventSocket = new DatagramSocket();
+//        }
+//        return cEventSocket;
+//    }
     @Override
-    public void process(Map<String, Entity> world, Entity entity) {
-        
-        if (getEventData().size() > 0) {
-            for (int i = 0; i < getEventData().size(); i++) {
+    public void run() {
+        while (true) {
+            playing = getPlaying();
+            if (!playing) {
+                output = getOutputList();
+//            clearOutput();
+//            System.out.println("for loop & size: " + output.entrySet().size());
+                for (Map.Entry<Events, String> entry : output.entrySet()) {
+                    Events eventType = entry.getKey();
+                    String data = entry.getValue();
+                    System.out.println(eventType);
+                    switch (eventType) {
+                        case CREATEPLAYER:
 
-                
-                
-                
-                String data = getData(MOVEMENT);
-                System.out.println(getEventData().size());
-                System.out.println("Current event: " + data);
-                
-                String allData = getClientID()+";"+MOVEMENT+";" + data;
-                
-                try {
-                    sendEvent(allData, i);
-                } catch (IOException ex) {
-                    Exceptions.printStackTrace(ex);
+                            break;
+                        case CREATEACCOUNT:
+                            try {
+                                sendEvent(data);
+                            } catch (Exception e) {
+                                System.out.println("Create Account transmit failed: " + e);
+                            }
+                            removeEvent(eventType, data);
+                            System.out.println("event removed");
+                            break;
+                        case LOGIN:
+                            try {
+                                sendEvent(data);
+                            } catch (Exception e) {
+                                System.out.println("LOGIN transmit failed: " + e);
+                            }
+                            removeEvent(eventType, data);
+                            System.out.println("event removed");
+                            break;
+                        case PLAY:
+                            try {
+                                sendEvent(data);
+                                setPlaying(true);
+                            } catch (Exception e) {
+                            }
+                            removeEvent(eventType, data);
+                            break;
+                        default:
+                            break;
+                    }
+
                 }
-                removeData(MOVEMENT);
+            } else {
+//                if (getEventData().size() > 0) {
+//                    for (int i = 0; i < getEventData().size(); i++) {
+//
+//                        String data = getData(MOVEMENT);
+//                        System.out.println(getEventData().size());
+//                        System.out.println("Current event: " + data);
+//
+//                        String allData = getClientID() + ";" + MOVEMENT + ";" + data;
+//
+//                        try {
+//                            sendEvent(allData);
+//                        } catch (IOException ex) {
+//                            Exceptions.printStackTrace(ex);
+//                        }
+//                        removeData(MOVEMENT);
+//                    }
+//                }
             }
         }
     }
 
-    private void sendEvent(String data, int i) throws IOException {
+    private void sendEvent(String data) throws IOException {
         InetAddress IPAddress = InetAddress.getByName("localhost");
 
 //        InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
-        cEventSocket = getDatagramSocket();
+//        cEventSocket = getDatagramSocket();
 
         sendData = data.getBytes();
-        System.out.println(sendData);
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9875);
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, getPort());
 
         if (sendData != null) {
-            
-            DataTransmitter.cEventSocket.send(sendPacket);
-            
-            System.out.println("Package Sent");
-        }
 
+            getDatagramSocket().send(sendPacket);
+
+            System.out.println("Package Sent: " + data);
+        }
     }
 }

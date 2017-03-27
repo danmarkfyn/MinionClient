@@ -27,6 +27,9 @@ import javafx.stage.StageStyle;
 import minioning.common.data.Entity;
 import minioning.common.data.Events;
 import static minioning.common.data.Events.CREATEPLAYER;
+import static minioning.common.data.Events.LOGIN;
+import static minioning.common.data.Events.PLAY;
+import static minioning.common.data.Lists.putOutput;
 import minioning.common.data.LocalData;
 import static minioning.common.data.LocalData.setClientID;
 
@@ -34,11 +37,11 @@ import static minioning.common.data.LocalData.setClientID;
  *
  * @author Jakob
  */
-public final class LauncherLogic implements Runnable {
+public final class LauncherLogic{
 
     public static DatagramSocket cSocket;
-    private static UUID ClientID;
-    private static boolean running = true;
+//    private static UUID ClientID;
+//    private static boolean running = true;
 
     // implements singleton
     public static DatagramSocket getDatagramSocket() throws SocketException {
@@ -63,28 +66,15 @@ public final class LauncherLogic implements Runnable {
     }
 
     public final void CreatePlayer(String playerInfo, InetAddress IPAddress, DatagramSocket clientSocket) throws IOException {
-        byte[] sendData = new byte[1024];
-
         String output = LocalData.getClientID() + ";" + CREATEPLAYER + ";" + playerInfo;
-
-        System.out.println(output);
-
-        sendData = output.getBytes();
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
-
-        clientSocket.send(sendPacket);
+        putOutput(CREATEPLAYER, output);
+//        System.out.println(output);
     }
 
     public final void accountQuery(Events event, String username, String password, InetAddress IPAddress, DatagramSocket clientSocket) throws IOException {
-        byte[] sendData = new byte[1024];
-
         String login = ";" + event + ";" + username + ";" + password;
-
-        sendData = login.getBytes();
-        System.out.println(login);
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
-
-        clientSocket.send(sendPacket);
+        putOutput(event, login);
+        System.out.println("putting event " + event);
     }
 
     public final void promt(String s1, String s2) {
@@ -122,84 +112,77 @@ public final class LauncherLogic implements Runnable {
     
     
     public final void play(UUID id , Events event, InetAddress IPAddress, DatagramSocket clientSocket)throws IOException{
-        running = false;
-        byte[] sendData = new byte[1024];
+        
+        
         String output = id + ";" + event;
-
-        System.out.println(output);
-
-        sendData = output.getBytes();
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
-
-        clientSocket.send(sendPacket);
-        
-        
+        putOutput(PLAY, output);
+//        System.out.println(output);
     }
     
 
-    @Override
-    public void run() {
-
-        byte[] sData = null;
-        DatagramPacket sPacket = null;
-
-        while (running) {
-
-            try {
-                cSocket = getDatagramSocket();
-                sData = new byte[1024];
-                sPacket = new DatagramPacket(sData, sData.length);
-
-                sData = new byte[1024];
-                sPacket = new DatagramPacket(sData, sData.length);
-
-                System.out.println("virker");
-            } catch (SocketException e) {
-                System.out.println(e);
-            }
-
-            try {
-                cSocket.receive(sPacket);
-                processPackage(sPacket);
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        }
-    }
-
-    public void processPackage(DatagramPacket dp) {
-        byte[] getData = new byte[1024];
-String modifiedSentence = new String(dp.getData());
-        try {
-            
-            System.out.println("Received in launcherlogic:" + modifiedSentence);
-            setUUID(modifiedSentence.trim());
-            
-        } catch (Exception e) {
-        }
-//        try{
-//            
-//            String[] s = modifiedSentence.split(";");
-//            
-//            System.out.println(s[0]+"og"+s[1]+"og"+s[2]);
-//            
-//            
-//        }catch(Exception e){
-//            
+//    @Override
+//    public void run() {
+//
+//        byte[] sData = null;
+//        DatagramPacket sPacket = null;
+//
+//        while (running) {
+//
+//            try {
+//                cSocket = getDatagramSocket();
+//                sData = new byte[1024];
+//                sPacket = new DatagramPacket(sData, sData.length);
+//
+//                sData = new byte[1024];
+//                sPacket = new DatagramPacket(sData, sData.length);
+//
+//                System.out.println("virker");
+//            } catch (SocketException e) {
+//                System.out.println(e);
+//            }
+//
+//            try {
+//                cSocket.receive(sPacket);
+//                processPackage(sPacket);
+//            } catch (Exception e) {
+//                System.out.println(e);
+//            }
 //        }
+//    }
+//
+//    public void processPackage(DatagramPacket dp) {
+//        byte[] getData = new byte[1024];
+//String modifiedSentence = new String(dp.getData());
 //        try {
-//            System.out.println("1");
-//            ByteArrayInputStream in = new ByteArrayInputStream(dp.getData());
-//            ObjectInputStream ois = new ObjectInputStream(in);
-//            System.out.println("2");
-//            ConcurrentHashMap<UUID, Entity> world = (ConcurrentHashMap<UUID, Entity>) (Map<UUID, Entity>) ois.readObject();
-//ois.close();
-//            System.out.println("3");
+//            
+//            System.out.println("Received in launcherlogic:" + modifiedSentence);
+//            setUUID(modifiedSentence.trim());
+//            
 //        } catch (Exception e) {
-//            System.out.println(e);
 //        }
-
-    }
+////        try{
+////            
+////            String[] s = modifiedSentence.split(";");
+////            
+////            System.out.println(s[0]+"og"+s[1]+"og"+s[2]);
+////            
+////            
+////        }catch(Exception e){
+////            
+////        }
+////        try {
+////            System.out.println("1");
+////            ByteArrayInputStream in = new ByteArrayInputStream(dp.getData());
+////            ObjectInputStream ois = new ObjectInputStream(in);
+////            System.out.println("2");
+////            ConcurrentHashMap<UUID, Entity> world = (ConcurrentHashMap<UUID, Entity>) (Map<UUID, Entity>) ois.readObject();
+////ois.close();
+////            System.out.println("3");
+////        } catch (Exception e) {
+////            System.out.println(e);
+////        }
+//
+//    }
 
     public void setUUID(String raw) {
 

@@ -12,10 +12,24 @@ import java.util.UUID;
  * @author Jakob
  */
 public class LocalData {
-    
-     private static UUID ClientID = null;
-     private static int height = 576;
-     private static int width = 1024;
+
+    private static UUID ClientID = null;
+    private static int height = 576;
+    private static int width = 1024;
+    private static Boolean playing = false;
+    private static final int port = 9876;
+
+    public static int getPort() {
+        return port;
+    }
+
+    public static Boolean getPlaying() {
+        return playing;
+    }
+
+    public static void setPlaying(Boolean playing) {
+        LocalData.playing = playing;
+    }
 
     public static int getHeight() {
         return height;
@@ -32,7 +46,7 @@ public class LocalData {
     public static void setWidth(int width) {
         LocalData.width = width;
     }
-     
+
     public static UUID getClientID() {
         return ClientID;
     }
@@ -40,6 +54,5 @@ public class LocalData {
     public static void setClientID(UUID ClientID) {
         LocalData.ClientID = ClientID;
     }
-    
-    
+
 }
