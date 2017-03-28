@@ -1,75 +1,49 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package minioning.connection;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketException;
-import org.openide.util.Exceptions;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import minioning.common.data.Entity;
+import static minioning.common.data.LocalData.setClientID;
+import minioning.common.services.IWorldUpdate;
+import static minioning.connection.Installer.getTempData;
+import static minioning.connection.WorldUpdater.updateWorld;
+import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
  * @author Jakob
  */
-public class DataReciever  {
+@ServiceProvider(service = IWorldUpdate.class)
+public class DataReciever implements IWorldUpdate {
 
-//    public static DatagramSocket cSocket;
-//    byte[] getData = new byte[1024];
-//
-//    DatagramPacket dp;
+    private static List<String[]> tempData;
+    
+    @Override
+    public void update(Map<UUID, Entity> world) {
+        System.out.println("update running in DataReceiver");
+        tempData = getTempData();
+        for(String[] data : tempData){
+            String event = data[0].trim();
+            System.out.println("found event: " + event);
+            switch(event){
+                case "LOGINSUCCESS":
+                    System.out.println("loginsuccess found");
+                    setUUID(data[1].trim());
+                    break;
+                case "WORLD":
+                    updateWorld(data, world);
+                    break;
+            }
+        }
+    }
 
-//    public static DatagramSocket getDatagramSocket() throws SocketException {
-//        if (cSocket == null) {
-//            try {
-//                cSocket = new DatagramSocket();
-//            } catch (Exception e) {
-//            }
-//
-//        }
-//        return cSocket;
-//    }
-//
-//    @Override
-//    public void run() {
-//        try {
-//            DatagramSocket sSocket = getDatagramSocket();
-//            
-//            while(true){
-//            DatagramPacket sPacket = new DatagramPacket(getData, getData.length);
-//            
-//            sSocket.receive(sPacket);
-//            String data = new String(sPacket.getData());
-//            
-//            
-//            
-//            }
-////        while (!Thread.currentThread().isInterrupted()) {
-////
-////
-////            try {
-////                cSocket = getDatagramSocket();
-////            } catch (SocketException ex) {
-////                Exceptions.printStackTrace(ex);
-////            }
-////                sData = new byte[1024];
-////                sPacket = new DatagramPacket(sData, sData.length);
-////
-////            try {
-////                cSocket.receive(sPacket);
-//
-//        } catch (Exception e) {
-//
-//        }
-//
-////            
-////            String[] s = modifiedSentence.split(";");
-////
-////    System.out.println (s
-////
-////[0]+"og"+s[1]+"og"+s[2]);
-//    }
+    private void setUUID(String raw) {
+
+        UUID ID = UUID.fromString(raw);
+        System.out.println(ID);
+        setClientID(ID);
+
+    }
+
 }

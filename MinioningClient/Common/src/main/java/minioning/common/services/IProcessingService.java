@@ -6,6 +6,7 @@
 package minioning.common.services;
 
 import java.util.Map;
+import java.util.UUID;
 import minioning.common.data.Entity;
 
 /**
@@ -13,5 +14,5 @@ import minioning.common.data.Entity;
  * @author Jakob
  */
 public interface IProcessingService {
-     void process(Map<String, Entity> world, Entity entity);
+     void process(Map<UUID, Entity> world, Entity entity);
 }

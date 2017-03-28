@@ -187,10 +187,9 @@ public class Launcher extends Application {
         // Play button action
         playBtn.setOnAction((v) -> {
 
-            new Thread(new Test()).start();
+//            new Thread(new Test()).start();
             try {
                 launcher.play(LocalData.getClientID(), PLAY, IPAddress, clientSocket);
-                
             } catch (IOException ex) {
                 Exceptions.printStackTrace(ex);
             }

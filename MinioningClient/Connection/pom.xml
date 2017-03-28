@@ -40,13 +40,12 @@
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
-            <artifactId>org-openide-util</artifactId>
-            <version>RELEASE68</version>
-            <type>jar</type>
+            <artifactId>org-openide-modules</artifactId>
+            <version>RELEASE81</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
-            <artifactId>org-openide-modules</artifactId>
+            <artifactId>org-openide-util</artifactId>
             <version>RELEASE81</version>
         </dependency>
     </dependencies>

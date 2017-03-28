@@ -10,9 +10,8 @@ import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import static minioning.common.data.LocalData.setClientID;
 import org.openide.modules.ModuleInstall;
 
 /**
@@ -32,15 +31,18 @@ public class Installer extends ModuleInstall {
     }
 
     public synchronized static List<String[]> getTempData() {
+        if (tempData == null) {
+            tempData = new ArrayList<String[]>();
+        }
         return tempData;
     }
 
     public static void putTempData(String[] newData) {
-        tempData.add(newData);
+        getTempData().add(newData);
     }
 
     public static void clearTempData() {
-        tempData.clear();
+        getTempData().clear();
     }
 
     @Override
@@ -59,11 +61,8 @@ public class Installer extends ModuleInstall {
 
             while (true) {
 
-//                cSocket = getDatagramSocket();
                 sData = new byte[1024];
                 sPacket = new DatagramPacket(sData, sData.length);
-
-                System.out.println("virker");
 
                 try {
                     getDatagramSocket().receive(sPacket);
@@ -83,7 +82,12 @@ public class Installer extends ModuleInstall {
             String[] result = (String[]) objectInputStream.readObject();
             objectInputStream.close();
             putTempData(result);
+            System.out.println("received:");
+            for(String resultLine : result){
+                System.out.println(resultLine);
+            }
         } catch (Exception e) {
+            System.out.println("processPackage failed: " + e);
 //            try {
 //                String simpleData = new String(dp.getData());
 //                System.out.println("Received: " + simpleData);
@@ -92,13 +96,4 @@ public class Installer extends ModuleInstall {
 //            }
         }
     }
-
-    public void setUUID(String raw) {
-
-        UUID ID = UUID.fromString(raw);
-        System.out.println(ID);
-        setClientID(ID);
-
-    }
-
 }

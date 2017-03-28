@@ -1,31 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package minioning.connection;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.util.Map;
-import minioning.common.data.Entity;
-import static minioning.common.data.EventData.getData;
-import static minioning.common.data.EventData.getEventData;
-import static minioning.common.data.EventData.removeData;
 import minioning.common.data.Events;
-import static minioning.common.data.Events.MOVEMENT;
 import static minioning.common.data.Lists.*;
-import static minioning.common.data.LocalData.getClientID;
 import static minioning.common.data.LocalData.getPlaying;
 import static minioning.common.data.LocalData.getPort;
 import static minioning.common.data.LocalData.setPlaying;
-import minioning.common.services.IProcessingService;
 import static minioning.connection.Installer.getDatagramSocket;
-import org.openide.util.Exceptions;
-import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
@@ -33,7 +17,6 @@ import org.openide.util.lookup.ServiceProvider;
  */
 public class DataTransmitter implements Runnable {
 
-    private static DatagramSocket cEventSocket;
     private byte[] sendData = new byte[1024];
     private Boolean playing;
     private Map<Events, String> output;

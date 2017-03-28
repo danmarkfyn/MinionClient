@@ -24,6 +24,7 @@ public class Entity implements Serializable {
         this.owner = owner;
         this.name = name;
         this.x = x;
+        this.y = y;
     }
 
     public int getX() {

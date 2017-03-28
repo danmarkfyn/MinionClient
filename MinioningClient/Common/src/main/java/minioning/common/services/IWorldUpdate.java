@@ -6,6 +6,7 @@
 package minioning.common.services;
 
 import java.util.Map;
+import java.util.UUID;
 import minioning.common.data.Entity;
 
 /**
@@ -14,6 +15,6 @@ import minioning.common.data.Entity;
  */
 public interface IWorldUpdate {
     
-    void update(Map<String, Entity> world);
+    void update(Map<UUID, Entity> world);
     
 }

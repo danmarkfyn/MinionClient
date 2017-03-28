@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.Entity;
 /**
@@ -35,7 +36,7 @@ public class Render {
 //        this.mapRenderer = new OrthogonalTiledMapRenderer((TiledMap) gameData.getMap());
     }
     
-    public void render(ConcurrentHashMap<String, Entity> world) {
+    public void render(ConcurrentHashMap<UUID, Entity> world) {
         // Process message timer and get next message if available
 //        if(activeMessage != null && messageTimer > 0) {
 //            messageTimer -= gameData.getDelta();
@@ -57,7 +58,7 @@ public class Render {
  
     }
     
-    public void drawSprites(ConcurrentHashMap<String, Entity> world) {
+    public void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
         SpriteBatch batch = new SpriteBatch();
         batch.begin();
         for (Entity entity : world.values()) {

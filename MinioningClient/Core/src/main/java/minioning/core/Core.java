@@ -21,6 +21,7 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import java.util.UUID;
 import minioning.common.data.EventData;
 import static minioning.common.data.EventData.getEventData;
 import minioning.common.data.Events;
@@ -29,7 +30,7 @@ import minioning.common.data.Events;
 public class Core implements ApplicationListener {
     
     private static EventData ed;
-    private Map<String, Entity> world = new ConcurrentHashMap<>();
+    private Map<UUID, Entity> world = new ConcurrentHashMap<>();
     private ShapeRenderer sr;
     private final Lookup lookup = Lookup.getDefault();
     private List<IPluginService> gamePlugins = new CopyOnWriteArrayList<>();

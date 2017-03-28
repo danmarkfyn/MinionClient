@@ -15,6 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import minioning.common.data.Entity;
 import minioning.common.data.LocalData;
 import static minioning.common.data.LocalData.getClientID;
+import static minioning.common.data.LocalData.getPlaying;
 import minioning.common.services.IGameInitializer;
 import minioning.common.services.IPluginService;
 import minioning.common.services.IProcessingService;
@@ -29,7 +30,7 @@ import org.openide.util.LookupListener;
  */
 public class Test implements Runnable {
 
-    private Map<String, Entity> world = new ConcurrentHashMap<>();
+    private Map<UUID, Entity> world = new ConcurrentHashMap<>();
     private final Lookup lookup = Lookup.getDefault();
     private List<IPluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private Lookup.Result<IPluginService> result;
@@ -43,47 +44,34 @@ public class Test implements Runnable {
 
 //        Entity player = new Entity(getClientID(),"Player");
 //        world.put(player.getName(), player);
-
         for (IPluginService plugin : gamePlugins) {
             plugin.start();
         }
 
         System.out.println(lookup.lookupAll(IProcessingService.class).size() + " entity processors was found");
 
-        //runs once to install visualisation
-        System.out.println("Looking for IGameInitializer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        for (IGameInitializer installService : getGameInitializer()) {
-            System.out.println("Found IGameInitializer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            installService.install();
-        }
     }
 
-    public void update() {
-   
+    public void updateEntities() {
         for (IProcessingService processorService : getProcessingServices()) {
             for (Entity e : world.values()) {
                 processorService.process(world, e);
             }
         }
-        
-        
-   
     }
-    
-    public void updateConnection(){
+
+    public void updateConnection() {
+        System.out.println("worldupdates found: " + getWorldUpdate().size());
         for (IWorldUpdate worldUpdate : getWorldUpdate()) {
-                worldUpdate.update(world);
+            worldUpdate.update(world);
         }
     }
 
-    
     // main thread for the graphical application
     @Override
     public void run() {
-        
-        
+
 //           Entity player = new Entity(getClientID(),"Player",200,LocalData.getHeight() - 150);
-       
 //           
 //           UUID id =  UUID.randomUUID();
 //           
@@ -93,9 +81,21 @@ public class Test implements Runnable {
 //           
 //        world.put(player.getName(), player);
 //        world.put(player2.getName(), player2);
+        boolean initialized = false;
         while (true) {
-            update();
             updateConnection();
+            if (getPlaying()) {
+                updateEntities();
+                if (!initialized) {
+                    //runs once to install visualisation
+                    System.out.println("Looking for IGameInitializer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    for (IGameInitializer installService : getGameInitializer()) {
+                        System.out.println("Found IGameInitializer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        installService.install();
+                    }
+                    initialized = true;
+                }
+            }
         }
     }
 
@@ -106,7 +106,8 @@ public class Test implements Runnable {
     private Collection<? extends IGameInitializer> getGameInitializer() {
         return lookup.lookupAll(IGameInitializer.class);
     }
-        private Collection<? extends IWorldUpdate> getWorldUpdate() {
+
+    private Collection<? extends IWorldUpdate> getWorldUpdate() {
         return lookup.lookupAll(IWorldUpdate.class);
     }
 

@@ -14,6 +14,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.EventData;
 import static minioning.common.data.EventData.addEvent;
@@ -33,13 +34,13 @@ import static minioning.common.data.LocalData.getHeight;
 public class VisualProcess implements IProcessingService, ApplicationListener {
 
     private ShapeRenderer sr;
-    private static Map<String, Entity> world = new ConcurrentHashMap<>();
+    private static Map<UUID, Entity> world = new ConcurrentHashMap<UUID, Entity>();
     private Render render = new Render();
 
     // Override render() i ApplicationListener i stedet for process (køres konstant)
     
     @Override
-    public void process(Map<String, Entity> world, Entity entity) {
+    public void process(Map<UUID, Entity> world, Entity entity) {
         
 
 //        System.out.println("Pr");
@@ -75,7 +76,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
         
 //        System.out.println(world.size());
         
-        render.render((ConcurrentHashMap<String, Entity>) world);
+        render.render((ConcurrentHashMap<UUID, Entity>) world);
         
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 
