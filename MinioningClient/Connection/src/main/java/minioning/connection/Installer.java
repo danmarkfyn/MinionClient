@@ -11,6 +11,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.openide.modules.ModuleInstall;
 
@@ -30,21 +31,30 @@ public class Installer extends ModuleInstall {
         return cSocket;
     }
 
+    //returns a copy of tempData and clears the original
     public synchronized static List<String[]> getTempData() {
+        List<String[]> tempDataCopy = new ArrayList<>();
+        for(String[] data : getActualTempData()){
+            tempDataCopy.add(data);
+        }
+        return tempDataCopy;
+    }
+
+    private synchronized static List<String[]> getActualTempData() {
         if (tempData == null) {
-            tempData = new ArrayList<String[]>();
+            tempData = Collections.synchronizedList(new ArrayList<String[]>());
         }
         return tempData;
     }
 
-    public static void putTempData(String[] newData) {
-        getTempData().add(newData);
+    public synchronized static void putTempData(String[] newData) {
+        getActualTempData().add(newData);
     }
 
     public static void clearTempData() {
-        getTempData().clear();
+        tempData.clear();
     }
-
+    
     @Override
     public void restored() {
         new Thread(new ConnectionThread()).start();
@@ -77,15 +87,11 @@ public class Installer extends ModuleInstall {
 
     public void processPackage(DatagramPacket dp) {
         try {
-            ByteArrayInputStream byteArrayInputStreaam = new ByteArrayInputStream(dp.getData());
-            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStreaam);
+            final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(dp.getData());
+            final ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             String[] result = (String[]) objectInputStream.readObject();
             objectInputStream.close();
             putTempData(result);
-            System.out.println("received:");
-            for(String resultLine : result){
-                System.out.println(resultLine);
-            }
         } catch (Exception e) {
             System.out.println("processPackage failed: " + e);
 //            try {

@@ -61,7 +61,6 @@ public class Test implements Runnable {
     }
 
     public void updateConnection() {
-        System.out.println("worldupdates found: " + getWorldUpdate().size());
         for (IWorldUpdate worldUpdate : getWorldUpdate()) {
             worldUpdate.update(world);
         }

@@ -72,35 +72,13 @@ public class DataTransmitter implements Runnable {
                         default:
                             break;
                     }
-
                 }
-            } else {
-//                if (getEventData().size() > 0) {
-//                    for (int i = 0; i < getEventData().size(); i++) {
-//
-//                        String data = getData(MOVEMENT);
-//                        System.out.println(getEventData().size());
-//                        System.out.println("Current event: " + data);
-//
-//                        String allData = getClientID() + ";" + MOVEMENT + ";" + data;
-//
-//                        try {
-//                            sendEvent(allData);
-//                        } catch (IOException ex) {
-//                            Exceptions.printStackTrace(ex);
-//                        }
-//                        removeData(MOVEMENT);
-//                    }
-//                }
             }
         }
     }
 
     private void sendEvent(String data) throws IOException {
         InetAddress IPAddress = InetAddress.getByName("localhost");
-
-//        InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
-//        cEventSocket = getDatagramSocket();
 
         sendData = data.getBytes();
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, getPort());

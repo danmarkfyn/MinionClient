@@ -18,12 +18,13 @@ public class WorldUpdater {
     
     private static Map<UUID, Entity> tempWorld;
     
-    public static void updateWorld(String[] newWorld, Map<UUID, Entity> world){
+    public synchronized static void updateWorld(String[] newWorld, Map<UUID, Entity> world){
         tempWorld = new ConcurrentHashMap<UUID, Entity>();
         for(int i = 0; i < newWorld.length; i++){
             Entity newEntity = createEntity(newWorld[i]);
             UUID ID = newEntity.getID();
             tempWorld.put(ID,newEntity);
+            System.out.println("entity created: " + newEntity.getName());
         }
         world = tempWorld;
     }
