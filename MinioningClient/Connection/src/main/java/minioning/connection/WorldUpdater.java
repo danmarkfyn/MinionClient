@@ -16,33 +16,33 @@ import minioning.common.data.Entity;
  */
 public class WorldUpdater {
     
-    private static Map<UUID, Entity> tempWorld;
+//    private static Map<UUID, Entity> tempWorld;
     
     public synchronized static void updateWorld(String[] newWorld, Map<UUID, Entity> world){
-        tempWorld = new ConcurrentHashMap<UUID, Entity>();
+        System.out.println(world.size());
+//        tempWorld = new ConcurrentHashMap<UUID, Entity>();
         world.clear();
         for(int i = 1; i < newWorld.length; i++){
             Entity newEntity = createEntity(newWorld[i]);
             UUID ID = newEntity.getID();
-            tempWorld.put(ID,newEntity);
-//            System.out.println("entity created: " + newEntity.getName());
-            if(world.containsKey(ID)){
-                world.replace(ID, newEntity);
-                System.out.println("updated: " + ID);
-            }else{
+//            System.out.println("ID: " + ID);
+//            tempWorld.put(ID,newEntity);
+            if(!world.containsKey(ID)){
                 world.put(ID, newEntity);
-                System.out.println("created: " + ID);
+//                System.out.println("created: " + ID);
+            }else{
+                world.replace(ID, newEntity);
+//                System.out.println("updated: " + ID);
             }
         }
     }
     
     
     private static Entity createEntity(String entityString){
+//        System.out.println("Entity: " + entityString);
         String[] data = entityString.split(";");
         
         UUID ID = UUID.fromString(data[0]);
-        System.out.println("data[0]: " + data[0]);
-        System.out.println("ID     : " + ID);
         String name = data[1];
         float fx = Float.parseFloat(data[2]);
         float fy = Float.parseFloat(data[3]);

@@ -75,7 +75,6 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
     public void render() {
         
 //        System.out.println(world.size());
-        
         render.render((ConcurrentHashMap<UUID, Entity>) world);
         
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {

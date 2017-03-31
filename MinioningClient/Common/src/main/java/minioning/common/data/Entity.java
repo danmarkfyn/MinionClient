@@ -10,7 +10,7 @@ import java.util.UUID;
  */
 public class Entity implements Serializable {
 
-    private final UUID ID = UUID.randomUUID();
+    private final UUID ID;
     private UUID owner;
     private String name;
     private int x = 0;
@@ -20,11 +20,12 @@ public class Entity implements Serializable {
     private float speed = 100;
     private Sprite sprite;
 
-    public Entity(UUID owner, String name, int x, int y) {
-        this.owner = owner;
+    public Entity(UUID ID, String name, int x, int y) {
+//        this.owner = owner;
         this.name = name;
         this.x = x;
         this.y = y;
+        this.ID = ID;
     }
 
     public int getX() {
