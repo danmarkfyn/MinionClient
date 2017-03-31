@@ -70,11 +70,19 @@ public class Render {
 //            int height = entity.getHeight();
 //            
 //            // Set entity sprite as texture from graphics folder with specified file name
+<<<<<<< HEAD
             if (entity.getSprite() == null) {
                 Texture texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "player.png"));
                 Sprite sprite = new Sprite(texture, 0, 0, 50, 50);
                 entity.setSprite(sprite);
                 sprite.setPosition(entity.getX() - sprite.getWidth() / 2, entity.getY() - sprite.getHeight() / 2);
+=======
+            if(entity.getSprite() == null) {
+                Texture texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "player.png"));
+                Sprite sprite = new Sprite(texture, 0, 0, 50, 50);
+                entity.setSprite(sprite);
+                sprite.setPosition(entity.getX()- sprite.getWidth()/2, entity.getY()-sprite.getHeight()/2);
+>>>>>>> b7884f095733dafc100920af815cbb6c8300d239
             }
 
             // Set bounds and rotation

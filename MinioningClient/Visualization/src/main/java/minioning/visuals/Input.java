@@ -3,20 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package minioning.common.data;
+package minioning.visuals;
+
+import com.badlogic.gdx.InputAdapter;
 
 /**
  *
  * @author Jakob
  */
-public enum Events {
+public class Input extends InputAdapter {
     
-    MOVEMENT,
-    CREATEPLAYER,
-    CREATEACCOUNT,
-    LOGIN,
-    QSKILL,
-    WSKILL,
-    ESKILL,
-    PLAY;
 }

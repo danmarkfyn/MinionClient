@@ -21,6 +21,8 @@ import static minioning.common.data.EventData.addEvent;
 import static minioning.common.data.EventData.getEventData;
 import minioning.common.data.Events;
 import static minioning.common.data.Events.MOVEMENT;
+import minioning.common.data.Lists;
+import static minioning.common.data.Lists.getOutputList;
 import static minioning.common.data.LocalData.getClientID;
 
 import static minioning.common.data.LocalData.getWidth;
@@ -38,18 +40,14 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
     private Render render = new Render();
 
     // Override render() i ApplicationListener i stedet for process (køres konstant)
-    
     @Override
     public void process(Map<UUID, Entity> world, Entity entity) {
-        
 
 //        System.out.println("Pr");
 //        this.world = world;
-                
 //        render.drawSprites((ConcurrentHashMap<String, Entity>) world);
 //        render.render((ConcurrentHashMap<String, Entity>) world);
         this.world = world;
-        
 
 // 
 //        
@@ -57,7 +55,6 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 //        System.out.println("1");
 //        
 //        System.out.println("2");
-
     }
 
     @Override
@@ -73,10 +70,10 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     @Override
     public void render() {
-        
+
 //        System.out.println(world.size());
         render.render((ConcurrentHashMap<UUID, Entity>) world);
-        
+
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 
             double x = Gdx.input.getX();
@@ -95,9 +92,22 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
             String movement = x + ";" + y;
 //            System.out.println(movement);
-            getEventData().put(Events.MOVEMENT, movement);
+            getOutputList().put(Events.MOVEMENT, movement);
 
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+            getOutputList().put(Events.QSKILL, "");
+            System.out.println("Q is pressed");
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            getOutputList().put(Events.WSKILL, "");
+            System.out.println("W is pressed");
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+            getOutputList().put(Events.ESKILL, "");
+            System.out.println("E is pressed");
+        }
+        System.out.println(getOutputList().size());
 
 //        Entity player = new Entity("Player", 500, 200);
 //        Entity flayer = new Entity("Flayer", 400, 200);
