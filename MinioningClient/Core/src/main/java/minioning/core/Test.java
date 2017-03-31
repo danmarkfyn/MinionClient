@@ -53,6 +53,7 @@ public class Test implements Runnable {
     }
 
     public void updateEntities() {
+//        System.out.println("world.Size(): " + world.size());
         for (IProcessingService processorService : getProcessingServices()) {
             for (Entity e : world.values()) {
                 processorService.process(world, e);

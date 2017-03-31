@@ -20,13 +20,20 @@ public class WorldUpdater {
     
     public synchronized static void updateWorld(String[] newWorld, Map<UUID, Entity> world){
         tempWorld = new ConcurrentHashMap<UUID, Entity>();
-        for(int i = 0; i < newWorld.length; i++){
+        world.clear();
+        for(int i = 1; i < newWorld.length; i++){
             Entity newEntity = createEntity(newWorld[i]);
             UUID ID = newEntity.getID();
             tempWorld.put(ID,newEntity);
-            System.out.println("entity created: " + newEntity.getName());
+//            System.out.println("entity created: " + newEntity.getName());
+            if(world.containsKey(ID)){
+                world.replace(ID, newEntity);
+                System.out.println("updated: " + ID);
+            }else{
+                world.put(ID, newEntity);
+                System.out.println("created: " + ID);
+            }
         }
-        world = tempWorld;
     }
     
     
@@ -34,9 +41,13 @@ public class WorldUpdater {
         String[] data = entityString.split(";");
         
         UUID ID = UUID.fromString(data[0]);
+        System.out.println("data[0]: " + data[0]);
+        System.out.println("ID     : " + ID);
         String name = data[1];
-        int x = Integer.parseInt(data[2]);
-        int y = Integer.parseInt(data[3]);
+        float fx = Float.parseFloat(data[2]);
+        float fy = Float.parseFloat(data[3]);
+        int x = Math.round(fx);
+        int y = Math.round(fy);
         Entity newEntity = new Entity(ID, name, x, y);
         
         return newEntity;

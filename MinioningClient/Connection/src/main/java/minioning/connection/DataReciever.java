@@ -32,12 +32,13 @@ public class DataReciever implements IWorldUpdate {
                     setUUID(data[1].trim());
                     break;
                 case "WORLD":
+                    /*
                     for (String entity : data) {
-                        if(entity.equals("WORLD")){
+                        if(entity.trim().equals("WORLD")){
                             continue;
-                        }
+                        }*/
                         updateWorld(data, world);
-                    }
+                    //}
                     break;
             }
         }

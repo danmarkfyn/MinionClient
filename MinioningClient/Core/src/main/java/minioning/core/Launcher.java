@@ -161,7 +161,7 @@ public class Launcher extends Application {
                 try {
                     launcher.accountQuery(LOGIN, username, password, IPAddress, clientSocket);
 //                    
-                    TimeUnit.MILLISECONDS.sleep(1000);
+                    TimeUnit.MILLISECONDS.sleep(2000);
 
                     if (LocalData.getClientID() != null) {
                         serverToken.setValue(Boolean.FALSE);

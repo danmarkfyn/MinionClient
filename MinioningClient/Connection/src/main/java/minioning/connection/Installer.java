@@ -34,7 +34,7 @@ public class Installer extends ModuleInstall {
     //returns a copy of tempData and clears the original
     public synchronized static List<String[]> getTempData() {
         List<String[]> tempDataCopy = new ArrayList<>();
-        for(String[] data : getActualTempData()){
+        for (String[] data : getActualTempData()) {
             tempDataCopy.add(data);
         }
         return tempDataCopy;
@@ -48,13 +48,20 @@ public class Installer extends ModuleInstall {
     }
 
     public synchronized static void putTempData(String[] newData) {
+        //check if already there, then add
+        List<String[]> tempData = getActualTempData();
+        for (int i = 0; i < tempData.size(); i++) {
+            if (newData[0].equals(tempData.get(i)[0])) {
+                getActualTempData().remove(tempData.get(i));
+            }
+        }
         getActualTempData().add(newData);
     }
 
     public static void clearTempData() {
-        tempData.clear();
+        getActualTempData().clear();
     }
-    
+
     @Override
     public void restored() {
         new Thread(new ConnectionThread()).start();
@@ -77,6 +84,7 @@ public class Installer extends ModuleInstall {
                 try {
                     getDatagramSocket().receive(sPacket);
                     processPackage(sPacket);
+//                    System.out.println("received something");
                 } catch (Exception e) {
                     System.out.println(e);
                 }
