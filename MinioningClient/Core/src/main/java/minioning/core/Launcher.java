@@ -224,7 +224,7 @@ public class Launcher extends Application {
 
             if (output != null) {
                 try {
-                    launcher.CreatePlayer(output, IPAddress, clientSocket);
+                    launcher.CreatePlayer(output);
                 } catch (Exception e) {
                 }
                 avatarnameField.clear();

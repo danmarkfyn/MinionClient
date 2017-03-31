@@ -31,7 +31,7 @@ public class DataTransmitter implements Runnable {
     public void run() {
         while (true) {
             playing = getPlaying();
-            if (!playing) {
+//            if (!playing) {
                 output = getOutputList();
 //            clearOutput();
 //            System.out.println("for loop & size: " + output.entrySet().size());
@@ -40,8 +40,14 @@ public class DataTransmitter implements Runnable {
                     String data = entry.getValue();
                     System.out.println(eventType);
                     switch (eventType) {
-                        case CREATEPLAYER:
-
+                        case MOVEMENT:
+                            try {
+                                sendEvent(data);
+                            } catch (Exception e) {
+                                System.out.println("Couldn't send movement");
+                            }
+                            removeEvent(eventType, data);
+                            System.out.println("event removed");
                             break;
                         case CREATEACCOUNT:
                             try {
@@ -69,11 +75,18 @@ public class DataTransmitter implements Runnable {
                             }
                             removeEvent(eventType, data);
                             break;
+                        case CREATEPLAYER:
+                            try {
+                                sendEvent(data);
+                            } catch (Exception e) {
+                                System.out.println("send createplayer failed");
+                            }
+                            removeEvent(eventType, data);
                         default:
                             break;
                     }
                 }
-            }
+//            }
         }
     }
 

@@ -23,6 +23,7 @@ import minioning.common.data.Events;
 import static minioning.common.data.Events.MOVEMENT;
 import minioning.common.data.Lists;
 import static minioning.common.data.Lists.getOutputList;
+import minioning.common.data.LocalData;
 import static minioning.common.data.LocalData.getClientID;
 
 import static minioning.common.data.LocalData.getWidth;
@@ -75,9 +76,11 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
         render.render((ConcurrentHashMap<UUID, Entity>) world);
 
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+//        if (Gdx.input.isKeyJustPressed(Input.Buttons.LEFT)) {  
 
-            double x = Gdx.input.getX();
-            double y = Gdx.input.getY();
+            int x = Gdx.input.getX();
+            int y = Gdx.input.getY();
+            y = getHeight()-y;
 
             if (x < 0) {
                 x = 1;
@@ -90,8 +93,8 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
                 y = getHeight();
             }
 
-            String movement = x + ";" + y;
-//            System.out.println(movement);
+            String movement = LocalData.getClientID().toString() + ";" + Events.MOVEMENT + ";" + x + ";" + y;
+            System.out.println(movement);
             getOutputList().put(Events.MOVEMENT, movement);
 
         }
@@ -107,7 +110,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
             getOutputList().put(Events.ESKILL, "");
             System.out.println("E is pressed");
         }
-        System.out.println(getOutputList().size());
+//        System.out.println(getOutputList().size());
 
 //        Entity player = new Entity("Player", 500, 200);
 //        Entity flayer = new Entity("Flayer", 400, 200);

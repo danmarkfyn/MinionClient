@@ -65,7 +65,7 @@ public final class LauncherLogic{
         return player;
     }
 
-    public final void CreatePlayer(String playerInfo, InetAddress IPAddress, DatagramSocket clientSocket) throws IOException {
+    public final void CreatePlayer(String playerInfo) throws IOException {
         String output = LocalData.getClientID() + ";" + CREATEPLAYER + ";" + playerInfo;
         putOutput(CREATEPLAYER, output);
 //        System.out.println(output);
