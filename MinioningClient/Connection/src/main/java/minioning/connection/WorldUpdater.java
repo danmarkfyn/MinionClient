@@ -19,7 +19,6 @@ public class WorldUpdater {
 //    private static Map<UUID, Entity> tempWorld;
     
     public synchronized static void updateWorld(String[] newWorld, Map<UUID, Entity> world){
-        System.out.println(world.size());
 //        tempWorld = new ConcurrentHashMap<UUID, Entity>();
         world.clear();
         for(int i = 1; i < newWorld.length; i++){
