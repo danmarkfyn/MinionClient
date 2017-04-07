@@ -52,7 +52,7 @@ public class Test implements Runnable {
     }
 
     private void loadPlugins() {
-        // Lookup game plugins
+        // Lookup plugins
         Lookup.Result<IPluginService> result = lookup.lookupResult(IPluginService.class);
         result.addLookupListener(lookupListener);
         synchronized (plugins) {
@@ -60,7 +60,7 @@ public class Test implements Runnable {
         }
         result.allItems();
 
-        // Start game plugins
+        // Start plugins
         synchronized (plugins) {
             for (IPluginService plugin : plugins) {
                 plugin.start(world);
