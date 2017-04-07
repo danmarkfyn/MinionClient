@@ -32,25 +32,65 @@ public class Test implements Runnable {
 
     private Map<UUID, Entity> world = new ConcurrentHashMap<>();
     private final Lookup lookup = Lookup.getDefault();
-    private List<IPluginService> gamePlugins = new CopyOnWriteArrayList<>();
+    private List<IPluginService> plugins = new CopyOnWriteArrayList<>();
     private Lookup.Result<IPluginService> result;
 
     public Test() {
 
         Lookup.Result<IPluginService> result = lookup.lookupResult(IPluginService.class);
         result.addLookupListener(lookupListener);
-        gamePlugins = new ArrayList<>(result.allInstances());
+        plugins = new ArrayList<>(result.allInstances());
         result.allItems();
 
 //        Entity player = new Entity(getClientID(),"Player");
 //        world.put(player.getName(), player);
-        for (IPluginService plugin : gamePlugins) {
-            plugin.start();
-        }
-
+//        for (IPluginService plugin : gamePlugins) {
+//            plugin.start(world);
+//        }
         System.out.println(lookup.lookupAll(IProcessingService.class).size() + " entity processors was found");
 
     }
+
+    private void loadPlugins() {
+        // Lookup game plugins
+        Lookup.Result<IPluginService> result = lookup.lookupResult(IPluginService.class);
+        result.addLookupListener(lookupListener);
+        synchronized (plugins) {
+            plugins.addAll(result.allInstances());
+        }
+        result.allItems();
+
+        // Start game plugins
+        synchronized (plugins) {
+            for (IPluginService plugin : plugins) {
+                plugin.start(world);
+            }
+        }
+    }
+
+    private final LookupListener lookupListener = new LookupListener() {
+        //Listens for changes in components, starting and stopping them when needed
+        @Override
+        public void resultChanged(LookupEvent le) {
+            Collection<? extends IPluginService> updatedPluginList = lookup.lookupAll(IPluginService.class);
+            for (IPluginService updatedGamePlugin : updatedPluginList) {
+                synchronized (plugins) {
+                    if (!plugins.contains(updatedGamePlugin)) {
+                        updatedGamePlugin.start(world);
+                        plugins.add(updatedGamePlugin);
+                    }
+                }
+            }
+            synchronized (plugins) {
+                for (IPluginService gamePlugin : plugins) {
+                    if (!updatedPluginList.contains(gamePlugin)) {
+                        gamePlugin.stop(world);
+                        plugins.remove(gamePlugin);
+                    }
+                }
+            }
+        }
+    };
 
     public void updateEntities() {
 //        System.out.println("world.Size(): " + world.size());
@@ -71,6 +111,7 @@ public class Test implements Runnable {
     @Override
     public void run() {
 
+        loadPlugins();;
 //           Entity player = new Entity(getClientID(),"Player",200,LocalData.getHeight() - 150);
 //           
 //           UUID id =  UUID.randomUUID();
@@ -111,10 +152,10 @@ public class Test implements Runnable {
         return lookup.lookupAll(IWorldUpdate.class);
     }
 
-    private final LookupListener lookupListener = new LookupListener() {
-        @Override
-        public void resultChanged(LookupEvent le) {
-
-        }
-    };
+//    private final LookupListener lookupListener = new LookupListener() {
+//        @Override
+//        public void resultChanged(LookupEvent le) {
+//
+//        }
+//    };
 }

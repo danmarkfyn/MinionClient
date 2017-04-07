@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Layer: minioning/silentupdate/layer.xml
+OpenIDE-Module-Localizing-Bundle: minioning/silentupdate/Bundle.proper
+ ties
+OpenIDE-Module-Install: minioning/silentupdate/UpdateActivator.class
+OpenIDE-Module-Specification-Version: 1.0
+OpenIDE-Module-Implementation-Version: 1.0-20170406
+OpenIDE-Module-Build-Version: 201704061513
+OpenIDE-Module: minioning.SilentUpdate
+OpenIDE-Module-Public-Packages: -
+OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
+OpenIDE-Module-Display-Category: minioning
+OpenIDE-Module-Name: SilentUpdate
+OpenIDE-Module-Short-Description: <undefined>
+OpenIDE-Module-Long-Description: <undefined>
+OpenIDE-Module-Module-Dependencies: org.netbeans.api.annotations.commo
+ n/1 > 1.27.1, org.openide.modules > 7.47.1, org.netbeans.modules.auto
+ update.services > 1.52.1, minioning.Common > 1.0
+

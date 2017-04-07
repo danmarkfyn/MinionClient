@@ -51,7 +51,7 @@ public class Core implements ApplicationListener {
 //        world.put(player.getName(), player);
        
         for (IPluginService plugin : gamePlugins) {
-            plugin.start();
+//            plugin.start();
         }
         update();
         System.out.println(lookup.lookupAll(IProcessingService.class).size() + " entity processors was found");
