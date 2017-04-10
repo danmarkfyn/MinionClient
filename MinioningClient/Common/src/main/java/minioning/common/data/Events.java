@@ -15,8 +15,8 @@ public enum Events {
     CREATEPLAYER,
     CREATEACCOUNT,
     LOGIN,
-    QSKILL,
-    WSKILL,
-    ESKILL,
+    SKILLQ,
+    SKILLW,
+    SKILLE,
     PLAY;
 }

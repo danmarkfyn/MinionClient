@@ -17,12 +17,13 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.Entity;
-
+import minioning.common.data.LocalData;
 /**
  *
  * @author Jakob
  */
 public class Render {
+
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
     private static final String RESOURCE_ROOT = "../../../Core/src/main/resources/";
@@ -60,15 +61,24 @@ public class Render {
     }
 
     public void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
-        backgroundTexture = new Texture(RESOURCE_ROOT + "map/grassland.png");
+      
         backgroundSprite = new Sprite(backgroundTexture);
-        
+
         SpriteBatch batch = new SpriteBatch();
-        
-        batch.begin();
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        backgroundSprite.draw(batch);
+
+        for (Entity entity : world.values()) {
+            
+            if(entity.getOwner() == LocalData.getClientID()){
+//              backgroundTexture = new Texture(RESOURCE_ROOT + "map/grassland.png");
+              
+             backgroundTexture = new Texture(RESOURCE_ROOT + entity.getLocation());
+              
+            batch.begin();
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            backgroundSprite.draw(batch);
+            }
+        }
         for (Entity entity : world.values()) {
 //            if (entity.getSpriteName() == null) continue;
 //            int width = entity.getWidth();

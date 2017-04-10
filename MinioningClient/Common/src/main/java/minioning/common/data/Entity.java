@@ -19,7 +19,16 @@ public class Entity implements Serializable {
     private float dy;
     private float speed = 100;
     private Sprite sprite;
+    private String location;
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+    
     public Entity(UUID ID, String name, int x, int y) {
 //        this.owner = owner;
         this.name = name;
@@ -32,6 +41,8 @@ public class Entity implements Serializable {
         return x;
     }
 
+    
+    
     public void setX(int x) {
         this.x = x;
     }

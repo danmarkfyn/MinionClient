@@ -32,13 +32,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.SingleSelectionModel;
-import minioning.common.data.Entity;
 import static minioning.common.data.EventData.clearEventData;
 import static minioning.common.data.Events.CREATEACCOUNT;
 import static minioning.common.data.Events.LOGIN;
 import static minioning.common.data.Events.PLAY;
 import minioning.common.data.LocalData;
-import static minioning.common.data.LocalData.setPlaying;
 import org.openide.util.Exceptions;
 
 
