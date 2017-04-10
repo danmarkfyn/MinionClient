@@ -29,12 +29,13 @@ public class Entity implements Serializable {
         this.location = location;
     }
     
-    public Entity(UUID ID, String name, int x, int y) {
+    public Entity(UUID ID, String name, int x, int y, String location) {
 //        this.owner = owner;
         this.name = name;
         this.x = x;
         this.y = y;
         this.ID = ID;
+        this.location = location;
     }
 
     public int getX() {

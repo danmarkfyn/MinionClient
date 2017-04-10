@@ -18,6 +18,17 @@ public class LocalData {
     private static int width = 1024;
     private static Boolean playing = false;
     private static final int port = 9876;
+    private static String location;
+
+    public static void setLocation(String location) {
+        LocalData.location = location;
+    }
+
+    public static String getLocation() {
+        return location;
+    }
+
+    
 
     public static int getPort() {
         return port;

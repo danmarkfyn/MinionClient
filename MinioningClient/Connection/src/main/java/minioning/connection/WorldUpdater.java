@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.Entity;
+import minioning.common.data.LocalData;
 
 /**
  *
@@ -23,6 +24,12 @@ public class WorldUpdater {
         world.clear();
         for(int i = 1; i < newWorld.length; i++){
             Entity newEntity = createEntity(newWorld[i]);
+            if (newEntity.getOwner().equals(LocalData.getClientID())){
+                
+              LocalData.setLocation(newEntity.getLocation());
+              
+            }
+                
             UUID ID = newEntity.getID();
 //            System.out.println("ID: " + ID);
 //            tempWorld.put(ID,newEntity);
@@ -40,15 +47,19 @@ public class WorldUpdater {
     private static Entity createEntity(String entityString){
 //        System.out.println("Entity: " + entityString);
         String[] data = entityString.split(";");
-        
+        System.out.println("testing data in createentity");
+        for(String out : data){
+            System.out.println(out);
+        }
         UUID ID = UUID.fromString(data[0]);
         String name = data[1];
         float fx = Float.parseFloat(data[2]);
         float fy = Float.parseFloat(data[3]);
         int x = Math.round(fx);
         int y = Math.round(fy);
-        Entity newEntity = new Entity(ID, name, x, y);
-        
+        String location = data[5];
+        Entity newEntity = new Entity(ID, name, x, y, location);
+        newEntity.setOwner(UUID.fromString(data[4]));
         return newEntity;
     }
     

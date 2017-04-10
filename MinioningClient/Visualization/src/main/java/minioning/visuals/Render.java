@@ -18,6 +18,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.Entity;
 import minioning.common.data.LocalData;
+
 /**
  *
  * @author Jakob
@@ -59,24 +60,29 @@ public class Render {
 //        mapRenderer.render(fglayers);  // Foreground
 
     }
-
+/*
+    LOAD ALLE TEXTURES HER!
+    */
     public void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
-      
-        backgroundSprite = new Sprite(backgroundTexture);
 
         SpriteBatch batch = new SpriteBatch();
-
+        batch.begin();
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
+        
+        
         for (Entity entity : world.values()) {
-            
-            if(entity.getOwner() == LocalData.getClientID()){
+            System.out.println(entity.getOwner() +"    "+ LocalData.getClientID());
+            if (entity.getOwner().equals(LocalData.getClientID())) {
+                
 //              backgroundTexture = new Texture(RESOURCE_ROOT + "map/grassland.png");
-              
-             backgroundTexture = new Texture(RESOURCE_ROOT + entity.getLocation());
-              
-            batch.begin();
-            Gdx.gl.glClearColor(0, 0, 0, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            backgroundSprite.draw(batch);
+                String path = RESOURCE_ROOT + "map/" + entity.getLocation() + ".png";
+                System.out.println(path);
+                backgroundTexture = new Texture(RESOURCE_ROOT + "map/" + entity.getLocation() + ".png");
+                backgroundSprite = new Sprite(backgroundTexture);
+                
+                backgroundSprite.draw(batch);
             }
         }
         for (Entity entity : world.values()) {
@@ -85,7 +91,7 @@ public class Render {
 //            int height = entity.getHeight();
 //            
 //            // Set entity sprite as texture from graphics folder with specified file name
-
+            
             if (entity.getSprite() == null) {
                 Texture texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "player.png"));
                 Sprite sprite = new Sprite(texture, 0, 0, 50, 50);
