@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.Entity;
@@ -96,7 +98,16 @@ public class Render {
                 Texture texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "player.png"));
                 Sprite sprite = new Sprite(texture, 0, 0, 50, 50);
                 entity.setSprite(sprite);
-                sprite.setPosition(entity.getX() - sprite.getWidth() / 2, entity.getY() - sprite.getHeight() / 2);
+                int x = entity.getX();
+                int y = entity.getY();
+                Interpolation interpolation = Interpolation.linear;
+                float dt = LocalData.getDt();
+                float progress = Math.min(1f, dt);
+                interpolation.apply(dt);
+                entity.getPosition().interpolate(Vector2.Zero, dt, interpolation);
+                sprite.setPosition(entity.getPosition().x, entity.getPosition().y);
+//                sprite.setPosition(entity.getX() - sprite.getWidth() / 2, entity.getY() - sprite.getHeight() / 2);
+                
             }
             // Set bounds and rotation
             Sprite sprite = entity.getSprite();

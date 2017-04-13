@@ -82,9 +82,17 @@ public class Test implements Runnable {
 //        world.put(player.getName(), player);
 //        world.put(player2.getName(), player2);
         boolean initialized = false;
+        float lastTime = System.nanoTime();
+        float elapsedTime = 0;
         while (true) {
             updateConnection();
+
             if (getPlaying()) {
+                elapsedTime += (System.nanoTime() - lastTime) / (float) 1000000000.0;
+                lastTime = System.nanoTime();
+                float dt = LocalData.getDt();
+                dt += elapsedTime;
+                LocalData.setDt(dt);
                 updateEntities();
                 if (!initialized) {
                     //runs once to install visualisation

@@ -13,6 +13,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import minioning.common.data.LocalData;
 import org.openide.modules.ModuleInstall;
 
 /**
@@ -84,6 +85,7 @@ public class Installer extends ModuleInstall {
                 try {
                     getDatagramSocket().receive(sPacket);
                     processPackage(sPacket);
+                    LocalData.resetDt();
 //                    System.out.println("received something");
                 } catch (Exception e) {
                     System.out.println(e);

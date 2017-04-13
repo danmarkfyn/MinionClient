@@ -25,7 +25,7 @@ public class WorldUpdater {
         for(int i = 1; i < newWorld.length; i++){
             Entity newEntity = createEntity(newWorld[i]);
             if (newEntity.getOwner().equals(LocalData.getClientID())){
-                
+             
               LocalData.setLocation(newEntity.getLocation());
               
             }
@@ -58,7 +58,9 @@ public class WorldUpdater {
         int x = Math.round(fx);
         int y = Math.round(fy);
         String location = data[5];
+//        Vector2 vector = new Vector2(data[x],data[y]);
         Entity newEntity = new Entity(ID, name, x, y, location);
+//        newEntity.setPosition(vector);
         newEntity.setOwner(UUID.fromString(data[4]));
         return newEntity;
     }

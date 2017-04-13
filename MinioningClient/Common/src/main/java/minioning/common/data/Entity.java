@@ -1,6 +1,7 @@
 package minioning.common.data;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -20,6 +21,15 @@ public class Entity implements Serializable {
     private float speed = 100;
     private Sprite sprite;
     private String location;
+    private Vector2 position;
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
 
     public String getLocation() {
         return location;

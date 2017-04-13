@@ -19,6 +19,11 @@ public class LocalData {
     private static Boolean playing = false;
     private static final int port = 9876;
     private static String location;
+    private static float dt;
+
+    public static void resetDt() {
+        dt = 0;
+    }
 
     public static void setLocation(String location) {
         LocalData.location = location;
@@ -28,7 +33,13 @@ public class LocalData {
         return location;
     }
 
-    
+    public static float getDt() {
+        return dt;
+    }
+
+    public static void setDt(float dt) {
+         LocalData.dt = dt;
+    }
 
     public static int getPort() {
         return port;
