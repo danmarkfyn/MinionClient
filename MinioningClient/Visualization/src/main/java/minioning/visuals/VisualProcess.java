@@ -32,32 +32,24 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     private ShapeRenderer sr;
     private static Map<UUID, Entity> world = new ConcurrentHashMap<UUID, Entity>();
-    private Render render = new Render();
+    private Render render;
 
-    // Override render() i ApplicationListener i stedet for process (kÃ¸res konstant)
     @Override
     public void process(Map<UUID, Entity> world, Entity entity) {
 
         this.world = world;
 
-// 
-//        
-////        Render render = new Render((ConcurrentHashMap<String, Entity>) world);
-//        System.out.println("1");
-//        
-//        System.out.println("2");
     }
 
     @Override
     public void create() {
         sr = new ShapeRenderer();
-
-//        render();
+        render = new Render();
+        render.loadTextures();
     }
 
     private String mouseClick() {
 
-//        if (Gdx.input.isKeyJustPressed(Input.Buttons.LEFT)) {  
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
         y = getHeight() - y;
@@ -74,9 +66,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
         }
 
         String movement = LocalData.getClientID().toString() + ";" + Events.MOVEMENT + ";" + x + ";" + y;
-//            System.out.println(movement);
         return movement;
-
     }
 
     @Override
@@ -86,43 +76,27 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
     @Override
     public void render() {
 
-//        System.out.println(world.size());
         render.render((ConcurrentHashMap<UUID, Entity>) world);
 
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             String click = mouseClick();
             getOutputList().put(Events.MOVEMENT, click);
         }
-
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
             getOutputList().put(Events.SKILLQ, mouseClick());
             System.out.println("Q is pressed");
         }
-
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             getOutputList().put(Events.SKILLW, "");
             System.out.println("W is pressed");
         }
-
         if (Gdx.input.isKeyPressed(Input.Keys.E)) {
             getOutputList().put(Events.SKILLE, "");
             System.out.println("E is pressed");
         }
-
-        for (Entity entity
-                : world.values()) {
-
-            sr.setColor(0, 1, 1, 0);
-
-            sr.begin(ShapeRenderer.ShapeType.Line);
-
-            sr.circle(entity.getX(), entity.getY(), 100);
-
-            sr.end();
-        }
-
     }
 
+    
     @Override
     public void pause() {
     }
