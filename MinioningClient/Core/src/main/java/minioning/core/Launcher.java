@@ -60,12 +60,11 @@ public class Launcher extends Application {
 
         LauncherLogic launcher = new LauncherLogic();
 
-//        Thread t = new Thread (launcher);
-//        t.start();
-        
+  
         Group root = new Group();
 
         //***TAB SETUP***
+        
         //Tap pane
         TabPane tp = new TabPane();
 
@@ -115,9 +114,12 @@ public class Launcher extends Application {
         TextField createNameField = new TextField();
         TextField createPassField = new TextField();
         
+        // Initial Field Values
         usernameField.setText("hit");
         passwordField.setText("me");
-
+        
+        avatarnameField.setText("Player");
+        
         // Labels
         Label usernameLabel = new Label("Username: ");
         Label passwordLabel = new Label("Password:  ");
@@ -132,7 +134,9 @@ public class Launcher extends Application {
         //Color
         titelLabel.setTextFill(Color.CADETBLUE);
 
+        
         // ***OnAction***
+        
         // Logout button action
         logoutBtn.setOnAction((v) -> {
 
@@ -185,16 +189,12 @@ public class Launcher extends Application {
         // Play button action
         playBtn.setOnAction((v) -> {
 
-//            new Thread(new Test()).start();
             try {
                 launcher.play(LocalData.getClientID(), PLAY, IPAddress, clientSocket);
             } catch (IOException ex) {
                 Exceptions.printStackTrace(ex);
             }
-            
-            
             primaryStage.close();
-
         });
         
         // create account action
@@ -209,7 +209,6 @@ public class Launcher extends Application {
                     createNameField.clear();
                     createPassField.clear();
                 }catch(IOException e){
-                    
                 }
             }
         });
@@ -290,7 +289,6 @@ public class Launcher extends Application {
 
         primaryStage.setOnCloseRequest((v) -> {
             System.out.println("Closing");
-
         });
 
         primaryStage.setScene(scene);
@@ -302,6 +300,5 @@ public class Launcher extends Application {
 
     public static void main(String[] args) throws SocketException, UnknownHostException {
         Application.launch(args);
-
     }
 }

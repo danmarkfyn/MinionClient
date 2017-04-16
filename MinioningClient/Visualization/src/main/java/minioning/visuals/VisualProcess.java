@@ -78,25 +78,27 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
         render.render((ConcurrentHashMap<UUID, Entity>) world);
 
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            String click = mouseClick();
-            getOutputList().put(Events.MOVEMENT, click);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
-            getOutputList().put(Events.SKILLQ, mouseClick());
-            System.out.println("Q is pressed");
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            getOutputList().put(Events.SKILLW, "");
-            System.out.println("W is pressed");
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.E)) {
-            getOutputList().put(Events.SKILLE, "");
-            System.out.println("E is pressed");
+        if (getOutputList().containsKey(Events.MOVEMENT) == false) {
+
+            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                String click = mouseClick();
+                getOutputList().put(Events.MOVEMENT, click);
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+                getOutputList().put(Events.SKILLQ, mouseClick());
+                System.out.println("Q is pressed");
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                getOutputList().put(Events.SKILLW, "");
+                System.out.println("W is pressed");
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+                getOutputList().put(Events.SKILLE, "");
+                System.out.println("E is pressed");
+            }
         }
     }
 
-    
     @Override
     public void pause() {
     }

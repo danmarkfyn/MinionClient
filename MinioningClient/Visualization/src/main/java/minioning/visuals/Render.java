@@ -6,14 +6,13 @@
 package minioning.visuals;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.utils.Align;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.Entity;
@@ -31,6 +30,9 @@ public class Render {
     private Texture backgroundTexture_2;
     private static Sprite backgroundSprite;
 
+    //  Get local values
+    private float width = LocalData.getWidth();
+    private float height = LocalData.getWidth();
 
     public Render() {
 
@@ -43,29 +45,41 @@ public class Render {
     }
 
     public void render(ConcurrentHashMap<UUID, Entity> world) {
-        // Process message timer and get next message if available
-//        if(activeMessage != null && messageTimer > 0) {
-//            messageTimer -= gameData.getDelta();
-//        } else {
-//            activeMessage = gameData.pollMessage();
-//            if(activeMessage != null)
-//                messageTimer = 0.3f + MESSAGE_TIMEOUT_PER_CHAR * activeMessage.length();
-//        }
 
         // Background is behind entities, foreground is in front of entities
-        int[] bglayers = {0};
-        int[] fglayers = {1, 2};
+//        int[] bglayers = {0};
+//        int[] fglayers = {1, 2};
+        // Clear screen
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Render everything
-//        mapRenderer.setView(cam);
-//        mapRenderer.render(bglayers);  // Background
-        this.drawSprites(world);            // Sprites
-//        mapRenderer.render(fglayers);  // Foreground
-
+        // Run render methods
+        drawSprites(world);
+        drawHud();
     }
-    /*
-     LOAD ALLE TEXTURES HER!
-     */
+
+// Draws the HeadUp Display
+    private void drawHud() {
+
+//        for (Entity entity : world.values()) {
+//                if (entity.getOwner().equals(LocalData.getClientID())) {
+//          
+//        }
+        // Set up 
+        SpriteBatch batch = new SpriteBatch();
+        BitmapFont font = new BitmapFont();
+        font.setColor(Color.WHITE);
+        font.getData().setScale(2f);
+
+        // Draw
+        batch.begin();
+        font.draw(batch, "In: " + LocalData.getLocation(), width - 155, LocalData.getHeight(), 150, Align.right, false);
+        batch.end();
+
+        // Dispose of objects
+        batch.dispose();
+        font.dispose();
+    }
 
     public void loadTextures() {
 
@@ -81,10 +95,8 @@ public class Render {
 
     }
 
-    public void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
-
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    // Draws sprites
+    private void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
 
         SpriteBatch batch = new SpriteBatch();
         batch.begin();
@@ -92,16 +104,16 @@ public class Render {
         for (Entity entity : world.values()) {
             System.out.println(entity.getOwner() + "    " + LocalData.getClientID());
             if (entity.getOwner().equals(LocalData.getClientID())) {
-                
+
                 String bgString = LocalData.getLocation();
-                
+
                 String path = RESOURCE_ROOT + "map/" + entity.getLocation() + ".png";
                 System.out.println(path);
 
                 try {
                     if (bgString.contentEquals("arena")) {
                         System.out.println("In Arena");
-                        
+
                         backgroundSprite = new Sprite(backgroundTexture_2);
                     } else {
                         System.out.println("In Wilderness");
@@ -111,33 +123,37 @@ public class Render {
                     System.out.println("Error in render: " + e);
                 }
 
-//                backgroundTexture = new Texture(RESOURCE_ROOT + "map/" + entity.getLocation() + ".png");
                 backgroundSprite.draw(batch);
             }
         }
-        //            // Set entity sprite as texture from graphics folder with specified file name
+        // Sets sprites for entities
         for (Entity entity : world.values()) {
-       
 
-            
             if (entity.getLocation().equals(LocalData.getLocation())) {
-            
-            if (entity.getSprite() == null) {
-                Texture texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "player.png"));
-                Sprite sprite = new Sprite(texture, 0, 0, 50, 50);
-                entity.setSprite(sprite);
-                sprite.setPosition(entity.getX() - sprite.getWidth() / 2, entity.getY() - sprite.getHeight() / 2);
-            }
-            
-            // Set bounds and rotation
-            Sprite sprite = entity.getSprite();
+
+                Texture texture;
+                if (entity.getSprite() == null) {
+                    if (entity.getOwner().equals(LocalData.getClientID())) {
+
+                        texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "blue.png"));
+                    } else {
+                        texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "red.png"));
+                    }
+
+                    Sprite sprite = new Sprite(texture, 0, 0, 50, 50);
+                    entity.setSprite(sprite);
+                    sprite.setPosition(entity.getX() - sprite.getWidth() / 2, entity.getY() - sprite.getHeight() / 2);
+                }
+
+                // Set bounds and rotation
+                Sprite sprite = entity.getSprite();
 //            sprite.setBounds(entity.getX() - width / 2, entity.getY() - height / 2, width, height);
 //            sprite.setRotation((float)Math.toDegrees(entity.getRadians()));
-            sprite.draw(batch);
+                sprite.draw(batch);
+            }
         }
-        }
+        // Dispose of objects
         batch.end();
         batch.dispose();
     }
-    
 }
