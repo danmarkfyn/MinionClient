@@ -19,6 +19,15 @@ public class LocalData {
     private static Boolean playing = false;
     private static final int port = 9876;
     private static String location;
+    private static String user;
+
+    public static String getUser() {
+        return user;
+    }
+
+    public static void setUser(String user) {
+        LocalData.user = user;
+    }
 
     public static void setLocation(String location) {
         LocalData.location = location;

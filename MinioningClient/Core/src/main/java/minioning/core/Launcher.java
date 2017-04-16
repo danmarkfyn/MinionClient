@@ -168,6 +168,7 @@ public class Launcher extends Application {
                     if (LocalData.getClientID() != null) {
                         serverToken.setValue(Boolean.FALSE);
                         name.setValue("Logged in as " + username);
+                        LocalData.setUser(username);
                         selectionModel.select(2);
 
 

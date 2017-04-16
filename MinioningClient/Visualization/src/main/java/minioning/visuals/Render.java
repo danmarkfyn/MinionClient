@@ -74,6 +74,7 @@ public class Render {
         // Draw
         batch.begin();
         font.draw(batch, "In: " + LocalData.getLocation(), width - 155, LocalData.getHeight(), 150, Align.right, false);
+        font.draw(batch, "Logged in as: " + LocalData.getUser(), 100, LocalData.getHeight(), 150, Align.right, false);
         batch.end();
 
         // Dispose of objects
@@ -89,7 +90,6 @@ public class Render {
             this.backgroundTexture_1 = new Texture(RESOURCE_ROOT + "map/" + "wilderness.png");
             System.out.println("Textures loaded succesfully");
         } catch (Exception e) {
-
             System.out.println("Failed to load textures: " + e);
         }
 
@@ -107,16 +107,11 @@ public class Render {
 
                 String bgString = LocalData.getLocation();
 
-                String path = RESOURCE_ROOT + "map/" + entity.getLocation() + ".png";
-                System.out.println(path);
 
                 try {
                     if (bgString.contentEquals("arena")) {
-                        System.out.println("In Arena");
-
                         backgroundSprite = new Sprite(backgroundTexture_2);
                     } else {
-                        System.out.println("In Wilderness");
                         backgroundSprite = new Sprite(backgroundTexture_1);
                     }
                 } catch (Exception e) {
@@ -139,7 +134,6 @@ public class Render {
                     } else {
                         texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "red.png"));
                     }
-
                     Sprite sprite = new Sprite(texture, 0, 0, 50, 50);
                     entity.setSprite(sprite);
                     sprite.setPosition(entity.getX() - sprite.getWidth() / 2, entity.getY() - sprite.getHeight() / 2);

@@ -82,8 +82,10 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 String click = mouseClick();
+                System.out.println(mouseClick());
                 getOutputList().put(Events.MOVEMENT, click);
             }
+        }
             if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
                 getOutputList().put(Events.SKILLQ, mouseClick());
                 System.out.println("Q is pressed");
@@ -95,7 +97,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
             if (Gdx.input.isKeyPressed(Input.Keys.E)) {
                 getOutputList().put(Events.SKILLE, "");
                 System.out.println("E is pressed");
-            }
+            
         }
     }
 
