@@ -7,7 +7,9 @@ package minioning.visuals;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -28,6 +30,10 @@ public class Render {
 
     private Texture backgroundTexture_1;
     private Texture backgroundTexture_2;
+
+    private Texture playerTexture;
+    private Texture enemyTexture;
+
     private static Sprite backgroundSprite;
 
     //  Get local values
@@ -50,8 +56,8 @@ public class Render {
 //        int[] bglayers = {0};
 //        int[] fglayers = {1, 2};
         // Clear screen
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//        Gdx.gl.glClearColor(0, 0, 0, 1);
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Run render methods
         drawSprites(world);
@@ -71,6 +77,10 @@ public class Render {
         font.setColor(Color.WHITE);
         font.getData().setScale(2f);
 
+        // Sets custom cursor
+        Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(RESOURCE_ROOT + "graphics/" + "cursor.png")), 16, 16);
+        Gdx.graphics.setCursor(customCursor);
+
         // Draw
         batch.begin();
         font.draw(batch, "In: " + LocalData.getLocation(), width - 155, LocalData.getHeight(), 150, Align.right, false);
@@ -80,19 +90,28 @@ public class Render {
         // Dispose of objects
         batch.dispose();
         font.dispose();
+        customCursor.dispose();
     }
 
     public void loadTextures() {
 
-        System.out.println("Loading textures");
+        System.out.println("Loading bg textures");
         try {
             this.backgroundTexture_2 = new Texture(RESOURCE_ROOT + "map/" + "arena.png");
             this.backgroundTexture_1 = new Texture(RESOURCE_ROOT + "map/" + "wilderness.png");
-            System.out.println("Textures loaded succesfully");
+            System.out.println("bg textures loaded succesfully");
         } catch (Exception e) {
-            System.out.println("Failed to load textures: " + e);
+            System.out.println("Failed to load bg textures: " + e);
         }
-
+        System.out.println("Loading entity textures");
+        
+        try {
+            playerTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "blue.png"));
+            enemyTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "red.png"));
+            System.out.println("entity textures loaded succesfully");
+        } catch (Exception e) {
+            System.out.println("Failed loading entity textures: " + e);
+        }
     }
 
     // Draws sprites
@@ -107,7 +126,6 @@ public class Render {
 
                 String bgString = LocalData.getLocation();
 
-
                 try {
                     if (bgString.contentEquals("arena")) {
                         backgroundSprite = new Sprite(backgroundTexture_2);
@@ -117,7 +135,6 @@ public class Render {
                 } catch (Exception e) {
                     System.out.println("Error in render: " + e);
                 }
-
                 backgroundSprite.draw(batch);
             }
         }
@@ -126,15 +143,15 @@ public class Render {
 
             if (entity.getLocation().equals(LocalData.getLocation())) {
 
-                Texture texture;
                 if (entity.getSprite() == null) {
-                    if (entity.getOwner().equals(LocalData.getClientID())) {
+                    Sprite sprite;
 
-                        texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "blue.png"));
+                    // Loads appropriate sprites
+                    if (entity.getOwner().equals(LocalData.getClientID())) {
+                        sprite = new Sprite(playerTexture, 0, 0, 50, 50);
                     } else {
-                        texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "red.png"));
+                        sprite = new Sprite(enemyTexture, 0, 0, 50, 50);
                     }
-                    Sprite sprite = new Sprite(texture, 0, 0, 50, 50);
                     entity.setSprite(sprite);
                     sprite.setPosition(entity.getX() - sprite.getWidth() / 2, entity.getY() - sprite.getHeight() / 2);
                 }

@@ -226,6 +226,7 @@ public class Launcher extends Application {
                 } catch (Exception e) {
                 }
                 avatarnameField.clear();
+                selectionModel.select(3);
             }
         });
 

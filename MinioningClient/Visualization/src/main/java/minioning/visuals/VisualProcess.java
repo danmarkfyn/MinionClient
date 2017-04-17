@@ -13,6 +13,7 @@ import org.openide.util.lookup.ServiceProvider;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,6 +44,8 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     @Override
     public void create() {
+        Gdx.graphics.setTitle("The Minioning");
+
         sr = new ShapeRenderer();
         render = new Render();
         render.loadTextures();
@@ -75,7 +78,9 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     @Override
     public void render() {
-
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
         render.render((ConcurrentHashMap<UUID, Entity>) world);
 
         if (getOutputList().containsKey(Events.MOVEMENT) == false) {
@@ -86,18 +91,18 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
                 getOutputList().put(Events.MOVEMENT, click);
             }
         }
-            if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
-                getOutputList().put(Events.SKILLQ, mouseClick());
-                System.out.println("Q is pressed");
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                getOutputList().put(Events.SKILLW, "");
-                System.out.println("W is pressed");
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.E)) {
-                getOutputList().put(Events.SKILLE, "");
-                System.out.println("E is pressed");
-            
+        
+        if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+            getOutputList().put(Events.SKILLQ, mouseClick());
+            System.out.println("Q is pressed");
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            getOutputList().put(Events.SKILLW, "");
+            System.out.println("W is pressed");
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+            getOutputList().put(Events.SKILLE, "");
+            System.out.println("E is pressed");
         }
     }
 
