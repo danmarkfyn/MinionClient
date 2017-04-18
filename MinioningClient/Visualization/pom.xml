@@ -48,12 +48,6 @@
         </dependency>
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx</artifactId>
-            <version>1.9.2</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-backend-lwjgl</artifactId>
             <version>1.9.2</version>
             <type>jar</type>
@@ -62,6 +56,11 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>Common</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx</artifactId>
+            <version>1.9.2</version>
         </dependency>
     </dependencies>
     <properties>

@@ -21,14 +21,19 @@ public class Entity implements Serializable {
     private float speed = 100;
     private Sprite sprite;
     private String location;
-    private Vector2 position;
+    private Vector2 velocity;
 
-    public Vector2 getPosition() {
-        return position;
+    public Vector2 getVelocity() {
+        return velocity;
+    }
+    
+    public void setVelocity(Vector2 velocity){
+        this.velocity = velocity;
     }
 
-    public void setPosition(Vector2 position) {
-        this.position = position;
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public String getLocation() {

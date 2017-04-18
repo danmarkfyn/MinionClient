@@ -5,6 +5,7 @@
  */
 package minioning.connection;
 
+import com.badlogic.gdx.math.Vector2;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,21 +48,21 @@ public class WorldUpdater {
     private static Entity createEntity(String entityString){
 //        System.out.println("Entity: " + entityString);
         String[] data = entityString.split(";");
-        System.out.println("testing data in createentity");
-        for(String out : data){
-            System.out.println(out);
-        }
+////        System.out.println("testing data in createentity");
+////        for(String out : data){
+////            System.out.println(out);
+////        }
         UUID ID = UUID.fromString(data[0]);
         String name = data[1];
         float fx = Float.parseFloat(data[2]);
         float fy = Float.parseFloat(data[3]);
         int x = Math.round(fx);
         int y = Math.round(fy);
-        String location = data[5];
-//        Vector2 vector = new Vector2(data[x],data[y]);
+        Vector2 velocity = new Vector2(Float.parseFloat(data[4]),Float.parseFloat(data[5]));
+        String location = data[7];
         Entity newEntity = new Entity(ID, name, x, y, location);
-//        newEntity.setPosition(vector);
-        newEntity.setOwner(UUID.fromString(data[4]));
+        newEntity.setVelocity(velocity);
+        newEntity.setOwner(UUID.fromString(data[6]));
         return newEntity;
     }
     

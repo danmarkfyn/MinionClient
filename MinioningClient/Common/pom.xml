@@ -42,7 +42,6 @@
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx</artifactId>
             <version>1.9.2</version>
-            <type>jar</type>
         </dependency>
     </dependencies>
     <properties>

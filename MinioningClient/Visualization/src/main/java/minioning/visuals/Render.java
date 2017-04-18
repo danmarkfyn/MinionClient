@@ -7,13 +7,9 @@ package minioning.visuals;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import java.util.UUID;
@@ -62,28 +58,27 @@ public class Render {
 //        mapRenderer.render(fglayers);  // Foreground
 
     }
-/*
+
+    /*
     LOAD ALLE TEXTURES HER!
-    */
+     */
     public void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
 
         SpriteBatch batch = new SpriteBatch();
         batch.begin();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        
-        
+
         for (Entity entity : world.values()) {
-            System.out.println(entity.getOwner() +"    "+ LocalData.getClientID());
+//            System.out.println(entity.getOwner() + "    " + LocalData.getClientID());
             if (entity.getOwner().equals(LocalData.getClientID())) {
-                
+
 //              backgroundTexture = new Texture(RESOURCE_ROOT + "map/grassland.png");
                 String path = RESOURCE_ROOT + "map/" + entity.getLocation() + ".png";
-                System.out.println(path);
+//                System.out.println(path);
                 backgroundTexture = new Texture(RESOURCE_ROOT + "map/" + entity.getLocation() + ".png");
                 backgroundSprite = new Sprite(backgroundTexture);
-                
+
                 backgroundSprite.draw(batch);
             }
         }
@@ -93,7 +88,7 @@ public class Render {
 //            int height = entity.getHeight();
 //            
 //            // Set entity sprite as texture from graphics folder with specified file name
-            
+
             if (entity.getSprite() == null) {
                 Texture texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "player.png"));
                 Sprite sprite = new Sprite(texture, 0, 0, 50, 50);
@@ -103,11 +98,29 @@ public class Render {
                 Interpolation interpolation = Interpolation.linear;
                 float dt = LocalData.getDt();
                 float progress = Math.min(1f, dt);
-                interpolation.apply(dt);
-                entity.getPosition().interpolate(Vector2.Zero, dt, interpolation);
-                sprite.setPosition(entity.getPosition().x, entity.getPosition().y);
+
+//                if (entity.getVelocity() != null) {
+//                    System.out.println("-----------------------------------------------------------------------");
+//                    System.out.println("entity vel before inter:");
+//                    System.out.println(entity.getVelocity().toString());
+////                System.out.println(entity.getVelocity().x + "; " + entity.getVelocity().y);
+//                    System.out.println("entity pos before inter:");
+//                    System.out.println(entity.getX() + "; " + entity.getY());
+//
+//                    interpolation.apply(dt);
+//                    entity.getVelocity().interpolate(Vector2.Zero, dt, interpolation);
+//
+//                    System.out.println("entity vel after inter:");
+//                    System.out.println(entity.getVelocity().toString());
+////                System.out.println(entity.getVelocity().x + "; " + entity.getVelocity().y);
+//                    System.out.println("entity pos after inter:");
+//                    System.out.println(entity.getX() + "; " + entity.getY());
+//                    System.out.println("------------------------------------------------------------------------");
+//                }
+
+                sprite.setPosition(entity.getX(), entity.getY());
 //                sprite.setPosition(entity.getX() - sprite.getWidth() / 2, entity.getY() - sprite.getHeight() / 2);
-                
+
             }
             // Set bounds and rotation
             Sprite sprite = entity.getSprite();
