@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.utils.Align;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.Entity;
+import static minioning.common.data.EntityType.ENEMY;
 import minioning.common.data.LocalData;
 
 /**
@@ -39,15 +41,18 @@ public class Render {
     //  Get local values
     private float width = LocalData.getWidth();
     private float height = LocalData.getWidth();
-
+    private final OrthographicCamera cam;
+    
     public Render() {
 
-//        try {
-//        } catch (Exception e) {
-//            System.out.println("Error loading textures: " + e);
-//        }
-//        this.cam = cam;
-//        this.mapRenderer = new OrthogonalTiledMapRenderer((TiledMap) gameData.getMap());
+        try {
+        } catch (Exception e) {
+            System.out.println("Error loading textures: " + e);
+        }
+        this.cam = new OrthographicCamera(LocalData.getWidth(), LocalData.getHeight());
+        
+        cam.update();
+    
     }
 
     public void render(ConcurrentHashMap<UUID, Entity> world) {
@@ -62,6 +67,7 @@ public class Render {
         // Run render methods
         drawSprites(world);
         drawHud();
+        cam.update();
     }
 
 // Draws the HeadUp Display
@@ -149,8 +155,10 @@ public class Render {
                     // Loads appropriate sprites
                     if (entity.getOwner().equals(LocalData.getClientID())) {
                         sprite = new Sprite(playerTexture, 0, 0, 50, 50);
-                    } else {
+                    } else if (entity.getType() == ENEMY){
                         sprite = new Sprite(enemyTexture, 0, 0, 50, 50);
+                    }else{
+                        sprite = new Sprite(playerTexture, 0, 0, 50, 50);
                     }
                     entity.setSprite(sprite);
                     sprite.setPosition(entity.getX() - sprite.getWidth() / 2, entity.getY() - sprite.getHeight() / 2);

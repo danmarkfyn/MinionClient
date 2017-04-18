@@ -20,7 +20,16 @@ public class Entity implements Serializable {
     private float speed = 100;
     private Sprite sprite;
     private String location;
+    private EntityType type;
 
+    public EntityType getType() {
+        return type;
+    }
+
+    public void setType(EntityType type) {
+        this.type = type;
+    }
+    
     public String getLocation() {
         return location;
     }

@@ -23,6 +23,8 @@ import minioning.common.data.LocalData;
 
 import static minioning.common.data.LocalData.getWidth;
 import static minioning.common.data.LocalData.getHeight;
+import static minioning.visuals.State.PAUSE;
+import static minioning.visuals.State.RUN;
 
 /**
  *
@@ -34,7 +36,8 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
     private ShapeRenderer sr;
     private static Map<UUID, Entity> world = new ConcurrentHashMap<UUID, Entity>();
     private Render render;
-
+    private State state;
+    private int p;
     @Override
     public void process(Map<UUID, Entity> world, Entity entity) {
 
@@ -49,6 +52,8 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
         sr = new ShapeRenderer();
         render = new Render();
         render.loadTextures();
+        state = RUN;
+        p = 0;
     }
 
     private String mouseClick() {
@@ -78,10 +83,6 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        render.render((ConcurrentHashMap<UUID, Entity>) world);
 
         if (getOutputList().containsKey(Events.MOVEMENT) == false) {
 
@@ -91,7 +92,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
                 getOutputList().put(Events.MOVEMENT, click);
             }
         }
-        
+
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
             getOutputList().put(Events.SKILLQ, mouseClick());
             System.out.println("Q is pressed");
@@ -101,17 +102,46 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
             System.out.println("W is pressed");
         }
         if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+
             getOutputList().put(Events.SKILLE, "");
             System.out.println("E is pressed");
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.P)) {
+            
+            if (p == 0) {
+                pause();
+                p = 1;
+            } else if (p == 1) {
+                resume();
+                p = 0;
+            }
+
+        }
+
+        switch (state) {
+            case RUN:
+                Gdx.gl.glClearColor(0, 0, 0, 1);
+                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+                render.render((ConcurrentHashMap<UUID, Entity>) world);
+                System.out.println("Render");
+                break;
+            case PAUSE:
+                Gdx.gl.glClearColor(0, 0, 0, 1);
+                System.out.println("Nothing");
+
+        }
+
     }
 
     @Override
     public void pause() {
+        state = PAUSE;
     }
 
     @Override
     public void resume() {
+        state = RUN;
     }
 
     @Override
