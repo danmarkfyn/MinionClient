@@ -16,5 +16,6 @@ public enum EntityType {
     TREE,
     LAVA,
     GOLD,
+    PORTAL,
     WALL;
 }

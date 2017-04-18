@@ -20,7 +20,17 @@ public class LocalData {
     private static final int port = 9876;
     private static String location;
     private static String user;
+   private static float dt;
 
+    public static float getDt() {
+        return dt;
+    }
+
+    public static void setDt(float dt) {
+        LocalData.dt = dt;
+    }
+    
+    
     public static String getUser() {
         return user;
     }

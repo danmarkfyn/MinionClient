@@ -13,7 +13,10 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import minioning.common.data.LocalData;
 import org.openide.modules.ModuleInstall;
+import org.openide.util.Exceptions;
 
 /**
  *
@@ -23,7 +26,8 @@ public class Installer extends ModuleInstall {
 
     public static DatagramSocket cSocket;
     private static List<String[]> tempData;
-
+ float timeStep = (float)0.1;
+    long lastTime = System.nanoTime();
     public static DatagramSocket getDatagramSocket() throws SocketException {
         if (cSocket == null) {
             cSocket = new DatagramSocket();
@@ -75,10 +79,18 @@ public class Installer extends ModuleInstall {
 
             byte[] sData = null;
             DatagramPacket sPacket = null;
-
+            sData = new byte[1500];
+            
             while (true) {
+//                long currentTime = System.nanoTime();
+//                 float elapsedTime = (currentTime - lastTime) / (float)1000000000.0;
+//                LocalData.setDt(elapsedTime);
+//                try {
+//                    TimeUnit.MILLISECONDS.sleep(100);
+//                } catch (InterruptedException ex) {
+//                    Exceptions.printStackTrace(ex);
+//                }
 
-                sData = new byte[1024];
                 sPacket = new DatagramPacket(sData, sData.length);
 
                 try {
@@ -101,7 +113,7 @@ public class Installer extends ModuleInstall {
             objectInputStream.close();
             putTempData(result);
         } catch (Exception e) {
-            System.out.println("processPackage failed: " + e);
+//            System.out.println("processPackage failed: " + e);
 //            try {
 //                String simpleData = new String(dp.getData());
 //                System.out.println("Received: " + simpleData);

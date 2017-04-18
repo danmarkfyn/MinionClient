@@ -7,8 +7,8 @@ package minioning.connection;
 
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.Entity;
+import minioning.common.data.EntityType;
 import minioning.common.data.LocalData;
 
 /**
@@ -16,11 +16,9 @@ import minioning.common.data.LocalData;
  * @author Jakob
  */
 public class WorldUpdater {
-    
-//    private static Map<UUID, Entity> tempWorld;
-    
+
     public synchronized static void updateWorld(String[] newWorld, Map<UUID, Entity> world){
-//        tempWorld = new ConcurrentHashMap<UUID, Entity>();
+
         world.clear();
         for(int i = 1; i < newWorld.length; i++){
             Entity newEntity = createEntity(newWorld[i]);
@@ -31,26 +29,18 @@ public class WorldUpdater {
             }
                 
             UUID ID = newEntity.getID();
-//            System.out.println("ID: " + ID);
-//            tempWorld.put(ID,newEntity);
             if(!world.containsKey(ID)){
                 world.put(ID, newEntity);
-//                System.out.println("created: " + ID);
             }else{
                 world.replace(ID, newEntity);
-//                System.out.println("updated: " + ID);
             }
         }
     }
     
     
     private static Entity createEntity(String entityString){
-//        System.out.println("Entity: " + entityString);
         String[] data = entityString.split(";");
-        System.out.println("testing data in createentity");
-        for(String out : data){
-            System.out.println(out);
-        }
+
         UUID ID = UUID.fromString(data[0]);
         String name = data[1];
         float fx = Float.parseFloat(data[2]);
@@ -60,6 +50,7 @@ public class WorldUpdater {
         String location = data[5];
         Entity newEntity = new Entity(ID, name, x, y, location);
         newEntity.setOwner(UUID.fromString(data[4]));
+        newEntity.setType(EntityType.valueOf(data[7]));
         return newEntity;
     }
     

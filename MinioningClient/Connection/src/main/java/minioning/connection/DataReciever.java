@@ -48,7 +48,6 @@ public class DataReciever implements IWorldUpdate {
     private void setUUID(String raw) {
 
         UUID ID = UUID.fromString(raw);
-        System.out.println(ID);
         setClientID(ID);
 
     }

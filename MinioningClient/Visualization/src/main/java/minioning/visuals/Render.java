@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.Entity;
 import static minioning.common.data.EntityType.ENEMY;
+import static minioning.common.data.EntityType.PORTAL;
 import minioning.common.data.LocalData;
 
 /**
@@ -35,24 +36,21 @@ public class Render {
 
     private Texture playerTexture;
     private Texture enemyTexture;
-
+    private Texture portalTexture;
     private static Sprite backgroundSprite;
 
     //  Get local values
     private float width = LocalData.getWidth();
     private float height = LocalData.getWidth();
-    private final OrthographicCamera cam;
-    
+
     public Render() {
 
         try {
         } catch (Exception e) {
             System.out.println("Error loading textures: " + e);
         }
-        this.cam = new OrthographicCamera(LocalData.getWidth(), LocalData.getHeight());
-        
-        cam.update();
-    
+
+
     }
 
     public void render(ConcurrentHashMap<UUID, Entity> world) {
@@ -63,20 +61,15 @@ public class Render {
         // Clear screen
 //        Gdx.gl.glClearColor(0, 0, 0, 1);
 //        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         // Run render methods
         drawSprites(world);
         drawHud();
-        cam.update();
     }
 
 // Draws the HeadUp Display
     private void drawHud() {
 
-//        for (Entity entity : world.values()) {
-//                if (entity.getOwner().equals(LocalData.getClientID())) {
-//          
-//        }
+
         // Set up 
         SpriteBatch batch = new SpriteBatch();
         BitmapFont font = new BitmapFont();
@@ -110,10 +103,11 @@ public class Render {
             System.out.println("Failed to load bg textures: " + e);
         }
         System.out.println("Loading entity textures");
-        
+
         try {
             playerTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "blue.png"));
             enemyTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "red.png"));
+            portalTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "portal.png"));
             System.out.println("entity textures loaded succesfully");
         } catch (Exception e) {
             System.out.println("Failed loading entity textures: " + e);
@@ -127,7 +121,7 @@ public class Render {
         batch.begin();
 
         for (Entity entity : world.values()) {
-            System.out.println(entity.getOwner() + "    " + LocalData.getClientID());
+//            System.out.println(entity.getOwner() + "    " + LocalData.getClientID());
             if (entity.getOwner().equals(LocalData.getClientID())) {
 
                 String bgString = LocalData.getLocation();
@@ -155,10 +149,12 @@ public class Render {
                     // Loads appropriate sprites
                     if (entity.getOwner().equals(LocalData.getClientID())) {
                         sprite = new Sprite(playerTexture, 0, 0, 50, 50);
-                    } else if (entity.getType() == ENEMY){
+                    } else if (entity.getType() == ENEMY) {
                         sprite = new Sprite(enemyTexture, 0, 0, 50, 50);
+                    } else if (entity.getType() == PORTAL) {
+                        sprite = new Sprite(portalTexture, 0, 0, 50, 50);
                     }else{
-                        sprite = new Sprite(playerTexture, 0, 0, 50, 50);
+                      sprite = new Sprite(playerTexture, 0, 0, 50, 50); 
                     }
                     entity.setSprite(sprite);
                     sprite.setPosition(entity.getX() - sprite.getWidth() / 2, entity.getY() - sprite.getHeight() / 2);

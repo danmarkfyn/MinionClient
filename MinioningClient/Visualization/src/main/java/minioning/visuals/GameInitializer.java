@@ -21,7 +21,7 @@ public class GameInitializer implements IGameInitializer {
 
     @Override
     public void install() {
-        System.out.println("Install running in Vizualisation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 
         cfg.width = getWidth();
