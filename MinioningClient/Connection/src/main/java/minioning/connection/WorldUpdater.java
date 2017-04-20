@@ -54,7 +54,7 @@ public class WorldUpdater {
         String location = data[5];
         Entity newEntity = new Entity(ID, name, x, y, location);
         newEntity.setOwner(UUID.fromString(data[4]));
-        newEntity.setType(EntityType.valueOf(data[7]));
+        newEntity.setType(EntityType.valueOf(data[1]));
         float vxp = Float.parseFloat(data[7]);
         float vyp = Float.parseFloat(data[8]);
         Vector2D vPosition = new Vector2D(vxp, vyp);

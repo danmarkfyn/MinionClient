@@ -98,7 +98,9 @@ public class DataTransmitter implements Runnable {
     }
 
     private void sendEvent(String data) throws IOException {
-        InetAddress IPAddress = InetAddress.getByName("localhost");
+//        InetAddress IPAddress = InetAddress.getByName("localhost");
+        
+        InetAddress IPAddress = InetAddress.getByName("10.126.24.199");
 
         sendData = data.getBytes();
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, getPort());
