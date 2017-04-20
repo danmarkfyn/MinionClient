@@ -41,28 +41,45 @@ public class WorldUpdater {
     
     private static Entity createEntity(String entityString){
         String[] data = entityString.split(";");
-//        System.out.println("testing data in createentity");
-//        for(String out : data){
-//            System.out.println(out);
-//        }
+        System.out.println("testing data in createentity");
+        for(String out : data){
+            System.out.println(out);
+        }
         UUID ID = UUID.fromString(data[0]);
-        String name = data[1];
-        float fx = Float.parseFloat(data[2]);
-        float fy = Float.parseFloat(data[3]);
-        int x = Math.round(fx);
-        int y = Math.round(fy);
-        String location = data[5];
-        Entity newEntity = new Entity(ID, name, x, y, location);
-        newEntity.setOwner(UUID.fromString(data[4]));
-        newEntity.setType(EntityType.valueOf(data[7]));
-        float vxp = Float.parseFloat(data[7]);
-        float vyp = Float.parseFloat(data[8]);
-        Vector2D vPosition = new Vector2D(vxp, vyp);
-        newEntity.setvPosition(vPosition);
-        float vxg = Float.parseFloat(data[9]);
-        float vyg = Float.parseFloat(data[10]);
-        Vector2D vTarget = new Vector2D(vxg, vyg);
-        newEntity.setvPosition(vTarget);
+        String type = data[1];
+        String name = data[2];
+        int x = Math.round(Float.parseFloat(data[3]));
+        int y = Math.round(Float.parseFloat(data[4]));
+        float vx = Float.parseFloat(data[5]);
+        float vy = Float.parseFloat(data[6]);
+        UUID owner = UUID.fromString(data[7]);
+        String location = data[8];
+        String doorTo = data[9];
+        
+        Entity newEntity = new Entity(
+            ID,
+            type,
+            name,
+            x,
+            y,
+            vx,
+            vy,
+            owner,
+            location,
+            doorTo
+        );
+        
+//        Entity newEntity = new Entity(ID, name, x, y, location);
+//        newEntity.setOwner(UUID.fromString(data[4]));
+//        newEntity.setType(EntityType.valueOf(data[7]));
+//        float vxp = Float.parseFloat(data[7]);
+//        float vyp = Float.parseFloat(data[8]);
+//        Vector2D vPosition = new Vector2D(vxp, vyp);
+//        newEntity.setvPosition(vPosition);
+//        float vxg = Float.parseFloat(data[9]);
+//        float vyg = Float.parseFloat(data[10]);
+//        Vector2D vTarget = new Vector2D(vxg, vyg);
+//        newEntity.setvPosition(vTarget);
         return newEntity;
     }
     

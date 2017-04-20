@@ -24,6 +24,7 @@ import minioning.common.data.Entity;
 import static minioning.common.data.EntityType.ENEMY;
 import static minioning.common.data.EntityType.PORTAL;
 import minioning.common.data.LocalData;
+import minioning.common.data.Vector2D;
 
 /**
  *
@@ -164,12 +165,12 @@ public class Render {
                     entity.setSprite(sprite);
                     
                    
-                    /* doesn't work???
-                    Vector2 vPos = entity.getvPosition();
-                    Vector2 vTarget = entity.getvTarget();
-                    */
-                    Vector2 vPos = new Vector2(entity.getvxp(), entity.getvyp());
+                    Vector2D ownVelocity = entity.getVelocity();
+                    Vector2 velocity = new Vector2(ownVelocity.getX(), ownVelocity.getY());
+                    /*
+                    den her væk?
                     Vector2 vTarget = new Vector2(entity.getvxg(), entity.getvyg());
+                    */
                     Interpolation interpolation = Interpolation.linear;
                     
                     elapsed = LocalData.getDt()-lastTime;
@@ -177,8 +178,10 @@ public class Render {
                     float updateTime = LocalData.getUpdateTime();
                     float progess = Math.min(1f, elapsed/updateTime);
                     float alpha = interpolation.apply(progess);
-                    vPos.interpolate(vTarget, alpha, interpolation);
-                    
+                    /*
+                    den her ændres? vTarget??
+                    velocity.interpolate(vTarget, alpha, interpolation);
+                    */
 //                    float x = entity.getX()*vPos.x;
 //                    float y = entity.getY()*vPos.y;
 float x = entity.getX();
