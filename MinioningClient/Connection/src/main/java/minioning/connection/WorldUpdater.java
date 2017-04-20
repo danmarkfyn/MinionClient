@@ -41,14 +41,10 @@ public class WorldUpdater {
     
     private static Entity createEntity(String entityString){
         String[] data = entityString.split(";");
-<<<<<<< Updated upstream
-
-=======
 //        System.out.println("testing data in createentity");
 //        for(String out : data){
 //            System.out.println(out);
 //        }
->>>>>>> Stashed changes
         UUID ID = UUID.fromString(data[0]);
         String name = data[1];
         float fx = Float.parseFloat(data[2]);
@@ -58,9 +54,7 @@ public class WorldUpdater {
         String location = data[5];
         Entity newEntity = new Entity(ID, name, x, y, location);
         newEntity.setOwner(UUID.fromString(data[4]));
-<<<<<<< Updated upstream
         newEntity.setType(EntityType.valueOf(data[7]));
-=======
         float vxp = Float.parseFloat(data[7]);
         float vyp = Float.parseFloat(data[8]);
         Vector2D vPosition = new Vector2D(vxp, vyp);
@@ -69,7 +63,6 @@ public class WorldUpdater {
         float vyg = Float.parseFloat(data[10]);
         Vector2D vTarget = new Vector2D(vxg, vyg);
         newEntity.setvPosition(vTarget);
->>>>>>> Stashed changes
         return newEntity;
     }
     
