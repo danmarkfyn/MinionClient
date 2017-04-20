@@ -21,15 +21,55 @@ public class Entity implements Serializable {
     private Sprite sprite;
     private String location;
     private EntityType type;
+    private Vector2D vPosition;
+    private Vector2D vTarget;
 
     public EntityType getType() {
         return type;
     }
 
+    public Vector2D getvTarget() {
+        return vTarget;
+    }
+
+    public float getvxp() {
+        return this.vPosition.getX();
+    }
+
+    public float getvyp() {
+        return this.vPosition.getY();
+    }
+
+    public float getvxg() {
+        if(this.vTarget == null){
+            return this.vPosition.getX();
+        }
+        return this.vTarget.getX();
+    }
+
+    public float getvyg() {
+        if(this.vTarget == null){
+            return this.vPosition.getY();
+        }
+        return this.vTarget.getY();
+    }
+
+    public void setvTarget(Vector2D vTarget) {
+        this.vTarget = vTarget;
+    }
+
+    public Vector2D getvPosition() {
+        return vPosition;
+    }
+
+    public void setvPosition(Vector2D vPosition) {
+        this.vPosition = vPosition;
+    }
+
     public void setType(EntityType type) {
         this.type = type;
     }
-    
+
     public String getLocation() {
         return location;
     }
@@ -37,7 +77,7 @@ public class Entity implements Serializable {
     public void setLocation(String location) {
         this.location = location;
     }
-    
+
     public Entity(UUID ID, String name, int x, int y, String location) {
 //        this.owner = owner;
         this.name = name;
@@ -51,8 +91,6 @@ public class Entity implements Serializable {
         return x;
     }
 
-    
-    
     public void setX(int x) {
         this.x = x;
     }
@@ -111,9 +149,6 @@ public class Entity implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
-
-
 
     public float getSpeed() {
         return speed;

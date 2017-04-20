@@ -39,6 +39,7 @@ public class DataTransmitter implements Runnable {
                     Events eventType = entry.getKey();
                     String data = entry.getValue();
                     System.out.println(eventType);
+                    System.out.println(data);
                     switch (eventType) {
                         case MOVEMENT:
                             try {
@@ -47,7 +48,6 @@ public class DataTransmitter implements Runnable {
                                 System.out.println("Couldn't send movement");
                             }
                             removeEvent(eventType, data);
-                            System.out.println("event removed");
                             break;
                         case CREATEACCOUNT:
                             try {
@@ -56,7 +56,6 @@ public class DataTransmitter implements Runnable {
                                 System.out.println("Create Account transmit failed: " + e);
                             }
                             removeEvent(eventType, data);
-                            System.out.println("event removed");
                             break;
                         case LOGIN:
                             try {
@@ -65,7 +64,6 @@ public class DataTransmitter implements Runnable {
                                 System.out.println("LOGIN transmit failed: " + e);
                             }
                             removeEvent(eventType, data);
-                            System.out.println("event removed");
                             break;
                         case PLAY:
                             try {
@@ -82,6 +80,15 @@ public class DataTransmitter implements Runnable {
                                 System.out.println("send createplayer failed");
                             }
                             removeEvent(eventType, data);
+                            break;
+                        case SKILLQ:
+                            try {
+                                sendEvent(data);
+                            } catch (Exception e) {
+                                System.out.println("send SKILLQ failed");
+                            }
+                            removeEvent(eventType, data);
+                            break;
                         default:
                             break;
                     }

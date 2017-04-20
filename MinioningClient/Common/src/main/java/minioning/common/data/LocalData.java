@@ -17,10 +17,15 @@ public class LocalData {
     private static int height = 576;
     private static int width = 1024;
     private static Boolean playing = false;
-    private static final int port = 9876;
+    private static final int port = 80;
     private static String location;
     private static String user;
+<<<<<<< Updated upstream
    private static float dt;
+=======
+    private static float dt;
+    private static float updateTime = 0.1f;
+>>>>>>> Stashed changes
 
     public static float getDt() {
         return dt;
@@ -33,6 +38,18 @@ public class LocalData {
     
     public static String getUser() {
         return user;
+    }
+
+    public static float getUpdateTime() {
+        return updateTime;
+    }
+
+    public static float getDt() {
+        return dt;
+    }
+
+    public static void setDt(float dt) {
+        LocalData.dt = dt;
     }
 
     public static void setUser(String user) {

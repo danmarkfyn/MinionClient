@@ -83,6 +83,8 @@ public class Test implements Runnable {
 //        world.put(player2.getName(), player2);
         boolean initialized = false;
         while (true) {
+            float dt = System.nanoTime();
+            LocalData.setDt(dt);
             updateConnection();
             if (getPlaying()) {
                 updateEntities();

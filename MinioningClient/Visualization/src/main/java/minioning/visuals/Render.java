@@ -15,6 +15,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -114,6 +116,9 @@ public class Render {
         }
     }
 
+    
+    float elapsed = 0;
+    float lastTime = elapsed;
     // Draws sprites
     private void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
 
@@ -157,7 +162,29 @@ public class Render {
                       sprite = new Sprite(playerTexture, 0, 0, 50, 50); 
                     }
                     entity.setSprite(sprite);
-                    sprite.setPosition(entity.getX() - sprite.getWidth() / 2, entity.getY() - sprite.getHeight() / 2);
+                    
+                   
+                    /* doesn't work???
+                    Vector2 vPos = entity.getvPosition();
+                    Vector2 vTarget = entity.getvTarget();
+                    */
+                    Vector2 vPos = new Vector2(entity.getvxp(), entity.getvyp());
+                    Vector2 vTarget = new Vector2(entity.getvxg(), entity.getvyg());
+                    Interpolation interpolation = Interpolation.linear;
+                    
+                    elapsed = LocalData.getDt()-lastTime;
+                    lastTime = elapsed;
+                    float updateTime = LocalData.getUpdateTime();
+                    float progess = Math.min(1f, elapsed/updateTime);
+                    float alpha = interpolation.apply(progess);
+                    vPos.interpolate(vTarget, alpha, interpolation);
+                    
+//                    float x = entity.getX()*vPos.x;
+//                    float y = entity.getY()*vPos.y;
+float x = entity.getX();
+float y = entity.getY();
+                    
+                    sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
                 }
 
                 // Set bounds and rotation

@@ -57,7 +57,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
         p = 0;
     }
 
-    private String mouseClick() {
+    private String mouseClick(Events event) {
 
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
@@ -74,7 +74,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
             y = getHeight();
         }
 
-        String movement = LocalData.getClientID().toString() + ";" + Events.MOVEMENT + ";" + x + ";" + y;
+        String movement = LocalData.getClientID().toString() + ";" + event + ";" + x + ";" + y;
         return movement;
     }
 
@@ -91,14 +91,14 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
         if (getOutputList().containsKey(Events.MOVEMENT) == false) {
             render.render((ConcurrentHashMap<UUID, Entity>) world);
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                String click = mouseClick();
-                System.out.println(mouseClick());
+                String click = mouseClick(Events.MOVEMENT);
+                System.out.println(mouseClick(Events.MOVEMENT));
                 getOutputList().put(Events.MOVEMENT, click);
             }
         }
         
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
-            getOutputList().put(Events.SKILLQ, mouseClick());
+            getOutputList().put(Events.SKILLQ, mouseClick(Events.SKILLQ));
             System.out.println("Q is pressed");
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
@@ -111,6 +111,31 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
             System.out.println("E is pressed");
         }
         if (Gdx.input.isKeyPressed(Input.Keys.P)) {
+<<<<<<< Updated upstream
+=======
+            
+            if (p == 0) {
+                pause();
+                p = 1;
+            } else if (p == 1) {
+                resume();
+                p = 0;
+            }
+
+        }
+
+        switch (state) {
+            case RUN:
+                Gdx.gl.glClearColor(0, 0, 0, 1);
+                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+                render.render((ConcurrentHashMap<UUID, Entity>) world);
+//                System.out.println("Render");
+                break;
+            case PAUSE:
+                Gdx.gl.glClearColor(0, 0, 0, 1);
+//                System.out.println("Nothing");
+>>>>>>> Stashed changes
 
 //            if (p == 0) {
 //                pause();

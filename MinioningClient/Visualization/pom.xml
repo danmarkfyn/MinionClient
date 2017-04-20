@@ -38,6 +38,20 @@
             <artifactId>org-openide-modules</artifactId>
             <version>RELEASE81</version>
             <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.netbeans.api</groupId>
+                    <artifactId>org-openide-util</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.netbeans.api</groupId>
+                    <artifactId>org-openide-util-lookup</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.netbeans.api</groupId>
+                    <artifactId>org-openide-util-ui</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
              <dependency>
@@ -48,20 +62,56 @@
         </dependency>
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx</artifactId>
-            <version>1.9.2</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-backend-lwjgl</artifactId>
             <version>1.9.2</version>
             <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.badlogicgames.gdx</groupId>
+                    <artifactId>gdx</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.java.jinput</groupId>
+                    <artifactId>jinput</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.badlogicgames.jlayer</groupId>
+                    <artifactId>jlayer</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jcraft</groupId>
+                    <artifactId>jorbis</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.lwjgl.lwjgl</groupId>
+                    <artifactId>lwjgl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.lwjgl.lwjgl</groupId>
+                    <artifactId>lwjgl_util</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>Common</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-util</artifactId>
+            <version>RELEASE68</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.lwjgl.lwjgl</groupId>
+            <artifactId>lwjgl</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx</artifactId>
+            <version>1.9.2</version>
         </dependency>
     </dependencies>
     <properties>
