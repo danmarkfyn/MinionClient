@@ -23,6 +23,36 @@ public class Entity implements Serializable {
     private EntityType type;
     private Vector2D vPosition;
     private Vector2D vTarget;
+    private Vector2D velocity;
+    private String doorTo;
+
+    public Entity(UUID ID, String type, String name, int x, int y, float vx, float vy, UUID owner, String location, String doorTo) {
+        this.ID = ID;
+        this.type = EntityType.valueOf(type);
+        this.name = name;
+        this.x = x;
+        this.y = y;
+        this.velocity = new Vector2D(vx, vy);
+        this.owner = owner;
+        this.location = location;
+        this.doorTo = doorTo;
+    }
+
+    public Vector2D getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(Vector2D velocity) {
+        this.velocity = velocity;
+    }
+
+    public String getDoorTo() {
+        return doorTo;
+    }
+
+    public void setDoorTo(String doorTo) {
+        this.doorTo = doorTo;
+    }
 
     public EntityType getType() {
         return type;
