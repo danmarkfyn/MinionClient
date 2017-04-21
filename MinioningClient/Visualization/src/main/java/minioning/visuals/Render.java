@@ -15,6 +15,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
@@ -25,6 +27,7 @@ import static minioning.common.data.EntityType.ENEMY;
 import static minioning.common.data.EntityType.PORTAL;
 import minioning.common.data.LocalData;
 import minioning.common.data.Vector2D;
+import static minioning.visuals.State.PAUSE;
 
 /**
  *
@@ -42,10 +45,15 @@ public class Render {
     private Texture portalTexture;
     private static Sprite backgroundSprite;
 
+    private ShapeRenderer sr = new ShapeRenderer();
     //  Get local values
     private float width = LocalData.getWidth();
     private float height = LocalData.getWidth();
 
+    
+        // allignment values
+    private int widthAlign = 100;
+    
     public Render() {
 
         try {
@@ -56,7 +64,7 @@ public class Render {
 
     }
 
-    public void render(ConcurrentHashMap<UUID, Entity> world) {
+     public void render(ConcurrentHashMap<UUID, Entity> world, State s) {
 
         // Background is behind entities, foreground is in front of entities
 //        int[] bglayers = {0};
@@ -67,6 +75,12 @@ public class Render {
         // Run render methods
         drawSprites(world);
         drawHud();
+                if(s == PAUSE){
+        ShowMenu();
+        }else{
+            widthAlign = 100;
+        }
+    
     }
 
 // Draws the HeadUp Display
@@ -86,7 +100,7 @@ public class Render {
         // Draw
         batch.begin();
         font.draw(batch, "In: " + LocalData.getLocation(), width - 155, LocalData.getHeight(), 150, Align.right, false);
-        font.draw(batch, "Logged in as: " + LocalData.getUser(), 100, LocalData.getHeight(), 150, Align.right, false);
+        font.draw(batch, "Logged in as: " + LocalData.getUser(), widthAlign, LocalData.getHeight(), 150, Align.right, false);
         batch.end();
 
         // Dispose of objects
@@ -117,6 +131,24 @@ public class Render {
         }
     }
 
+    
+    private void ShowMenu() {
+        widthAlign = 300;
+        
+        SpriteBatch batch = new SpriteBatch();
+        batch.begin();
+        sr.begin(ShapeType.Filled);
+        sr.setColor(Color.FIREBRICK);
+        sr.rect(0, 0, 200, height);
+        sr.end();
+
+        
+        
+        
+        batch.end();
+        batch.dispose();
+    }
+    
     
     float elapsed = 0;
     float lastTime = elapsed;

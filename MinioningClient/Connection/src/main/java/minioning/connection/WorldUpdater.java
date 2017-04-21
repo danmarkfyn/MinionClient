@@ -8,9 +8,7 @@ package minioning.connection;
 import java.util.Map;
 import java.util.UUID;
 import minioning.common.data.Entity;
-import minioning.common.data.EntityType;
 import minioning.common.data.LocalData;
-import minioning.common.data.Vector2D;
 
 /**
  *
@@ -41,9 +39,7 @@ public class WorldUpdater {
     
     private static Entity createEntity(String entityString){
         String[] data = entityString.split(";");
-        System.out.println("testing data in createentity");
         for(String out : data){
-            System.out.println(out);
         }
         UUID ID = UUID.fromString(data[0]);
         String type = data[1];

@@ -51,7 +51,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
 //        sr = new ShapeRenderer();
         render = new Render();
-//        render.loadTextures();
+        render.loadTextures();
         state = RUN;
         p = 0;
     }
