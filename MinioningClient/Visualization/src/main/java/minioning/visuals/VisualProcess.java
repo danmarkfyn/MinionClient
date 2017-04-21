@@ -33,11 +33,10 @@ import static minioning.visuals.State.RUN;
 @ServiceProvider(service = IProcessingService.class)
 public class VisualProcess implements IProcessingService, ApplicationListener {
 
-    private ShapeRenderer sr;
     private static Map<UUID, Entity> world = new ConcurrentHashMap<UUID, Entity>();
     private Render render;
-    private State state;
-    private int p;
+    private State state = RUN;
+    private int p = 1;
 
     @Override
     public void process(Map<UUID, Entity> world, Entity entity) {
@@ -50,9 +49,9 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
     public void create() {
         Gdx.graphics.setTitle("The Minioning");
 
-        sr = new ShapeRenderer();
+//        sr = new ShapeRenderer();
         render = new Render();
-        render.loadTextures();
+//        render.loadTextures();
         state = RUN;
         p = 0;
     }
@@ -84,13 +83,17 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     @Override
     public void render() {
-
-        if (getOutputList().containsKey(Events.MOVEMENT) == false) {
-            render.render((ConcurrentHashMap<UUID, Entity>) world);
-            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                String click = mouseClick(Events.MOVEMENT);
-                System.out.println(mouseClick(Events.MOVEMENT));
-                getOutputList().put(Events.MOVEMENT, click);
+ render.render((ConcurrentHashMap<UUID, Entity>) world, state);
+        if (state == RUN) {
+            if (getOutputList().containsKey(Events.MOVEMENT) == false) {
+               
+                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                    String click = mouseClick(Events.MOVEMENT);
+                    System.out.println(mouseClick(Events.MOVEMENT));
+                    getOutputList().put(Events.MOVEMENT, click);
+                }
+            } else {
+                
             }
         }
 
@@ -108,16 +111,17 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
             System.out.println("E is pressed");
         }
         if (Gdx.input.isKeyPressed(Input.Keys.P)) {
-//            
-//            if (p == 0) {
-//                pause();
-//                p = 1;
-//            } else if (p == 1) {
-//                resume();
-//                p = 0;
-//            }
-//
-//        }
+
+            if (p == 0) {
+                state = RUN;
+                p = 1;
+            } else if (p == 1) {
+                state = PAUSE;
+                p = 0;
+            }
+
+        }
+    }
 //
 //        switch (state) {
 //            case RUN:
@@ -130,8 +134,8 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 //            case PAUSE:
 //                Gdx.gl.glClearColor(0, 0, 0, 1);
 ////                System.out.println("Nothing");
-        }
-    }
+//        }
+//    }
 
     @Override
     public void pause() {

@@ -15,6 +15,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
@@ -24,6 +26,7 @@ import minioning.common.data.Entity;
 import static minioning.common.data.EntityType.ENEMY;
 import static minioning.common.data.EntityType.PORTAL;
 import minioning.common.data.LocalData;
+import static minioning.visuals.State.PAUSE;
 
 /**
  *
@@ -40,22 +43,30 @@ public class Render {
     private Texture enemyTexture;
     private Texture portalTexture;
     private static Sprite backgroundSprite;
-
+    private ShapeRenderer sr = new ShapeRenderer();
+    
+     BitmapFont font = new BitmapFont();
+     
+    // allignment values
+    private int widthAlign = 100;
+    
+    ;
     //  Get local values
     private float width = LocalData.getWidth();
     private float height = LocalData.getWidth();
 
     public Render() {
-
+        font.setColor(Color.WHITE);
+        font.getData().setScale(2f);
         try {
+            loadTextures();
         } catch (Exception e) {
             System.out.println("Error loading textures: " + e);
         }
 
-
     }
 
-    public void render(ConcurrentHashMap<UUID, Entity> world) {
+    public void render(ConcurrentHashMap<UUID, Entity> world, State s) {
 
         // Background is behind entities, foreground is in front of entities
 //        int[] bglayers = {0};
@@ -66,17 +77,20 @@ public class Render {
         // Run render methods
         drawSprites(world);
         drawHud();
+        if(s == PAUSE){
+        ShowMenu();
+        }else{
+            widthAlign = 100;
+        }
     }
 
 // Draws the HeadUp Display
     private void drawHud() {
 
-
         // Set up 
         SpriteBatch batch = new SpriteBatch();
-        BitmapFont font = new BitmapFont();
-        font.setColor(Color.WHITE);
-        font.getData().setScale(2f);
+       
+
 
         // Sets custom cursor
         Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(RESOURCE_ROOT + "graphics/" + "cursor.png")), 16, 16);
@@ -85,7 +99,7 @@ public class Render {
         // Draw
         batch.begin();
         font.draw(batch, "In: " + LocalData.getLocation(), width - 155, LocalData.getHeight(), 150, Align.right, false);
-        font.draw(batch, "Logged in as: " + LocalData.getUser(), 100, LocalData.getHeight(), 150, Align.right, false);
+        font.draw(batch, "Logged in as: " + LocalData.getUser(), widthAlign, LocalData.getHeight(), 150, Align.right, false);
         batch.end();
 
         // Dispose of objects
@@ -94,7 +108,7 @@ public class Render {
         customCursor.dispose();
     }
 
-    public void loadTextures() {
+    private void loadTextures() {
 
         System.out.println("Loading bg textures");
         try {
@@ -116,10 +130,28 @@ public class Render {
         }
     }
 
-    
+    private void ShowMenu() {
+        widthAlign = 300;
+        
+        SpriteBatch batch = new SpriteBatch();
+        batch.begin();
+        sr.begin(ShapeType.Filled);
+        sr.setColor(Color.FIREBRICK);
+        sr.rect(0, 0, 200, height);
+        sr.end();
+
+        
+        
+        
+        batch.end();
+        batch.dispose();
+    }
+
     float elapsed = 0;
     float lastTime = elapsed;
+
     // Draws sprites
+
     private void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
 
         SpriteBatch batch = new SpriteBatch();
@@ -158,32 +190,31 @@ public class Render {
                         sprite = new Sprite(enemyTexture, 0, 0, 50, 50);
                     } else if (entity.getType() == PORTAL) {
                         sprite = new Sprite(portalTexture, 0, 0, 50, 50);
-                    }else{
-                      sprite = new Sprite(playerTexture, 0, 0, 50, 50); 
+                    } else {
+                        sprite = new Sprite(playerTexture, 0, 0, 50, 50);
                     }
                     entity.setSprite(sprite);
-                    
-                   
+
                     /* doesn't work???
-                    Vector2 vPos = entity.getvPosition();
-                    Vector2 vTarget = entity.getvTarget();
-                    */
+                     Vector2 vPos = entity.getvPosition();
+                     Vector2 vTarget = entity.getvTarget();
+                     */
                     Vector2 vPos = new Vector2(entity.getvxp(), entity.getvyp());
                     Vector2 vTarget = new Vector2(entity.getvxg(), entity.getvyg());
                     Interpolation interpolation = Interpolation.linear;
-                    
-                    elapsed = LocalData.getDt()-lastTime;
+
+                    elapsed = LocalData.getDt() - lastTime;
                     lastTime = elapsed;
                     float updateTime = LocalData.getUpdateTime();
-                    float progess = Math.min(1f, elapsed/updateTime);
+                    float progess = Math.min(1f, elapsed / updateTime);
                     float alpha = interpolation.apply(progess);
                     vPos.interpolate(vTarget, alpha, interpolation);
-                    
+
 //                    float x = entity.getX()*vPos.x;
 //                    float y = entity.getY()*vPos.y;
-float x = entity.getX();
-float y = entity.getY();
-                    
+                    float x = entity.getX();
+                    float y = entity.getY();
+
                     sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
                 }
 
