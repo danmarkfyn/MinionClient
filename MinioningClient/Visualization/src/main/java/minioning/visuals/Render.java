@@ -8,8 +8,6 @@ package minioning.visuals;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -19,6 +17,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,55 +37,66 @@ public class Render {
 
     private static final String RESOURCE_ROOT = "../../../Core/src/main/resources/";
 
+    
+    // Textures
+    
+    // Background
     private Texture backgroundTexture_1;
     private Texture backgroundTexture_2;
 
+    // Entities
     private Texture playerTexture;
     private Texture enemyTexture;
     private Texture portalTexture;
     private static Sprite backgroundSprite;
 
+    // Shaperender
     private ShapeRenderer sr = new ShapeRenderer();
+    
     //  Get local values
     private float width = LocalData.getWidth();
     private float height = LocalData.getWidth();
 
-    
-        // allignment values
+    // Allignment values for menu/HUD
     private int widthAlign = 100;
+
     
+    /**
+     * Class constructer
+     */
     public Render() {
 
         try {
+            loadTextures();
         } catch (Exception e) {
             System.out.println("Error loading textures: " + e);
         }
-
-
     }
 
-     public void render(ConcurrentHashMap<UUID, Entity> world, State s) {
+    /**
+     * This method renders all assets in correct order to ensure no 
+     * unwanted overlapping
+     * @param world ConcurrentHashMap with entities (game world)
+     * @param s Current render state
+     */
+    
+    public void render(ConcurrentHashMap<UUID, Entity> world, State s) {
 
-        // Background is behind entities, foreground is in front of entities
-//        int[] bglayers = {0};
-//        int[] fglayers = {1, 2};
-        // Clear screen
-//        Gdx.gl.glClearColor(0, 0, 0, 1);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // Run render methods
         drawSprites(world);
         drawHud();
-                if(s == PAUSE){
-        ShowMenu();
-        }else{
+        if (s == PAUSE) {
+            ShowMenu();
+        } else {
             widthAlign = 100;
         }
-    
+
     }
 
+    /**
+     * This method draws the Head-Up Display (HUD)
+     */
 // Draws the HeadUp Display
     private void drawHud() {
-
 
         // Set up 
         SpriteBatch batch = new SpriteBatch();
@@ -109,7 +120,12 @@ public class Render {
         customCursor.dispose();
     }
 
-    public void loadTextures() {
+    /**
+     * This method loads texture resources from their local path for use as sprites
+     */
+    
+    // Loads textures
+    private void loadTextures() {
 
         System.out.println("Loading bg textures");
         try {
@@ -131,10 +147,14 @@ public class Render {
         }
     }
 
+    /**
+     * This method renders the ingame menu
+     */
     
+    // Draws ingame menu
     private void ShowMenu() {
         widthAlign = 300;
-        
+
         SpriteBatch batch = new SpriteBatch();
         batch.begin();
         sr.begin(ShapeType.Filled);
@@ -142,16 +162,26 @@ public class Render {
         sr.rect(0, 0, 200, height);
         sr.end();
 
-        
-        
-        
+        // Create menu button
+        Skin skin = new Skin();
+
+        skin.getSprite(RESOURCE_ROOT + "graphics/" + "portal.png");
+
+        TextButton menuBtn = new TextButton("Show Stats", skin);
+
         batch.end();
         batch.dispose();
     }
-    
-    
+
     float elapsed = 0;
     float lastTime = elapsed;
+
+    
+    /**
+     * Draws sprites to represent entities in world
+     * @param world ConcurrentHashMap with entities (game world)
+     */
+    
     // Draws sprites
     private void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
 
@@ -191,34 +221,33 @@ public class Render {
                         sprite = new Sprite(enemyTexture, 0, 0, 50, 50);
                     } else if (entity.getType() == PORTAL) {
                         sprite = new Sprite(portalTexture, 0, 0, 50, 50);
-                    }else{
-                      sprite = new Sprite(playerTexture, 0, 0, 50, 50); 
+                    } else {
+                        sprite = new Sprite(playerTexture, 0, 0, 50, 50);
                     }
                     entity.setSprite(sprite);
-                    
-                   
+
                     Vector2D ownVelocity = entity.getVelocity();
                     Vector2 velocity = new Vector2(ownVelocity.getX(), ownVelocity.getY());
                     /*
-                    den her væk?
-                    Vector2 vTarget = new Vector2(entity.getvxg(), entity.getvyg());
-                    */
+                     den her væk?
+                     Vector2 vTarget = new Vector2(entity.getvxg(), entity.getvyg());
+                     */
                     Interpolation interpolation = Interpolation.linear;
-                    
-                    elapsed = LocalData.getDt()-lastTime;
+
+                    elapsed = LocalData.getDt() - lastTime;
                     lastTime = elapsed;
                     float updateTime = LocalData.getUpdateTime();
-                    float progess = Math.min(1f, elapsed/updateTime);
+                    float progess = Math.min(1f, elapsed / updateTime);
                     float alpha = interpolation.apply(progess);
                     /*
-                    den her ændres? vTarget??
-                    velocity.interpolate(vTarget, alpha, interpolation);
-                    */
+                     den her ændres? vTarget??
+                     velocity.interpolate(vTarget, alpha, interpolation);
+                     */
 //                    float x = entity.getX()*vPos.x;
 //                    float y = entity.getY()*vPos.y;
-float x = entity.getX();
-float y = entity.getY();
-                    
+                    float x = entity.getX();
+                    float y = entity.getY();
+
                     sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
                 }
 
