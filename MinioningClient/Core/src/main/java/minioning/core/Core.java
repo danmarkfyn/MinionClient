@@ -5,84 +5,52 @@
  */
 package minioning.core;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import minioning.common.data.Entity;
+import minioning.common.data.LocalData;
+import static minioning.common.data.LocalData.getPlaying;
+import minioning.common.services.IGameInitializer;
 import minioning.common.services.IPluginService;
 import minioning.common.services.IProcessingService;
+import minioning.common.services.IWorldUpdate;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import java.util.UUID;
-import minioning.common.data.EventData;
-import static minioning.common.data.EventData.getEventData;
-import minioning.common.data.Events;
 
+/**
+ *
+ * @author Jakob
+ */
+public class Core implements Runnable {
 
-public class Core implements ApplicationListener {
-    
-    private static EventData ed;
     private Map<UUID, Entity> world = new ConcurrentHashMap<>();
-    private ShapeRenderer sr;
     private final Lookup lookup = Lookup.getDefault();
     private List<IPluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private Lookup.Result<IPluginService> result;
-    
-    
-    
-    @Override
-    public void create() {
-//        sr = new ShapeRenderer();
+
+    public Core() {
 
         Lookup.Result<IPluginService> result = lookup.lookupResult(IPluginService.class);
         result.addLookupListener(lookupListener);
         gamePlugins = new ArrayList<>(result.allInstances());
         result.allItems();
 
-//        Entity player = new Entity(,"d");
-//        world.put(player.getName(), player);
-       
+
         for (IPluginService plugin : gamePlugins) {
             plugin.start();
         }
-        update();
-        System.out.println(lookup.lookupAll(IProcessingService.class).size() + " entity processors was found");
+
+        System.out.println(lookup.lookupAll(IProcessingService.class).size() + " processors was found");
+
     }
 
-    @Override
-    public void render() {
-        update();
-        
-        //input test
-          if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
-//              System.out.println("X= " + Gdx.input.getX() + " og Y= " + Gdx.input.getY());
-              String movement = ";" + Gdx.input.getX() + ";" + Gdx.input.getY();
-              getEventData().put(Events.LOGIN, movement);
-              System.out.println(movement);
-          }
-        
-//        for (Entity entity : world.values()) {
-//
-//            sr.setColor(0, 1, 1, 0);
-//
-//            sr.begin(ShapeRenderer.ShapeType.Line);
-//
-//            sr.circle(entity.getX(), entity.getY(), 100);
-//
-//            sr.end();
-//        }
-    }
-
-    private void update() {
-//        //Update
+    public void updateEntities() {
         for (IProcessingService processorService : getProcessingServices()) {
             for (Entity e : world.values()) {
                 processorService.process(world, e);
@@ -90,49 +58,53 @@ public class Core implements ApplicationListener {
         }
     }
 
-    private void draw() {
+    public void updateConnection() {
+        for (IWorldUpdate worldUpdate : getWorldUpdate()) {
+            worldUpdate.update(world);
+        }
     }
 
+    // main thread for the graphical application
     @Override
-    public void resize(int width, int height) {
-    }
+    public void run() {
 
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void dispose() {
+        boolean initialized = false;
+        while (true) {
+            float dt = System.nanoTime();
+            LocalData.setDt(dt);
+            updateConnection();
+            if (getPlaying()) {
+                updateEntities();
+                if (!initialized) {
+                    
+                    //runs once to install visualisation
+                    System.out.println("Looking for IGameInitializer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    for (IGameInitializer installService : getGameInitializer()) {
+                        System.out.println("Found IGameInitializer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        installService.install();
+                    }
+                    initialized = true;
+                }
+            }
+        }
     }
 
     private Collection<? extends IProcessingService> getProcessingServices() {
         return lookup.lookupAll(IProcessingService.class);
     }
+
+    private Collection<? extends IGameInitializer> getGameInitializer() {
+        return lookup.lookupAll(IGameInitializer.class);
+    }
+
+    private Collection<? extends IWorldUpdate> getWorldUpdate() {
+        return lookup.lookupAll(IWorldUpdate.class);
+    }
+
     private final LookupListener lookupListener = new LookupListener() {
         @Override
         public void resultChanged(LookupEvent le) {
 
-//            Collection<? extends IPluginService> updated = result.allInstances();
-//
-//            for (IPluginService us : updated) {
-//                // Found modules
-//                if (!gamePlugins.contains(us)) {
-//                    us.start();
-//                    gamePlugins.add(us);
-//                }
-//            }
-//
-//            // Uninstall modules
-//            for (IPluginService gs : gamePlugins) {
-//                if (!updated.contains(gs)) {
-//                    gs.stop();
-//                    gamePlugins.remove(gs);
-//                }
-//            }
         }
     };
 }

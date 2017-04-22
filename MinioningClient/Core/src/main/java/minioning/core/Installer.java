@@ -46,7 +46,7 @@ public class Installer extends ModuleInstall {
                 javafx.application.Application.launch(Launcher.class);
             }
         }.start();
-        new Thread(new Test()).start();
+        new Thread(new Core()).start();
 //t.start();
     }
 //     public void run() {

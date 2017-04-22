@@ -10,7 +10,5 @@ package minioning.common.services;
  * @author Jakob
  */
 public interface IGameInitializer {
-    
     void install();
-    
 }

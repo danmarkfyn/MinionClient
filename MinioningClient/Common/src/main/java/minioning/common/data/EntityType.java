@@ -10,6 +10,9 @@ package minioning.common.data;
  * @author Jakob
  */
 public enum EntityType {
+    /**
+     * Types of enums for the different entity types
+     */
     PLAYER,
     DOOR,
     ENEMY,

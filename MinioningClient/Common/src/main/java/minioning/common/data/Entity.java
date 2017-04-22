@@ -26,6 +26,22 @@ public class Entity implements Serializable {
     private Vector2D velocity;
     private String doorTo;
 
+    /**
+     * Entity constructor
+     * 
+     * @param ID UUID
+     * @param type Entity type
+     * @param name Name of the entity
+     * @param x
+     * @param y
+     * @param vx
+     * @param vy
+     * @param owner
+     * @param location The current location of the entity (in the game world) on the server
+     * @param doorTo Only if the entity acts as a portal is this field required. 
+     * else it is set to null
+     */
+    
     public Entity(UUID ID, String type, String name, int x, int y, float vx, float vy, UUID owner, String location, String doorTo) {
         this.ID = ID;
         this.type = EntityType.valueOf(type);

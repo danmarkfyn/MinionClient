@@ -14,7 +14,5 @@ import minioning.common.data.Entity;
  * @author Jakob
  */
 public interface IWorldUpdate {
-    
     void update(Map<UUID, Entity> world);
-    
 }

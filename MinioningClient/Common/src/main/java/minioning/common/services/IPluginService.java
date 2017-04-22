@@ -12,5 +12,4 @@ package minioning.common.services;
 public interface IPluginService  {
     void start();
     void stop();
-
 }

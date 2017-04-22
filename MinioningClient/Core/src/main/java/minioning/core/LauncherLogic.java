@@ -41,15 +41,9 @@ import static minioning.common.data.LocalData.setClientID;
  */
 public final class LauncherLogic{
 
-    public static DatagramSocket cSocket;
 
-    // implements singleton
-    public static DatagramSocket getDatagramSocket() throws SocketException {
-        if (cSocket == null) {
-            cSocket = new DatagramSocket();
-        }
-        return cSocket;
-    }
+
+
 
     /**
      * This method takes a String as parameter and checks if it live up to the
@@ -64,8 +58,8 @@ public final class LauncherLogic{
         String tempPlayer = input.trim();
         tempPlayer = tempPlayer.replaceAll(" ", "");
 
-        if (tempPlayer.contains("Ã¸") || tempPlayer.contains("Ã¥")
-                || tempPlayer.contains("Ã¦") || tempPlayer.contains(";") || tempPlayer.length() < 1 || tempPlayer.length() > 10) {
+        if (tempPlayer.contains("Æ¸") || tempPlayer.contains("Ø")
+                || tempPlayer.contains("Å¦") || tempPlayer.contains(";") || tempPlayer.length() < 1 || tempPlayer.length() > 10) {
             return null;
         } else {
             player = tempPlayer;
@@ -80,7 +74,7 @@ public final class LauncherLogic{
      * @param avatarName User input for a avatar name (String)
      * @throws IOException 
      */
-    public final void CreatePlayer(String avatarName) throws IOException {
+    public final void CreatePlayer(String avatarName){
         String output = LocalData.getClientID() + ";" + CREATEPLAYER + ";" + avatarName;
         putOutput(CREATEPLAYER, output);
     }
@@ -98,7 +92,7 @@ public final class LauncherLogic{
      * @throws IOException 
      */
     
-    public final void accountQuery(Events event, String username, String password, InetAddress IPAddress, DatagramSocket clientSocket) throws IOException {
+    public final void accountQuery(Events event, String username, String password){
         String login = ";" + event + ";" + username + ";" + password;
         putOutput(event, login);
         System.out.println("putting event " + event);
@@ -155,7 +149,7 @@ public final class LauncherLogic{
      * @throws IOException 
      */
     
-    public final void play(UUID id , Events event, InetAddress IPAddress, DatagramSocket clientSocket)throws IOException{
+    public final void play(UUID id , Events event){
         
         String output = id + ";" + event;
         putOutput(PLAY, output);

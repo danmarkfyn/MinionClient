@@ -9,8 +9,13 @@ package minioning.common.data;
  *
  * @author Jakob
  */
+
+
+
 public enum Events {
-    
+    /**
+     * Types of enums for the different events query types
+     */
     MOVEMENT,
     CREATEPLAYER,
     CREATEACCOUNT,

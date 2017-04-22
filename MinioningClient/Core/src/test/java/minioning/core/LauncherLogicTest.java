@@ -87,22 +87,19 @@ public class LauncherLogicTest {
 //    /**
 //     * Test of CreatePlayer method, of class LauncherLogic.
 //     */
+
     @Test
     public void testCreatePlayer() throws Exception {
         System.out.println("CreatePlayer");
 
         // Arrange
-        
         String playerInfo = "TestPlayers";
         LauncherLogic LLInstance = new LauncherLogic();
- 
-        
+
         // Act
-        
         LLInstance.CreatePlayer(playerInfo);
-     
+
         // Assert
-        
         assertTrue(Lists.getOutputList().isEmpty() == false);
 
     }
@@ -156,21 +153,20 @@ public class LauncherLogicTest {
         System.out.println("play");
 
         // Arrange
-        
         UUID testID = UUID.randomUUID();
         Events testEvent = PLAY;
-        InetAddress IPAddress = null;
-        DatagramSocket clientSocket = null;
         LauncherLogic LLInstance = new LauncherLogic();
- 
-        
+        String testResult;
+
         // Act
-        
-        LLInstance.play(testID, testEvent, IPAddress, clientSocket);
-     
+        LLInstance.play(testID, testEvent);
+        testResult = Lists.getOutputList().get(testEvent);
+
         // Assert
-        
         assertTrue(Lists.getOutputList().isEmpty() == false);
+        assertNotNull(testResult);
+        assertEquals(testID+";"+testEvent, testResult);
+        
     }
 
 //    /**

@@ -4,12 +4,8 @@ package minioning.core;
  *
  * @author Jakob
  */
-import java.io.IOException;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -23,7 +19,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import static minioning.core.LauncherLogic.getDatagramSocket;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -39,32 +34,33 @@ import static minioning.common.data.Events.PLAY;
 import minioning.common.data.LocalData;
 import org.openide.util.Exceptions;
 
-
 public class Launcher extends Application {
 
-    public static Launcher launcher = null;
+
     private final int height = 200;
     private final int width = 310;
     private static final BooleanProperty serverToken = new SimpleBooleanProperty();
-    private static UUID ClientID = null;
     private static StringProperty name = new SimpleStringProperty();
-    private Thread t;
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        serverToken.setValue(Boolean.TRUE);
-
-        final DatagramSocket clientSocket = getDatagramSocket();
-//        final InetAddress IPAddress = InetAddress.getByName("192.168.87.13");
-        final InetAddress IPAddress = InetAddress.getByName("localhost");
+        serverToken.setValue(Boolean.FALSE);
 
         LauncherLogic launcher = new LauncherLogic();
 
-  
         Group root = new Group();
 
         //***TAB SETUP***
-        
         //Tap pane
         TabPane tp = new TabPane();
 
@@ -113,13 +109,13 @@ public class Launcher extends Application {
 
         TextField createNameField = new TextField();
         TextField createPassField = new TextField();
-        
+
         // Initial Field Values
         usernameField.setText("hit");
         passwordField.setText("me");
-        
+
         avatarnameField.setText("Player");
-        
+
         // Labels
         Label usernameLabel = new Label("Username: ");
         Label passwordLabel = new Label("Password:  ");
@@ -134,15 +130,13 @@ public class Launcher extends Application {
         //Color
         titelLabel.setTextFill(Color.CADETBLUE);
 
-        
         // ***OnAction***
-        
         // Logout button action
         logoutBtn.setOnAction((v) -> {
 
             try {
                 name.setValue("");
-                serverToken.setValue(Boolean.TRUE);
+                serverToken.setValue(Boolean.FALSE);
                 LocalData.setClientID(null);
                 clearEventData();
 
@@ -161,24 +155,22 @@ public class Launcher extends Application {
 
             if (username != null && password != null) {
                 try {
-                    launcher.accountQuery(LOGIN, username, password, IPAddress, clientSocket);
+                    launcher.accountQuery(LOGIN, username, password);
 //                    
                     TimeUnit.MILLISECONDS.sleep(2000);
 
                     if (LocalData.getClientID() != null) {
-                        serverToken.setValue(Boolean.FALSE);
+                        serverToken.setValue(Boolean.TRUE);
                         name.setValue("Logged in as " + username);
                         LocalData.setUser(username);
                         selectionModel.select(2);
 
-
                     } else {
 
-                        launcher.promt("Login Timeout", "Error");
+                        launcher.promt("Login Timeout or try with different account info", "Error");
                         serverToken.setValue(Boolean.FALSE);
                     }
 
-                } catch (IOException e) {
                 } catch (InterruptedException ex) {
                     Exceptions.printStackTrace(ex);
                 }
@@ -190,31 +182,27 @@ public class Launcher extends Application {
         // Play button action
         playBtn.setOnAction((v) -> {
 
-            try {
-                launcher.play(LocalData.getClientID(), PLAY, IPAddress, clientSocket);
-            } catch (IOException ex) {
-                Exceptions.printStackTrace(ex);
-            }
+            launcher.play(LocalData.getClientID(), PLAY);
+
             primaryStage.close();
         });
-        
+
         // create account action
-        createAccountBtn.setOnAction((v)->{
+        createAccountBtn.setOnAction((v) -> {
             String tempName = launcher.nameCheck(createNameField.getText());
 
             String tempPassword = launcher.nameCheck(createPassField.getText());
 
             if (tempName != null && tempPassword != null) {
-                try {
-                    launcher.accountQuery(CREATEACCOUNT, tempName, tempPassword, IPAddress, clientSocket);
-                    createNameField.clear();
-                    createPassField.clear();
-                }catch(IOException e){
-                }
+
+                launcher.accountQuery(CREATEACCOUNT, tempName, tempPassword);
+                createNameField.clear();
+                createPassField.clear();
+
             }
+
         });
-        
-        
+
         // create avatar button action
         createAvatarBtn.setOnAction((v) -> {
             String avatarName = avatarnameField.getText();
@@ -249,19 +237,19 @@ public class Launcher extends Application {
 
         t2_hb1.getChildren().addAll(createNameLabel, createNameField);
         t2_hb2.getChildren().addAll(createPassLabel, createPassField);
-        
+
         t2_vb1.getChildren().addAll(t2_hb1, t2_hb2, createAccountBtn);
 
         // binds
-        tab2.disableProperty().bind(serverToken.not());
-        tab3.disableProperty().bind(serverToken);
-        tab4.disableProperty().bind(serverToken);
+        tab2.disableProperty().bind(serverToken);
+        tab3.disableProperty().bind(serverToken.not());
+        tab4.disableProperty().bind(serverToken.not());
 
-        usernameField.disableProperty().bind(serverToken.not());
-        passwordField.disableProperty().bind(serverToken.not());
-        loginBtn.disableProperty().bind(serverToken.not());
+        usernameField.disableProperty().bind(serverToken);
+        passwordField.disableProperty().bind(serverToken);
+        loginBtn.disableProperty().bind(serverToken);
 
-        logoutBtn.disableProperty().bind(serverToken);
+        logoutBtn.disableProperty().bind(serverToken.not());
 
         nameLabel.textProperty().bind(name);
 

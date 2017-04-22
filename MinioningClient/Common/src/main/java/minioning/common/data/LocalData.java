@@ -13,6 +13,7 @@ import java.util.UUID;
  */
 public class LocalData {
 
+    
     private static UUID ClientID = null;
     private static int height = 576;
     private static int width = 1024;
