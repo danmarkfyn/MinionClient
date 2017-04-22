@@ -26,7 +26,9 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.ToggleGroup;
 import static minioning.common.data.EventData.clearEventData;
 import static minioning.common.data.Events.CREATEACCOUNT;
 import static minioning.common.data.Events.LOGIN;
@@ -36,21 +38,12 @@ import org.openide.util.Exceptions;
 
 public class Launcher extends Application {
 
-
     private final int height = 200;
     private final int width = 310;
     private static final BooleanProperty serverToken = new SimpleBooleanProperty();
     private static StringProperty name = new SimpleStringProperty();
+    private final ToggleGroup tg = new ToggleGroup();
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -110,6 +103,15 @@ public class Launcher extends Application {
         TextField createNameField = new TextField();
         TextField createPassField = new TextField();
 
+        // radiobuttons
+        RadioButton rb1 = new RadioButton("Local");
+        RadioButton rb2 = new RadioButton("Internet");
+
+        rb1.isSelected();
+
+        rb1.setToggleGroup(tg);
+        rb2.setToggleGroup(tg);
+
         // Initial Field Values
         usernameField.setText("hit");
         passwordField.setText("me");
@@ -144,6 +146,19 @@ public class Launcher extends Application {
 
             }
 
+        });
+
+        // Radio buttons action
+        rb1.setOnAction((v) -> {
+
+            LocalData.setInetAddress("localhost");
+            System.out.println(LocalData.getInetAddress());
+        });
+
+        rb2.setOnAction((v) -> {
+
+            LocalData.setInetAddress("10.126.24.199");
+            System.out.println(LocalData.getInetAddress());
         });
 
         // Login button action
@@ -224,8 +239,8 @@ public class Launcher extends Application {
 
         VBox t1_vb1 = new VBox();
 
-        t1_hb1.getChildren().addAll(usernameLabel, usernameField);
-        t1_hb2.getChildren().addAll(passwordLabel, passwordField);
+        t1_hb1.getChildren().addAll(usernameLabel, usernameField, rb1);
+        t1_hb2.getChildren().addAll(passwordLabel, passwordField, rb2);
 
         t1_vb1.getChildren().addAll(t1_hb1, t1_hb2, loginBtn, nameLabel, logoutBtn);
 
@@ -247,6 +262,8 @@ public class Launcher extends Application {
 
         usernameField.disableProperty().bind(serverToken);
         passwordField.disableProperty().bind(serverToken);
+        rb1.disableProperty().bind(serverToken);
+        rb2.disableProperty().bind(serverToken);
         loginBtn.disableProperty().bind(serverToken);
 
         logoutBtn.disableProperty().bind(serverToken.not());

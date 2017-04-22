@@ -13,16 +13,24 @@ import java.util.UUID;
  */
 public class LocalData {
 
-    
     private static UUID ClientID = null;
     private static int height = 576;
     private static int width = 1024;
     private static Boolean playing = false;
     private static final int port = 80;
+    private static String inetAddress = "localhost";
     private static String location;
     private static String user;
-   private static float dt;
+    private static float dt;
     private static float updateTime = 0.1f;
+
+    public static String getInetAddress() {
+        return inetAddress;
+    }
+
+    public static void setInetAddress(String inetAddress) {
+        LocalData.inetAddress = inetAddress;
+    }
 
     public static float getDt() {
         return dt;
@@ -31,8 +39,7 @@ public class LocalData {
     public static void setDt(float dt) {
         LocalData.dt = dt;
     }
-    
-    
+
     public static String getUser() {
         return user;
     }
@@ -52,8 +59,6 @@ public class LocalData {
     public static String getLocation() {
         return location;
     }
-
-    
 
     public static int getPort() {
         return port;

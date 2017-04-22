@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.util.Map;
 import minioning.common.data.Events;
 import static minioning.common.data.Lists.*;
+import minioning.common.data.LocalData;
 import static minioning.common.data.LocalData.getPlaying;
 import static minioning.common.data.LocalData.getPort;
 import static minioning.common.data.LocalData.setPlaying;
@@ -100,7 +101,7 @@ public class DataTransmitter implements Runnable {
     private void sendEvent(String data) throws IOException {
 //        InetAddress IPAddress = InetAddress.getByName("localhost");
         
-        InetAddress IPAddress = InetAddress.getByName("10.126.24.199");
+        InetAddress IPAddress = InetAddress.getByName(LocalData.getInetAddress());
 
         sendData = data.getBytes();
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, getPort());
