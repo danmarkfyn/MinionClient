@@ -5,16 +5,11 @@
  */
 package minioning.core;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -24,24 +19,29 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import minioning.common.data.Entity;
 import minioning.common.data.Events;
 import static minioning.common.data.Events.CREATEPLAYER;
-import static minioning.common.data.Events.LOGIN;
 import static minioning.common.data.Events.PLAY;
 import static minioning.common.data.Lists.putOutput;
 import minioning.common.data.LocalData;
 import static minioning.common.data.LocalData.setClientID;
 
 /**
+ * 
+ * This class handles the logic of the launcher. It allows to put login and other server queries
+ * into the event list for transmission to the server for handeling.
+ */
+
+/**
  *
  * @author Jakob
+ * 
+ * This class handles the logic of the launcher. It allows to put login and other server queries
+ * into the event list for transmission to the server for handeling.
  */
 public final class LauncherLogic{
 
     public static DatagramSocket cSocket;
-//    private static UUID ClientID;
-//    private static boolean running = true;
 
     // implements singleton
     public static DatagramSocket getDatagramSocket() throws SocketException {
@@ -51,6 +51,14 @@ public final class LauncherLogic{
         return cSocket;
     }
 
+    /**
+     * This method takes a String as parameter and checks if it live up to the
+     * format specified
+     * 
+     * @param input A userinput (name) 
+     * @return A string that fulfills the format, or null if no such string was made
+     */
+    
     public String nameCheck(String input) {
         String player = null;
         String tempPlayer = input.trim();
@@ -65,17 +73,44 @@ public final class LauncherLogic{
         return player;
     }
 
-    public final void CreatePlayer(String playerInfo) throws IOException {
-        String output = LocalData.getClientID() + ";" + CREATEPLAYER + ";" + playerInfo;
+    /**
+     * 
+     * This method puts a CreatePlayer query in the list of events for server transmission
+     * 
+     * @param avatarName User input for a avatar name (String)
+     * @throws IOException 
+     */
+    public final void CreatePlayer(String avatarName) throws IOException {
+        String output = LocalData.getClientID() + ";" + CREATEPLAYER + ";" + avatarName;
         putOutput(CREATEPLAYER, output);
     }
 
+    
+    /**
+     * 
+     * This method handles both queries for creating an account and logging in
+     * 
+     * @param event An event enum specifying what kind of query (CREATEAACOUNR or LOGIN
+     * @param username Login username or wished username for an account not yet created
+     * @param password Login password or wished password for an account not yet created
+     * @param IPAddress
+     * @param clientSocket
+     * @throws IOException 
+     */
+    
     public final void accountQuery(Events event, String username, String password, InetAddress IPAddress, DatagramSocket clientSocket) throws IOException {
         String login = ";" + event + ";" + username + ";" + password;
         putOutput(event, login);
         System.out.println("putting event " + event);
     }
 
+    /**
+     * This method creates a new dialog box
+     * 
+     * @param s1 Is used for setting the message of the dialog box
+     * @param s2 Is used for setting the title of the dialog box
+     */
+    
     public final void promt(String s1, String s2) {
         
         // prompt message 
@@ -110,6 +145,15 @@ public final class LauncherLogic{
         dialog.setResizable(false);
     }
     
+    
+    /**
+     * 
+     * @param id
+     * @param event
+     * @param IPAddress
+     * @param clientSocket
+     * @throws IOException 
+     */
     
     public final void play(UUID id , Events event, InetAddress IPAddress, DatagramSocket clientSocket)throws IOException{
         

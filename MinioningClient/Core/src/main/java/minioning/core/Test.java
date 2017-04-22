@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import minioning.common.data.Entity;
 import minioning.common.data.LocalData;
-import static minioning.common.data.LocalData.getClientID;
 import static minioning.common.data.LocalData.getPlaying;
 import minioning.common.services.IGameInitializer;
 import minioning.common.services.IPluginService;
@@ -42,8 +41,7 @@ public class Test implements Runnable {
         gamePlugins = new ArrayList<>(result.allInstances());
         result.allItems();
 
-//        Entity player = new Entity(getClientID(),"Player");
-//        world.put(player.getName(), player);
+
         for (IPluginService plugin : gamePlugins) {
             plugin.start();
         }

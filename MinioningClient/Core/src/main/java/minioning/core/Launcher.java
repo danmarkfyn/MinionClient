@@ -217,12 +217,12 @@ public class Launcher extends Application {
         
         // create avatar button action
         createAvatarBtn.setOnAction((v) -> {
-            String s = avatarnameField.getText();
-            String output = launcher.nameCheck(s);
+            String avatarName = avatarnameField.getText();
+            String name = launcher.nameCheck(avatarName);
 
-            if (output != null) {
+            if (name != null) {
                 try {
-                    launcher.CreatePlayer(output);
+                    launcher.CreatePlayer(name);
                 } catch (Exception e) {
                 }
                 avatarnameField.clear();
