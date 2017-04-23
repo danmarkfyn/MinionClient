@@ -5,6 +5,7 @@
  */
 package minioning.visuals;
 
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
@@ -13,12 +14,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.utils.Align;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,7 +29,13 @@ import static minioning.common.data.EntityType.ENEMY;
 import static minioning.common.data.EntityType.PORTAL;
 import minioning.common.data.LocalData;
 import minioning.common.data.Vector2D;
-import static minioning.visuals.State.PAUSE;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.Input;
+import static minioning.visuals.State.INMENU;
 
 /**
  *
@@ -37,9 +45,9 @@ public class Render {
 
     private static final String RESOURCE_ROOT = "../../../Core/src/main/resources/";
 
-    
-    // Textures
-    
+    private Stage stage;
+    // Textures and Images
+
     // Background
     private Texture backgroundTexture_1;
     private Texture backgroundTexture_2;
@@ -52,7 +60,7 @@ public class Render {
 
     // Shaperender
     private ShapeRenderer sr = new ShapeRenderer();
-    
+
     //  Get local values
     private float width = LocalData.getWidth();
     private float height = LocalData.getWidth();
@@ -60,7 +68,14 @@ public class Render {
     // Allignment values for menu/HUD
     private int widthAlign = 100;
 
-    
+    // Buttons
+    Image menuButton;
+
+    private Texture buttonTexture;
+    private TextureRegion buttonTextureRegion;
+    private TextureRegionDrawable buttonTexRegionDrawable;
+    private ImageButton button;
+
     /**
      * Class constructer
      */
@@ -74,21 +89,20 @@ public class Render {
     }
 
     /**
-     * This method renders all assets in correct order to ensure no 
-     * unwanted overlapping
+     * This method renders all assets in correct order to ensure no unwanted
+     * overlapping
+     *
      * @param world ConcurrentHashMap with entities (game world)
      * @param s Current render state
      */
-    
     public void render(ConcurrentHashMap<UUID, Entity> world, State s) {
-
+        System.out.println(s);
         drawSprites(world);
         drawHud();
-        if (s == PAUSE) {
-            ShowMenu();
-        } else {
-            widthAlign = 100;
+        if (s == INMENU) {
+            ShowMenu(s);
         }
+        widthAlign = 100;
 
     }
 
@@ -121,10 +135,10 @@ public class Render {
     }
 
     /**
-     * This method loads texture resources from their local path for use as sprites
+     * This method loads texture resources from their local path for use as
+     * sprites
      */
-    
-    // Loads textures
+    // Loads textures and Images
     private void loadTextures() {
 
         System.out.println("Loading bg textures");
@@ -141,6 +155,19 @@ public class Render {
             playerTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "blue.png"));
             enemyTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "red.png"));
             portalTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "portal.png"));
+
+            try {
+                buttonTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "button1.png"));
+
+                buttonTextureRegion = new TextureRegion(buttonTexture);
+                buttonTexRegionDrawable = new TextureRegionDrawable(buttonTextureRegion);
+
+                button = new ImageButton(buttonTexRegionDrawable);
+
+            } catch (Exception e) {
+            }
+
+            menuButton = new Image(portalTexture);
             System.out.println("entity textures loaded succesfully");
         } catch (Exception e) {
             System.out.println("Failed loading entity textures: " + e);
@@ -150,38 +177,54 @@ public class Render {
     /**
      * This method renders the ingame menu
      */
-    
     // Draws ingame menu
-    private void ShowMenu() {
-        widthAlign = 300;
+    private void ShowMenu(final State s) {
+        if (s.equals(INMENU)) {
 
-        SpriteBatch batch = new SpriteBatch();
-        batch.begin();
-        sr.begin(ShapeType.Filled);
-        sr.setColor(Color.FIREBRICK);
-        sr.rect(0, 0, 200, height);
-        sr.end();
+            widthAlign = 300;
 
-        // Create menu button
-        Skin skin = new Skin();
+            SpriteBatch batch = new SpriteBatch();
+            batch.begin();
+            sr.begin(ShapeType.Filled);
+            sr.setColor(Color.FIREBRICK);
+            sr.rect(0, 0, 200, height);
+            sr.end();
 
-        skin.getSprite(RESOURCE_ROOT + "graphics/" + "portal.png");
+            button.setX(100);
+            button.setY(height / 2);
 
-        TextButton menuBtn = new TextButton("Show Stats", skin);
+            stage = new Stage(new ScreenViewport());
+            stage.addActor(button);
+            Gdx.input.setInputProcessor(stage);
 
-        batch.end();
-        batch.dispose();
+            button.addListener(new ClickListener() {
+
+                @Override
+                public boolean handle(Event event) {
+                    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+
+                        System.out.println("Button Pressed");
+
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            stage.act(Gdx.graphics.getDeltaTime());
+            stage.draw();
+
+            batch.end();
+            batch.dispose();
+        }
     }
-
     float elapsed = 0;
     float lastTime = elapsed;
 
-    
     /**
      * Draws sprites to represent entities in world
+     *
      * @param world ConcurrentHashMap with entities (game world)
      */
-    
     // Draws sprites
     private void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
 

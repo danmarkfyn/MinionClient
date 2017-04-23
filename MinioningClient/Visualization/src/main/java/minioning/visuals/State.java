@@ -11,7 +11,7 @@ package minioning.visuals;
  */
 public enum State {
  
-    PAUSE,
-    RUN;
+    INGAME,
+    INMENU;
     
 }

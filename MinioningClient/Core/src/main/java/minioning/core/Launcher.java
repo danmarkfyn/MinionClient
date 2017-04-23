@@ -107,7 +107,7 @@ public class Launcher extends Application {
         RadioButton rb1 = new RadioButton("Local");
         RadioButton rb2 = new RadioButton("Internet");
 
-        rb1.isSelected();
+        rb1.selectedProperty().set(true);
 
         rb1.setToggleGroup(tg);
         rb2.setToggleGroup(tg);

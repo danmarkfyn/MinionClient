@@ -13,18 +13,16 @@ import org.openide.util.lookup.ServiceProvider;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.Events;
 import static minioning.common.data.Lists.getOutputList;
 import minioning.common.data.LocalData;
-
 import static minioning.common.data.LocalData.getWidth;
 import static minioning.common.data.LocalData.getHeight;
-import static minioning.visuals.State.PAUSE;
-import static minioning.visuals.State.RUN;
+import static minioning.visuals.State.INGAME;
+import static minioning.visuals.State.INMENU;
+
 
 /**
  *
@@ -35,7 +33,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     private static Map<UUID, Entity> world = new ConcurrentHashMap<UUID, Entity>();
     private Render render;
-    private State state = RUN;
+    private State state = INGAME;
     private int p = 1;
 
     @Override
@@ -49,10 +47,8 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
     public void create() {
         Gdx.graphics.setTitle("The Minioning");
 
-//        sr = new ShapeRenderer();
         render = new Render();
-//        render.loadTextures();
-        state = RUN;
+        state = INGAME;
         p = 0;
     }
 
@@ -84,7 +80,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
     @Override
     public void render() {
  render.render((ConcurrentHashMap<UUID, Entity>) world, state);
-        if (state == RUN) {
+        if (state == INGAME) {
             if (getOutputList().containsKey(Events.MOVEMENT) == false) {
                
                 if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
@@ -113,10 +109,10 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
         if (Gdx.input.isKeyPressed(Input.Keys.P)) {
 
             if (p == 0) {
-                state = RUN;
+                state = INGAME;
                 p = 1;
             } else if (p == 1) {
-                state = PAUSE;
+                state = INMENU;
                 p = 0;
             }
 
@@ -139,12 +135,10 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     @Override
     public void pause() {
-        state = PAUSE;
     }
 
     @Override
     public void resume() {
-        state = RUN;
     }
 
     @Override
