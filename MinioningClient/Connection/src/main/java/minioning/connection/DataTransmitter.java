@@ -33,74 +33,90 @@ public class DataTransmitter implements Runnable {
         while (true) {
             playing = getPlaying();
 //            if (!playing) {
-                output = getOutputList();
+            output = getOutputList();
 //            clearOutput();
 //            System.out.println("for loop & size: " + output.entrySet().size());
-                for (Map.Entry<Events, String> entry : output.entrySet()) {
-                    Events eventType = entry.getKey();
-                    String data = entry.getValue();
-                    System.out.println(eventType);
-                    System.out.println(data);
-                    switch (eventType) {
-                        case MOVEMENT:
-                            try {
-                                sendEvent(data);
-                            } catch (Exception e) {
-                                System.out.println("Couldn't send movement");
-                            }
-                            removeEvent(eventType, data);
-                            break;
-                        case CREATEACCOUNT:
-                            try {
-                                sendEvent(data);
-                            } catch (Exception e) {
-                                System.out.println("Create Account transmit failed: " + e);
-                            }
-                            removeEvent(eventType, data);
-                            break;
-                        case LOGIN:
-                            try {
-                                sendEvent(data);
-                            } catch (Exception e) {
-                                System.out.println("LOGIN transmit failed: " + e);
-                            }
-                            removeEvent(eventType, data);
-                            break;
-                        case PLAY:
-                            try {
-                                sendEvent(data);
-                                setPlaying(true);
-                            } catch (Exception e) {
-                            }
-                            removeEvent(eventType, data);
-                            break;
-                        case CREATEPLAYER:
-                            try {
-                                sendEvent(data);
-                            } catch (Exception e) {
-                                System.out.println("send createplayer failed");
-                            }
-                            removeEvent(eventType, data);
-                            break;
-                        case SKILLQ:
-                            try {
-                                sendEvent(data);
-                            } catch (Exception e) {
-                                System.out.println("send SKILLQ failed");
-                            }
-                            removeEvent(eventType, data);
-                            break;
-                        default:
-                            break;
-                    }
+            for (Map.Entry<Events, String> entry : output.entrySet()) {
+                Events eventType = entry.getKey();
+                String data = entry.getValue();
+                System.out.println(eventType);
+                System.out.println(data);
+                switch (eventType) {
+                    case MOVEMENT:
+                        try {
+                            sendEvent(data);
+                        } catch (Exception e) {
+                            System.out.println("Couldn't send movement");
+                        }
+                        removeEvent(eventType, data);
+                        break;
+                    case CREATEACCOUNT:
+                        try {
+                            sendEvent(data);
+                        } catch (Exception e) {
+                            System.out.println("Create Account transmit failed: " + e);
+                        }
+                        removeEvent(eventType, data);
+                        break;
+                    case LOGIN:
+                        try {
+                            sendEvent(data);
+                        } catch (Exception e) {
+                            System.out.println("LOGIN transmit failed: " + e);
+                        }
+                        removeEvent(eventType, data);
+                        break;
+                    case PLAY:
+                        try {
+                            sendEvent(data);
+                            setPlaying(true);
+                        } catch (Exception e) {
+                        }
+                        removeEvent(eventType, data);
+                        break;
+                    case CREATEPLAYER:
+                        try {
+                            sendEvent(data);
+                        } catch (Exception e) {
+                            System.out.println("send createplayer failed");
+                        }
+                        removeEvent(eventType, data);
+                        break;
+                    case SKILLQ:
+                        try {
+                            sendEvent(data);
+                        } catch (Exception e) {
+                            System.out.println("send SKILLQ failed");
+                        }
+                        removeEvent(eventType, data);
+                        break;
+                    case SKILLW:
+                        try {
+                            sendEvent(data);
+                        } catch (Exception e) {
+                            System.out.println("send SKILLQ failed");
+                        }
+                        removeEvent(eventType, data);
+                        break;
+                    case SKILLE:
+                        try {
+                            sendEvent(data);
+                        } catch (Exception e) {
+                            System.out.println("send SKILLQ failed");
+                        }
+                        removeEvent(eventType, data);
+                        break;
+                    default:
+                        break;
                 }
+            }
 //            }
         }
     }
 
     private void sendEvent(String data) throws IOException {
 //        InetAddress IPAddress = InetAddress.getByName("localhost");
-        
+
         InetAddress IPAddress = InetAddress.getByName(LocalData.getInetAddress());
 
         sendData = data.getBytes();

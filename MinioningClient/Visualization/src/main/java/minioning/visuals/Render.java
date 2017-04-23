@@ -5,7 +5,6 @@
  */
 package minioning.visuals;
 
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
@@ -46,8 +45,8 @@ public class Render {
     private static final String RESOURCE_ROOT = "../../../Core/src/main/resources/";
 
     private Stage stage;
-    // Textures and Images
 
+    // Textures and Images
     // Background
     private Texture backgroundTexture_1;
     private Texture backgroundTexture_2;
@@ -96,14 +95,14 @@ public class Render {
      * @param s Current render state
      */
     public void render(ConcurrentHashMap<UUID, Entity> world, State s) {
-        System.out.println(s);
+
         drawSprites(world);
         drawHud();
         if (s == INMENU) {
             ShowMenu(s);
+        } else {
+            widthAlign = 100;
         }
-        widthAlign = 100;
-
     }
 
     /**
@@ -186,11 +185,11 @@ public class Render {
             SpriteBatch batch = new SpriteBatch();
             batch.begin();
             sr.begin(ShapeType.Filled);
-            sr.setColor(Color.FIREBRICK);
+            sr.setColor(Color.DARK_GRAY);
             sr.rect(0, 0, 200, height);
             sr.end();
 
-            button.setX(100);
+            button.setX(75);
             button.setY(height / 2);
 
             stage = new Stage(new ScreenViewport());
@@ -232,7 +231,7 @@ public class Render {
         batch.begin();
 
         for (Entity entity : world.values()) {
-//            System.out.println(entity.getOwner() + "    " + LocalData.getClientID());
+
             if (entity.getOwner().equals(LocalData.getClientID())) {
 
                 String bgString = LocalData.getLocation();
@@ -293,6 +292,11 @@ public class Render {
 
                     sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
                 }
+                BitmapFont font = new BitmapFont();
+                font.setColor(Color.BLUE);
+
+                font.getData().setScale(1f);
+                font.draw(batch, entity.getType().toString(), entity.getX(), entity.getY() + entity.getSprite().getHeight(), 0, Align.center, false);
 
                 // Set bounds and rotation
                 Sprite sprite = entity.getSprite();
