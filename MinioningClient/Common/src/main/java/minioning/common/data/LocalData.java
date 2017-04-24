@@ -23,6 +23,15 @@ public class LocalData {
     private static String user;
     private static float dt;
     private static float updateTime = 0.1f;
+    private static boolean key1;
+
+    public static boolean isKey1() {
+        return key1;
+    }
+
+    public static void setKey1(boolean key1) {
+        LocalData.key1 = key1;
+    }
 
     public static String getInetAddress() {
         return inetAddress;
@@ -96,4 +105,6 @@ public class LocalData {
         LocalData.ClientID = ClientID;
     }
 
+    
+    
 }

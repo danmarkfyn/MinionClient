@@ -13,6 +13,7 @@ import org.openide.util.lookup.ServiceProvider;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import minioning.common.data.Events;
@@ -22,7 +23,6 @@ import static minioning.common.data.LocalData.getWidth;
 import static minioning.common.data.LocalData.getHeight;
 import static minioning.visuals.State.INGAME;
 import static minioning.visuals.State.INMENU;
-
 
 /**
  *
@@ -35,6 +35,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
     private Render render;
     private State state = INGAME;
     private int p = 1;
+    private boolean ePressed, qPressed, wPressed, pPressed, mouseClicked = false;
 
     @Override
     public void process(Map<UUID, Entity> world, Entity entity) {
@@ -50,6 +51,8 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
         render = new Render();
         state = INGAME;
         p = 0;
+//    GameInput inputProcessor = new GameInput();
+//Gdx.input.setInputProcessor(inputProcessor);
     }
 
     private String mouseClick(Events event) {
@@ -79,20 +82,23 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     @Override
     public void render() {
- render.render((ConcurrentHashMap<UUID, Entity>) world, state);
+        render.render((ConcurrentHashMap<UUID, Entity>) world, state);
         if (state == INGAME) {
             if (getOutputList().containsKey(Events.MOVEMENT) == false) {
-               
+
                 if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                    String click = mouseClick(Events.MOVEMENT);
-                    System.out.println(mouseClick(Events.MOVEMENT));
-                    getOutputList().put(Events.MOVEMENT, click);
+                    if (!mouseClicked) {
+                        String click = mouseClick(Events.MOVEMENT);
+
+                        getOutputList().put(Events.MOVEMENT, click);
+                        mouseClicked = true;
+                    }
+                } else {
+                    mouseClicked = false;
+
                 }
-            } else {
-                
             }
         }
-
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
             getOutputList().put(Events.SKILLQ, mouseClick(Events.SKILLQ));
             System.out.println("Q is pressed");
@@ -102,20 +108,28 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
             System.out.println("W is pressed");
         }
         if (Gdx.input.isKeyPressed(Input.Keys.E)) {
-
-            getOutputList().put(Events.SKILLE, "");
-            System.out.println("E is pressed");
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.P)) {
-
-            if (p == 0) {
-                state = INGAME;
-                p = 1;
-            } else if (p == 1) {
-                state = INMENU;
-                p = 0;
+            if (!ePressed) {
+                getOutputList().put(Events.SKILLE, "");
+                System.out.println("E is pressed");
+                ePressed = true;
             }
 
+        } else {
+            ePressed = false;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+            if (!pPressed) {
+                if (p == 0) {
+                    state = INGAME;
+                    p = 1;
+                } else if (p == 1) {
+                    state = INMENU;
+                    p = 0;
+                }
+                ePressed = true;
+            } else {
+                pPressed = false;
+            }
         }
     }
 //

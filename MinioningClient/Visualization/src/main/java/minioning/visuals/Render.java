@@ -34,6 +34,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import static minioning.visuals.State.INMENU;
 
 /**
@@ -196,19 +198,18 @@ public class Render {
             stage.addActor(button);
             Gdx.input.setInputProcessor(stage);
 
-            button.addListener(new ClickListener() {
-
-                @Override
-                public boolean handle(Event event) {
-                    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-
-                        System.out.println("Button Pressed");
-
-                        return true;
-                    }
-                    return false;
-                }
-            });
+//            button.addListener(new ClickListener() {
+//                @Override
+//                public boolean handle(Event event) {
+//                    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+//
+//                        System.out.println("Button Pressed");
+//
+//                        return true;
+//                    }
+//                    return false;
+//                }
+//            });
             stage.act(Gdx.graphics.getDeltaTime());
             stage.draw();
 
@@ -296,7 +297,7 @@ public class Render {
                 font.setColor(Color.BLUE);
 
                 font.getData().setScale(1f);
-                font.draw(batch, entity.getType().toString(), entity.getX(), entity.getY() + entity.getSprite().getHeight(), 0, Align.center, false);
+                font.draw(batch, entity.getName().toString(), entity.getX(), entity.getY() + entity.getSprite().getHeight(), 0, Align.center, false);
 
                 // Set bounds and rotation
                 Sprite sprite = entity.getSprite();
@@ -309,4 +310,5 @@ public class Render {
         batch.end();
         batch.dispose();
     }
+
 }

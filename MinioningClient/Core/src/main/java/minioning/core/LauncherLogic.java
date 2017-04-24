@@ -6,9 +6,6 @@
 package minioning.core;
 
 import java.io.IOException;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
 import java.util.UUID;
 import javafx.scene.Group;
 import javafx.scene.Scene;
