@@ -265,7 +265,7 @@ public class Render {
                     } else if (entity.getType() == PORTAL) {
                         sprite = new Sprite(portalTexture, 0, 0, 50, 50);
                     } else {
-                        sprite = new Sprite(playerTexture, 0, 0, 50, 50);
+                        sprite = new Sprite(portalTexture, 0, 0, 50, 50);
                     }
                     entity.setSprite(sprite);
 

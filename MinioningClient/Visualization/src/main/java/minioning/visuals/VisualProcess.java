@@ -105,9 +105,10 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
                 getOutputList().put(Events.SKILLQ, mouseClick(Events.SKILLQ));
                 System.out.println("Q is pressed");
                 qPressed = true;
-            } else {
-                qPressed = false;
             }
+        } else {
+            qPressed = false;
+
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             getOutputList().put(Events.SKILLW, "");
