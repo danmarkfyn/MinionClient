@@ -25,6 +25,15 @@ public class Entity implements Serializable {
     private Vector2D vTarget;
     private Vector2D velocity;
     private String doorTo;
+    private int hp;
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
 
     /**
      * Entity constructor
@@ -42,7 +51,7 @@ public class Entity implements Serializable {
      * else it is set to null
      */
     
-    public Entity(UUID ID, String type, String name, int x, int y, float vx, float vy, UUID owner, String location, String doorTo) {
+    public Entity(UUID ID, String type, String name, int x, int y, float vx, float vy, UUID owner, String location, String doorTo, int hp) {
         this.ID = ID;
         this.type = EntityType.valueOf(type);
         this.name = name;
@@ -52,6 +61,7 @@ public class Entity implements Serializable {
         this.owner = owner;
         this.location = location;
         this.doorTo = doorTo;
+        this.hp = hp;
     }
 
     public Vector2D getVelocity() {

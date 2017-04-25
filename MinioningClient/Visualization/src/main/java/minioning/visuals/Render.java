@@ -31,7 +31,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import static minioning.common.data.EntityType.DOOR;
 import static minioning.common.data.EntityType.HOLYBOLT;
+import static minioning.common.data.EntityType.PLAYER;
 import static minioning.visuals.State.INMENU;
 
 /**
@@ -104,6 +106,8 @@ public class Render {
         } else {
             widthAlign = 100;
         }
+        drawCustomCursor();
+
     }
 
     /**
@@ -117,10 +121,10 @@ public class Render {
         BitmapFont font = new BitmapFont();
         font.setColor(Color.WHITE);
         font.getData().setScale(2f);
-
-        // Sets custom cursor
-        Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(RESOURCE_ROOT + "graphics/" + "cursor.png")), 16, 16);
-        Gdx.graphics.setCursor(customCursor);
+//
+//        // Sets custom cursor
+//        Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(RESOURCE_ROOT + "graphics/" + "cursor.png")), 16, 16);
+//        Gdx.graphics.setCursor(customCursor);
 
         // Draw
         batch.begin();
@@ -131,6 +135,13 @@ public class Render {
         // Dispose of objects
         batch.dispose();
         font.dispose();
+
+    }
+
+    private void drawCustomCursor() {
+        // Sets custom cursor
+        Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(RESOURCE_ROOT + "graphics/" + "cursor.png")), 16, 16);
+        Gdx.graphics.setCursor(customCursor);
         customCursor.dispose();
     }
 
@@ -156,7 +167,6 @@ public class Render {
             enemyTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "red.png"));
             portalTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "portal.png"));
             missile1Texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "holybolt.png"));
-            
 
             try {
                 buttonTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "button1.png"));
@@ -252,7 +262,7 @@ public class Render {
         }
         // Sets sprites for entities
         for (Entity entity : world.values()) {
-                                    
+
             if (entity.getLocation().equals(LocalData.getLocation())) {
 
                 if (entity.getSprite() == null) {
@@ -265,7 +275,7 @@ public class Render {
                         sprite = new Sprite(enemyTexture, 0, 0, sizeL, sizeL);
                     } else if (entity.getType() == PORTAL) {
                         sprite = new Sprite(portalTexture, 0, 0, sizeL, sizeL);
-                        } else if (entity.getType() == HOLYBOLT) {
+                    } else if (entity.getType() == HOLYBOLT) {
                         sprite = new Sprite(missile1Texture, 0, 0, sizeS, sizeS);
                     } else {
                         sprite = new Sprite(portalTexture, 0, 0, sizeL, sizeL);
@@ -296,17 +306,30 @@ public class Render {
 
                     sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
                 }
-                BitmapFont font = new BitmapFont();
-                font.setColor(Color.BLUE);
 
-                font.getData().setScale(1f);
-                font.draw(batch, entity.getName().toString(), entity.getX(), entity.getY() + entity.getSprite().getHeight(), 0, Align.center, false);
+                // Displays Entity Info
+                BitmapFont font1 = new BitmapFont();
+                font1.setColor(Color.BLUE);
 
-                // Set bounds and rotation
+                BitmapFont font2 = new BitmapFont();
+                font2.setColor(Color.RED);
+
+                font1.getData().setScale(1f);
+
+// Set bounds and rotation
                 Sprite sprite = entity.getSprite();
 //            sprite.setBounds(entity.getX() - width / 2, entity.getY() - height / 2, width, height);
 //            sprite.setRotation((float)Math.toDegrees(entity.getRadians()));
                 sprite.draw(batch);
+                if (entity.getType() == PLAYER || entity.getType() == DOOR || entity.getType() == ENEMY) {
+                    font1.draw(batch, entity.getName().toString(), entity.getX(), entity.getY() + entity.getSprite().getHeight() + 20, 0, Align.center, false);
+                    font2.draw(batch, entity.getHp() + "", entity.getX(), entity.getY() + entity.getSprite().getHeight(), 0, Align.center, false);
+//                    sr.begin(ShapeType.Filled);
+//                    sr.setColor(Color.GREEN);
+//                    sr.rect(entity.getX(),entity.getY() + entity.getSprite().getHeight() + 35, entity.getHp(), 20);
+//                    sr.end();
+                }
+
             }
         }
         // Dispose of objects

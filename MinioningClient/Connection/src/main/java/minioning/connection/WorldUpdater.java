@@ -16,30 +16,29 @@ import minioning.common.data.LocalData;
  */
 public class WorldUpdater {
 
-    public synchronized static void updateWorld(String[] newWorld, Map<UUID, Entity> world){
+    public synchronized static void updateWorld(String[] newWorld, Map<UUID, Entity> world) {
 
         world.clear();
-        for(int i = 1; i < newWorld.length; i++){
+        for (int i = 1; i < newWorld.length; i++) {
             Entity newEntity = createEntity(newWorld[i]);
-            if (newEntity.getOwner().equals(LocalData.getClientID())){
-                
-              LocalData.setLocation(newEntity.getLocation());
-              
+            if (newEntity.getOwner().equals(LocalData.getClientID())) {
+
+                LocalData.setLocation(newEntity.getLocation());
+
             }
-                
+
             UUID ID = newEntity.getID();
-            if(!world.containsKey(ID)){
+            if (!world.containsKey(ID)) {
                 world.put(ID, newEntity);
-            }else{
+            } else {
                 world.replace(ID, newEntity);
             }
         }
     }
-    
-    
-    private static Entity createEntity(String entityString){
+
+    private static Entity createEntity(String entityString) {
         String[] data = entityString.split(";");
-        for(String out : data){
+        for (String out : data) {
         }
         UUID ID = UUID.fromString(data[0]);
         String type = data[1];
@@ -51,20 +50,22 @@ public class WorldUpdater {
         UUID owner = UUID.fromString(data[7]);
         String location = data[8];
         String doorTo = data[9];
-        
+        int hp = Integer.parseInt(data[11]);
+
         Entity newEntity = new Entity(
-            ID,
-            type,
-            name,
-            x,
-            y,
-            vx,
-            vy,
-            owner,
-            location,
-            doorTo
+                ID,
+                type,
+                name,
+                x,
+                y,
+                vx,
+                vy,
+                owner,
+                location,
+                doorTo,
+                hp
         );
-        
+
 //        Entity newEntity = new Entity(ID, name, x, y, location);
 //        newEntity.setOwner(UUID.fromString(data[4]));
 //        newEntity.setType(EntityType.valueOf(data[7]));
@@ -78,5 +79,5 @@ public class WorldUpdater {
 //        newEntity.setvPosition(vTarget);
         return newEntity;
     }
-    
+
 }
