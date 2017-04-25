@@ -18,7 +18,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.utils.Align;
 import java.util.UUID;
@@ -32,10 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
+import static minioning.common.data.EntityType.HOLYBOLT;
 import static minioning.visuals.State.INMENU;
 
 /**
@@ -57,6 +53,7 @@ public class Render {
     private Texture playerTexture;
     private Texture enemyTexture;
     private Texture portalTexture;
+    private Texture missile1Texture;
     private static Sprite backgroundSprite;
 
     // Shaperender
@@ -68,6 +65,8 @@ public class Render {
 
     // Allignment values for menu/HUD
     private int widthAlign = 100;
+    private int sizeS = 32;
+    private int sizeL = 48;
 
     // Buttons
     Image menuButton;
@@ -156,6 +155,8 @@ public class Render {
             playerTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "blue.png"));
             enemyTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "red.png"));
             portalTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "portal.png"));
+            missile1Texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "holybolt.png"));
+            
 
             try {
                 buttonTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "button1.png"));
@@ -227,7 +228,7 @@ public class Render {
      */
     // Draws sprites
     private void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
-
+        System.out.println(world.size());
         SpriteBatch batch = new SpriteBatch();
         batch.begin();
 
@@ -251,7 +252,7 @@ public class Render {
         }
         // Sets sprites for entities
         for (Entity entity : world.values()) {
-
+                                    
             if (entity.getLocation().equals(LocalData.getLocation())) {
 
                 if (entity.getSprite() == null) {
@@ -259,13 +260,15 @@ public class Render {
 
                     // Loads appropriate sprites
                     if (entity.getOwner().equals(LocalData.getClientID())) {
-                        sprite = new Sprite(playerTexture, 0, 0, 50, 50);
+                        sprite = new Sprite(playerTexture, 0, 0, sizeL, sizeL);
                     } else if (entity.getType() == ENEMY) {
-                        sprite = new Sprite(enemyTexture, 0, 0, 50, 50);
+                        sprite = new Sprite(enemyTexture, 0, 0, sizeL, sizeL);
                     } else if (entity.getType() == PORTAL) {
-                        sprite = new Sprite(portalTexture, 0, 0, 50, 50);
+                        sprite = new Sprite(portalTexture, 0, 0, sizeL, sizeL);
+                        } else if (entity.getType() == HOLYBOLT) {
+                        sprite = new Sprite(missile1Texture, 0, 0, sizeS, sizeS);
                     } else {
-                        sprite = new Sprite(portalTexture, 0, 0, 50, 50);
+                        sprite = new Sprite(portalTexture, 0, 0, sizeL, sizeL);
                     }
                     entity.setSprite(sprite);
 

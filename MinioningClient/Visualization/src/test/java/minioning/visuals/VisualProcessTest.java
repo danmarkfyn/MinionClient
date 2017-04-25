@@ -48,48 +48,48 @@ public class VisualProcessTest {
      */
     
     
-    @Test
-    public void testProcess() {
-
-        System.out.println("process");
-
-        // Arrange
-        // Create world
-        Map<UUID, Entity> world = new ConcurrentHashMap<>();
-        GameInitializer giInstance = new GameInitializer();
-        
-        
-        // Create and put enitity into world
-        UUID testID = UUID.randomUUID();
-        String name = "TestEntity";
-        String location = "ARENA";
-        int x = 1;
-        int y = 1;
-        
-        Entity testPlayer = new Entity(testID, name, x, y, location);
-        testPlayer.setType(EntityType.PLAYER);
-        
-        world.put(testID, testPlayer);
-
-
-        VisualProcess vpInstance = new VisualProcess();
-        
-       
-        // Act
-        giInstance.install();
-        
-        vpInstance.create();
-        
-        vpInstance.render();
-        
-        vpInstance.process(world, testPlayer);
-        
-        // Assert
-        assertTrue(testPlayer.getSprite() != null);
-        
-        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-    }
+//    @Test
+//    public void testProcess() {
+//
+//        System.out.println("process");
+//
+//        // Arrange
+//        // Create world
+//        Map<UUID, Entity> world = new ConcurrentHashMap<>();
+//        GameInitializer giInstance = new GameInitializer();
+//        
+//        
+//        // Create and put enitity into world
+//        UUID testID = UUID.randomUUID();
+//        String name = "TestEntity";
+//        String location = "ARENA";
+//        int x = 1;
+//        int y = 1;
+//        
+//        Entity testPlayer = new Entity(testID, name, x, y, location);
+//        testPlayer.setType(EntityType.PLAYER);
+//        
+//        world.put(testID, testPlayer);
+//
+//
+//        VisualProcess vpInstance = new VisualProcess();
+//        
+//       
+//        // Act
+//        giInstance.install();
+//        
+//        vpInstance.create();
+//        
+//        vpInstance.render();
+//        
+//        vpInstance.process(world, testPlayer);
+//        
+//        // Assert
+//        assertTrue(testPlayer.getSprite() != null);
+//        
+//        // TODO review the generated test code and remove the default call to fail.
+////        fail("The test case is a prototype.");
+//    }
 
     /**
      * Test of create method, of class VisualProcess.

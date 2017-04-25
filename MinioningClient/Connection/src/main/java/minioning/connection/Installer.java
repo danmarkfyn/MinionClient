@@ -13,10 +13,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import minioning.common.data.LocalData;
 import org.openide.modules.ModuleInstall;
-import org.openide.util.Exceptions;
 
 /**
  *
@@ -79,7 +76,7 @@ public class Installer extends ModuleInstall {
 
             byte[] sData = null;
             DatagramPacket sPacket = null;
-            sData = new byte[1500];
+            sData = new byte[8192];
             
             while (true) {
 //                long currentTime = System.nanoTime();

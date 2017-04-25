@@ -51,8 +51,6 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
         render = new Render();
         state = INGAME;
         p = 0;
-//    GameInput inputProcessor = new GameInput();
-//Gdx.input.setInputProcessor(inputProcessor);
     }
 
     private String mouseClick(Events event) {
@@ -139,20 +137,6 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
             }
         }
     }
-//
-//        switch (state) {
-//            case RUN:
-//                Gdx.gl.glClearColor(0, 0, 0, 1);
-//                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//
-//                render.render((ConcurrentHashMap<UUID, Entity>) world);
-////                System.out.println("Render");
-//                break;
-//            case PAUSE:
-//                Gdx.gl.glClearColor(0, 0, 0, 1);
-////                System.out.println("Nothing");
-//        }
-//    }
 
     @Override
     public void pause() {

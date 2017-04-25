@@ -157,7 +157,7 @@ public class Launcher extends Application {
 
         rb2.setOnAction((v) -> {
 
-            LocalData.setInetAddress("192.168.1.97");
+            LocalData.setInetAddress("10.126.24.199");
             System.out.println(LocalData.getInetAddress());
         });
 

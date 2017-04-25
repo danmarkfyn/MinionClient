@@ -19,6 +19,11 @@ import static minioning.common.data.LocalData.getHeight;
 @ServiceProvider(service = IGameInitializer.class)
 public class GameInitializer implements IGameInitializer {
 
+    /**
+     *  Runs the Libgdx applicatino when IGameInitializer service is called from core
+     */
+    
+    
     @Override
     public void install() {
         

@@ -19,23 +19,13 @@ import static minioning.connection.Installer.getDatagramSocket;
 public class DataTransmitter implements Runnable {
 
     private byte[] sendData = new byte[1024];
-    private Boolean playing;
     private Map<Events, String> output;
 
-//    public static DatagramSocket getDatagramSocket() throws SocketException {
-//        if (cEventSocket == null) {
-//            cEventSocket = new DatagramSocket();
-//        }
-//        return cEventSocket;
-//    }
+
     @Override
     public void run() {
         while (true) {
-            playing = getPlaying();
-//            if (!playing) {
             output = getOutputList();
-//            clearOutput();
-//            System.out.println("for loop & size: " + output.entrySet().size());
             for (Map.Entry<Events, String> entry : output.entrySet()) {
                 Events eventType = entry.getKey();
                 String data = entry.getValue();
@@ -115,7 +105,6 @@ public class DataTransmitter implements Runnable {
     }
 
     private void sendEvent(String data) throws IOException {
-//        InetAddress IPAddress = InetAddress.getByName("localhost");
 
         InetAddress IPAddress = InetAddress.getByName(LocalData.getInetAddress());
 
