@@ -50,7 +50,7 @@ public class Render {
     // Background
     private Texture backgroundTexture_1;
     private Texture backgroundTexture_2;
-
+    private Texture backgroundTexture_3;
     // Entities
     private Texture playerTexture;
     private Texture enemyTexture;
@@ -60,7 +60,6 @@ public class Render {
 
     // Shaperender
     private ShapeRenderer sr = new ShapeRenderer();
-
     //  Get local values
     private float width = LocalData.getWidth();
     private float height = LocalData.getWidth();
@@ -78,6 +77,9 @@ public class Render {
     private TextureRegionDrawable buttonTexRegionDrawable;
     private ImageButton button;
 
+    private float elapsed = 0;
+    private float lastTime = elapsed;
+    
     /**
      * Class constructer
      */
@@ -121,10 +123,7 @@ public class Render {
         BitmapFont font = new BitmapFont();
         font.setColor(Color.WHITE);
         font.getData().setScale(2f);
-//
-//        // Sets custom cursor
-//        Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(RESOURCE_ROOT + "graphics/" + "cursor.png")), 16, 16);
-//        Gdx.graphics.setCursor(customCursor);
+
 
         // Draw
         batch.begin();
@@ -137,7 +136,7 @@ public class Render {
         font.dispose();
 
     }
-
+    
     private void drawCustomCursor() {
         // Sets custom cursor
         Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(RESOURCE_ROOT + "graphics/" + "cursor.png")), 16, 16);
@@ -154,8 +153,10 @@ public class Render {
 
         System.out.println("Loading bg textures");
         try {
+            this.backgroundTexture_3 = new Texture(RESOURCE_ROOT + "map/" + "wilderness_east.png");
             this.backgroundTexture_2 = new Texture(RESOURCE_ROOT + "map/" + "arena.png");
             this.backgroundTexture_1 = new Texture(RESOURCE_ROOT + "map/" + "wilderness.png");
+
             System.out.println("bg textures loaded succesfully");
         } catch (Exception e) {
             System.out.println("Failed to load bg textures: " + e);
@@ -209,18 +210,6 @@ public class Render {
             stage.addActor(button);
             Gdx.input.setInputProcessor(stage);
 
-//            button.addListener(new ClickListener() {
-//                @Override
-//                public boolean handle(Event event) {
-//                    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-//
-//                        System.out.println("Button Pressed");
-//
-//                        return true;
-//                    }
-//                    return false;
-//                }
-//            });
             stage.act(Gdx.graphics.getDeltaTime());
             stage.draw();
 
@@ -228,9 +217,30 @@ public class Render {
             batch.dispose();
         }
     }
-    float elapsed = 0;
-    float lastTime = elapsed;
 
+    
+    
+    private Sprite setSprite(Entity entity){
+         Sprite sprite;
+
+                    // Loads appropriate sprites
+                    if (entity.getOwner().equals(LocalData.getClientID())) {
+                        sprite = new Sprite(playerTexture, 0, 0, sizeL, sizeL);
+                    } else if (entity.getType() == ENEMY) {
+                        sprite = new Sprite(enemyTexture, 0, 0, sizeL, sizeL);
+                    } else if (entity.getType() == PORTAL) {
+                        sprite = new Sprite(portalTexture, 0, 0, sizeL, sizeL);
+                    } else if (entity.getType() == HOLYBOLT) {
+                        sprite = new Sprite(missile1Texture, 0, 0, sizeS, sizeS);
+                    } else {
+                        sprite = new Sprite(portalTexture, 0, 0, sizeL, sizeL);
+                    }
+                    entity.setSprite(sprite);
+        
+        
+        return sprite;
+    }
+    
     /**
      * Draws sprites to represent entities in world
      *
@@ -251,8 +261,10 @@ public class Render {
                 try {
                     if (bgString.contentEquals("arena")) {
                         backgroundSprite = new Sprite(backgroundTexture_2);
-                    } else {
+                    } else if (bgString.contentEquals("wilderness")) {
                         backgroundSprite = new Sprite(backgroundTexture_1);
+                    } else if (bgString.contentEquals("wilderness_east")) {
+                        backgroundSprite = new Sprite(backgroundTexture_3);
                     }
                 } catch (Exception e) {
                     System.out.println("Error in render: " + e);
@@ -260,32 +272,18 @@ public class Render {
                 backgroundSprite.draw(batch);
             }
         }
+        
         // Sets sprites for entities
         for (Entity entity : world.values()) {
-
             if (entity.getLocation().equals(LocalData.getLocation())) {
-
                 if (entity.getSprite() == null) {
-                    Sprite sprite;
-
-                    // Loads appropriate sprites
-                    if (entity.getOwner().equals(LocalData.getClientID())) {
-                        sprite = new Sprite(playerTexture, 0, 0, sizeL, sizeL);
-                    } else if (entity.getType() == ENEMY) {
-                        sprite = new Sprite(enemyTexture, 0, 0, sizeL, sizeL);
-                    } else if (entity.getType() == PORTAL) {
-                        sprite = new Sprite(portalTexture, 0, 0, sizeL, sizeL);
-                    } else if (entity.getType() == HOLYBOLT) {
-                        sprite = new Sprite(missile1Texture, 0, 0, sizeS, sizeS);
-                    } else {
-                        sprite = new Sprite(portalTexture, 0, 0, sizeL, sizeL);
-                    }
-                    entity.setSprite(sprite);
+                   
+                    Sprite sprite = setSprite(entity);
 
                     Vector2D ownVelocity = entity.getVelocity();
                     Vector2 velocity = new Vector2(ownVelocity.getX(), ownVelocity.getY());
                     /*
-                     den her væk?
+                     den her vÃ¦k?
                      Vector2 vTarget = new Vector2(entity.getvxg(), entity.getvyg());
                      */
                     Interpolation interpolation = Interpolation.linear;
@@ -296,7 +294,7 @@ public class Render {
                     float progess = Math.min(1f, elapsed / updateTime);
                     float alpha = interpolation.apply(progess);
                     /*
-                     den her ændres? vTarget??
+                     den her Ã¦ndres? vTarget??
                      velocity.interpolate(vTarget, alpha, interpolation);
                      */
 //                    float x = entity.getX()*vPos.x;

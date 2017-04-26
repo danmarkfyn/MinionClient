@@ -144,6 +144,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
     @Override
     public void resume() {
+    render();
     }
 
     @Override
