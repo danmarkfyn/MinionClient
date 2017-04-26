@@ -56,7 +56,13 @@ public class Render {
     private Texture enemyTexture;
     private Texture portalTexture;
     private Texture missile1Texture;
+    private Texture otherPlayerTexture;
+
     private static Sprite backgroundSprite;
+
+    // textures for entity and bg errors
+    private Texture errorTexture;
+    private Texture errorBG;
 
     // Shaperender
     private ShapeRenderer sr = new ShapeRenderer();
@@ -79,7 +85,7 @@ public class Render {
 
     private float elapsed = 0;
     private float lastTime = elapsed;
-    
+
     /**
      * Class constructer
      */
@@ -124,7 +130,6 @@ public class Render {
         font.setColor(Color.WHITE);
         font.getData().setScale(2f);
 
-
         // Draw
         batch.begin();
         font.draw(batch, "In: " + LocalData.getLocation(), width - 155, LocalData.getHeight(), 150, Align.right, false);
@@ -136,7 +141,7 @@ public class Render {
         font.dispose();
 
     }
-    
+
     private void drawCustomCursor() {
         // Sets custom cursor
         Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(RESOURCE_ROOT + "graphics/" + "cursor.png")), 16, 16);
@@ -156,7 +161,7 @@ public class Render {
             this.backgroundTexture_3 = new Texture(RESOURCE_ROOT + "map/" + "wilderness_east.png");
             this.backgroundTexture_2 = new Texture(RESOURCE_ROOT + "map/" + "arena.png");
             this.backgroundTexture_1 = new Texture(RESOURCE_ROOT + "map/" + "wilderness.png");
-
+            this.errorBG = new Texture(RESOURCE_ROOT + "map/"+ "worldNull.png");
             System.out.println("bg textures loaded succesfully");
         } catch (Exception e) {
             System.out.println("Failed to load bg textures: " + e);
@@ -168,7 +173,8 @@ public class Render {
             enemyTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "red.png"));
             portalTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "portal.png"));
             missile1Texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "holybolt.png"));
-
+            otherPlayerTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "green.png"));
+            errorTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "error.png"));
             try {
                 buttonTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "button1.png"));
 
@@ -218,29 +224,28 @@ public class Render {
         }
     }
 
-    
-    
-    private Sprite setSprite(Entity entity){
-         Sprite sprite;
+    private Sprite setSprite(Entity entity) {
+        Sprite sprite;
 
-                    // Loads appropriate sprites
-                    if (entity.getOwner().equals(LocalData.getClientID())) {
-                        sprite = new Sprite(playerTexture, 0, 0, sizeL, sizeL);
-                    } else if (entity.getType() == ENEMY) {
-                        sprite = new Sprite(enemyTexture, 0, 0, sizeL, sizeL);
-                    } else if (entity.getType() == PORTAL) {
-                        sprite = new Sprite(portalTexture, 0, 0, sizeL, sizeL);
-                    } else if (entity.getType() == HOLYBOLT) {
-                        sprite = new Sprite(missile1Texture, 0, 0, sizeS, sizeS);
-                    } else {
-                        sprite = new Sprite(portalTexture, 0, 0, sizeL, sizeL);
-                    }
-                    entity.setSprite(sprite);
-        
-        
+        // Loads appropriate sprites
+        if (entity.getOwner().equals(LocalData.getClientID())) {
+            sprite = new Sprite(playerTexture, 0, 0, sizeL, sizeL);
+        } else if (entity.getType() == ENEMY) {
+            sprite = new Sprite(enemyTexture, 0, 0, sizeL, sizeL);
+        } else if (entity.getType() == PORTAL) {
+            sprite = new Sprite(portalTexture, 0, 0, sizeL, sizeL);
+        } else if (entity.getType() == HOLYBOLT) {
+            sprite = new Sprite(missile1Texture, 0, 0, sizeS, sizeS);
+        } else if (entity.getType() == PLAYER && entity.getID() != LocalData.getClientID()) {
+            sprite = new Sprite(otherPlayerTexture, 0, 0, sizeL, sizeL);
+        } else {
+            sprite = new Sprite(errorTexture, 0, 0, sizeL, sizeL);
+        }
+        entity.setSprite(sprite);
+
         return sprite;
     }
-    
+
     /**
      * Draws sprites to represent entities in world
      *
@@ -265,6 +270,8 @@ public class Render {
                         backgroundSprite = new Sprite(backgroundTexture_1);
                     } else if (bgString.contentEquals("wilderness_east")) {
                         backgroundSprite = new Sprite(backgroundTexture_3);
+                    }else{
+                        backgroundSprite = new Sprite(errorBG);
                     }
                 } catch (Exception e) {
                     System.out.println("Error in render: " + e);
@@ -272,12 +279,12 @@ public class Render {
                 backgroundSprite.draw(batch);
             }
         }
-        
+
         // Sets sprites for entities
         for (Entity entity : world.values()) {
             if (entity.getLocation().equals(LocalData.getLocation())) {
                 if (entity.getSprite() == null) {
-                   
+
                     Sprite sprite = setSprite(entity);
 
                     Vector2D ownVelocity = entity.getVelocity();
