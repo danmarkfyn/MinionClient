@@ -83,6 +83,14 @@ public class Render {
     private TextureRegionDrawable buttonTexRegionDrawable;
     private ImageButton button;
 
+    // Menu Sprites
+    Sprite player;
+    Sprite enemy;
+    Sprite otherP;
+
+    Sprite[] sa;
+
+    // Time values
     private float elapsed = 0;
     private float lastTime = elapsed;
 
@@ -93,6 +101,7 @@ public class Render {
 
         try {
             loadTextures();
+            loadSprites();
         } catch (Exception e) {
             System.out.println("Error loading textures: " + e);
         }
@@ -138,7 +147,6 @@ public class Render {
 
         // Dispose of objects
         batch.dispose();
-        font.dispose();
 
     }
 
@@ -161,7 +169,7 @@ public class Render {
             this.backgroundTexture_3 = new Texture(RESOURCE_ROOT + "map/" + "wilderness_east.png");
             this.backgroundTexture_2 = new Texture(RESOURCE_ROOT + "map/" + "arena.png");
             this.backgroundTexture_1 = new Texture(RESOURCE_ROOT + "map/" + "wilderness.png");
-            this.errorBG = new Texture(RESOURCE_ROOT + "map/"+ "worldNull.png");
+            this.errorBG = new Texture(RESOURCE_ROOT + "map/" + "worldNull.png");
             System.out.println("bg textures loaded succesfully");
         } catch (Exception e) {
             System.out.println("Failed to load bg textures: " + e);
@@ -202,31 +210,63 @@ public class Render {
 
             widthAlign = 300;
 
-            SpriteBatch batch = new SpriteBatch();
-            batch.begin();
             sr.begin(ShapeType.Filled);
             sr.setColor(Color.DARK_GRAY);
             sr.rect(0, 0, 200, height);
             sr.end();
 
-            button.setX(75);
-            button.setY(height / 2);
+            SpriteBatch batch = new SpriteBatch();
+            batch.begin();
 
-            stage = new Stage(new ScreenViewport());
-            stage.addActor(button);
-            Gdx.input.setInputProcessor(stage);
+            setMenuIcon(batch, 125, 400, player, "PLAYER: ");
+            setMenuIcon(batch, 125, 350, enemy, "ENEMY: ");
+            setMenuIcon(batch, 125, 300, otherP, "ALLIES: ");
 
-            stage.act(Gdx.graphics.getDeltaTime());
-            stage.draw();
-
+//            ss = setMenuIcon(batch, 50, 200, player, RESOURCE_ROOT);
+//
+//            button.setX(75);
+//            button.setY(height / 2);
+//
+//            stage = new Stage(new ScreenViewport());
+//            stage.addActor(button);
+//            Gdx.input.setInputProcessor(stage);
+//
+//            stage.act(Gdx.graphics.getDeltaTime());
+//            stage.draw();
+//            ss.draw(batch);
             batch.end();
             batch.dispose();
         }
     }
 
+    private void loadSprites() {
+        this.player = new Sprite(playerTexture, 0, 0, sizeL, sizeL);
+        this.enemy = new Sprite(enemyTexture, 0, 0, sizeL, sizeL);
+        this.otherP = new Sprite(otherPlayerTexture, 0, 0, sizeL, sizeL);
+
+    }
+
+    private void setMenuIcon(SpriteBatch batch, int x, int y, Sprite sprite, String text) {
+
+        int newY = (int) sprite.getHeight() / 2;
+
+        sprite.setPosition(x, y);
+
+        BitmapFont font = new BitmapFont();
+        font.setColor(Color.WHITE);
+        font.getData().setScale(1.3f);
+
+        // Draw
+        font.draw(batch, text, x - 10, y + newY, 0, Align.right, false);
+
+        sprite.draw(batch);
+
+        // Dispose of objects
+    }
+
     private Sprite setSprite(Entity entity) {
         Sprite sprite;
-
+        
         // Loads appropriate sprites
         if (entity.getOwner().equals(LocalData.getClientID())) {
             sprite = new Sprite(playerTexture, 0, 0, sizeL, sizeL);
@@ -253,7 +293,7 @@ public class Render {
      */
     // Draws sprites
     private void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
-        System.out.println(world.size());
+//        System.out.println(world.size());
         SpriteBatch batch = new SpriteBatch();
         batch.begin();
 
@@ -270,7 +310,7 @@ public class Render {
                         backgroundSprite = new Sprite(backgroundTexture_1);
                     } else if (bgString.contentEquals("wilderness_east")) {
                         backgroundSprite = new Sprite(backgroundTexture_3);
-                    }else{
+                    } else {
                         backgroundSprite = new Sprite(errorBG);
                     }
                 } catch (Exception e) {
@@ -310,7 +350,12 @@ public class Render {
                     float y = entity.getY();
 
                     sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
+
                 }
+
+                // Draw sprite
+                Sprite sprite = entity.getSprite();
+                sprite.draw(batch);
 
                 // Displays Entity Info
                 BitmapFont font1 = new BitmapFont();
@@ -321,18 +366,10 @@ public class Render {
 
                 font1.getData().setScale(1f);
 
-// Set bounds and rotation
-                Sprite sprite = entity.getSprite();
-//            sprite.setBounds(entity.getX() - width / 2, entity.getY() - height / 2, width, height);
-//            sprite.setRotation((float)Math.toDegrees(entity.getRadians()));
-                sprite.draw(batch);
                 if (entity.getType() == PLAYER || entity.getType() == DOOR || entity.getType() == ENEMY) {
                     font1.draw(batch, entity.getName().toString(), entity.getX(), entity.getY() + entity.getSprite().getHeight() + 20, 0, Align.center, false);
                     font2.draw(batch, entity.getHp() + "", entity.getX(), entity.getY() + entity.getSprite().getHeight(), 0, Align.center, false);
-//                    sr.begin(ShapeType.Filled);
-//                    sr.setColor(Color.GREEN);
-//                    sr.rect(entity.getX(),entity.getY() + entity.getSprite().getHeight() + 35, entity.getHp(), 20);
-//                    sr.end();
+
                 }
 
             }

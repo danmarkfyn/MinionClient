@@ -35,22 +35,30 @@ import static minioning.common.data.Events.LOGIN;
 import static minioning.common.data.Events.PLAY;
 import minioning.common.data.LocalData;
 import org.openide.util.Exceptions;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 
 public class Launcher extends Application {
 
+     private static final String RESOURCE_ROOT = "../../../Core/src/main/resources/";
+    
     private final int height = 200;
     private final int width = 310;
     private static final BooleanProperty serverToken = new SimpleBooleanProperty();
     private static StringProperty name = new SimpleStringProperty();
     private final ToggleGroup tg = new ToggleGroup();
-
+    
+    private ImageView iv = new ImageView();
+    private Image image;
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        
+        image = new Image(getClass().getClassLoader().getResource("graphics/blue.png").toString(), true);
+        iv.setImage(image);
         serverToken.setValue(Boolean.FALSE);
 
         LauncherLogic launcher = new LauncherLogic();
-
+        
         Group root = new Group();
 
         //***TAB SETUP***
@@ -75,6 +83,7 @@ public class Launcher extends Application {
         // Tap4
         Tab tab4 = new Tab("Play Minioning");
         tab4.closableProperty().set(false);
+        tab4.setDisable(true);
 
         // Pane
         BorderPane pane = new BorderPane();
@@ -130,7 +139,7 @@ public class Launcher extends Application {
         titelLabel.setFont(font1);
 
         //Color
-        titelLabel.setTextFill(Color.CADETBLUE);
+        titelLabel.setTextFill(Color.BLUE);
 
         // ***OnAction***
         // Logout button action
@@ -182,7 +191,7 @@ public class Launcher extends Application {
 
                     } else {
 
-                        launcher.promt("Login Timeout or try with different account info", "Error");
+                        launcher.promt("Login Timeout", "Error");
                         serverToken.setValue(Boolean.FALSE);
                     }
 
@@ -226,7 +235,9 @@ public class Launcher extends Application {
             if (name != null) {
                 try {
                     launcher.CreatePlayer(name);
+                     tab4.setDisable(false);
                 } catch (Exception e) {
+                    System.out.println(e);
                 }
                 avatarnameField.clear();
                 selectionModel.select(3);
@@ -239,8 +250,8 @@ public class Launcher extends Application {
 
         VBox t1_vb1 = new VBox();
 
-        t1_hb1.getChildren().addAll(usernameLabel, usernameField, rb1);
-        t1_hb2.getChildren().addAll(passwordLabel, passwordField, rb2);
+        t1_hb1.getChildren().addAll(usernameLabel, usernameField);
+        t1_hb2.getChildren().addAll(passwordLabel, passwordField);
 
         t1_vb1.getChildren().addAll(t1_hb1, t1_hb2, loginBtn, nameLabel, logoutBtn);
 
@@ -255,10 +266,17 @@ public class Launcher extends Application {
 
         t2_vb1.getChildren().addAll(t2_hb1, t2_hb2, createAccountBtn);
 
+        
+        VBox radioVB = new VBox();
+        
+        radioVB.getChildren().addAll(rb1,rb2);
+        
+        HBox head = new HBox();
+        head.getChildren().addAll(titelLabel, radioVB);
+        
         // binds
         tab2.disableProperty().bind(serverToken);
         tab3.disableProperty().bind(serverToken.not());
-        tab4.disableProperty().bind(serverToken.not());
 
         usernameField.disableProperty().bind(serverToken);
         passwordField.disableProperty().bind(serverToken);
@@ -275,7 +293,7 @@ public class Launcher extends Application {
 
         VBox t3_vb1 = new VBox();
 
-        t3_hb1.getChildren().addAll(avatarnameLabel, avatarnameField);
+        t3_hb1.getChildren().addAll(avatarnameLabel, avatarnameField, iv);
 
         t3_vb1.getChildren().addAll(t3_hb1, createAvatarBtn);
 
@@ -286,14 +304,16 @@ public class Launcher extends Application {
         tab4.setContent(playBtn);
         tp.getTabs().addAll(tab1, tab2, tab3, tab4);
 
-        pane.setTop(titelLabel);
+        pane.setTop(head);
         pane.setBottom(tp);
 
         playBtn.setPrefSize(this.width, 100);
 
         root.getChildren().addAll(pane);
+        
         Scene scene = new Scene(root, width, height, Color.GAINSBORO);
-
+        
+        
         primaryStage.setOnCloseRequest((v) -> {
             System.out.println("Closing");
         });
