@@ -30,7 +30,6 @@ import minioning.common.data.Vector2D;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import static minioning.common.data.EntityType.DOOR;
 import static minioning.common.data.EntityType.HOLYBOLT;
 import static minioning.common.data.EntityType.PLAYER;
@@ -44,13 +43,15 @@ public class Render {
 
     private static final String RESOURCE_ROOT = "../../../Core/src/main/resources/";
 
-    private Stage stage;
+
 
     // Textures and Images
     // Background
     private Texture backgroundTexture_1;
     private Texture backgroundTexture_2;
     private Texture backgroundTexture_3;
+    private Texture backgroundTexture_4;
+
     // Entities
     private Texture playerTexture;
     private Texture enemyTexture;
@@ -166,6 +167,7 @@ public class Render {
 
         System.out.println("Loading bg textures");
         try {
+            this.backgroundTexture_4 = new Texture(RESOURCE_ROOT + "map/" + "wilderness_west.png");
             this.backgroundTexture_3 = new Texture(RESOURCE_ROOT + "map/" + "wilderness_east.png");
             this.backgroundTexture_2 = new Texture(RESOURCE_ROOT + "map/" + "arena.png");
             this.backgroundTexture_1 = new Texture(RESOURCE_ROOT + "map/" + "wilderness.png");
@@ -266,7 +268,7 @@ public class Render {
 
     private Sprite setSprite(Entity entity) {
         Sprite sprite;
-        
+
         // Loads appropriate sprites
         if (entity.getOwner().equals(LocalData.getClientID())) {
             sprite = new Sprite(playerTexture, 0, 0, sizeL, sizeL);
@@ -293,7 +295,7 @@ public class Render {
      */
     // Draws sprites
     private void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
-//        System.out.println(world.size());
+        System.out.println(world.size());
         SpriteBatch batch = new SpriteBatch();
         batch.begin();
 
@@ -310,6 +312,8 @@ public class Render {
                         backgroundSprite = new Sprite(backgroundTexture_1);
                     } else if (bgString.contentEquals("wilderness_east")) {
                         backgroundSprite = new Sprite(backgroundTexture_3);
+                    } else if (bgString.contentEquals("wilderness_west")) {
+                        backgroundSprite = new Sprite(backgroundTexture_4);
                     } else {
                         backgroundSprite = new Sprite(errorBG);
                     }
@@ -330,7 +334,7 @@ public class Render {
                     Vector2D ownVelocity = entity.getVelocity();
                     Vector2 velocity = new Vector2(ownVelocity.getX(), ownVelocity.getY());
                     /*
-                     den her vÃ¦k?
+                     den her vÃƒÂ¦k?
                      Vector2 vTarget = new Vector2(entity.getvxg(), entity.getvyg());
                      */
                     Interpolation interpolation = Interpolation.linear;
@@ -341,7 +345,7 @@ public class Render {
                     float progess = Math.min(1f, elapsed / updateTime);
                     float alpha = interpolation.apply(progess);
                     /*
-                     den her Ã¦ndres? vTarget??
+                     den her ÃƒÂ¦ndres? vTarget??
                      velocity.interpolate(vTarget, alpha, interpolation);
                      */
 //                    float x = entity.getX()*vPos.x;

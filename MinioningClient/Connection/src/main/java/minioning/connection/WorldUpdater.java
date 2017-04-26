@@ -65,6 +65,11 @@ public class WorldUpdater {
                 doorTo,
                 hp
         );
+        
+//         if (newEntity.getOwner().equals(LocalData.getClientID())) {
+//             LocalData.setLocation(location);
+//         }
+        
 
 //        Entity newEntity = new Entity(ID, name, x, y, location);
 //        newEntity.setOwner(UUID.fromString(data[4]));

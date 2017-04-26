@@ -9,7 +9,6 @@ import java.util.Map;
 import minioning.common.data.Entity;
 import minioning.common.services.IProcessingService;
 import org.openide.util.lookup.ServiceProvider;
-
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -49,7 +48,7 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
         render = new Render();
         state = INGAME;
-        p = 0;
+        p = 1;
     }
 
     private String mouseClick(Events event) {
