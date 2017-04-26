@@ -50,7 +50,7 @@ public class WorldUpdater {
         UUID owner = UUID.fromString(data[7]);
         String location = data[8];
         String doorTo = data[9];
-        int hp = Integer.parseInt(data[11]);
+        int hp = Integer.parseInt(data[10]);
 
         Entity newEntity = new Entity(
                 ID,
