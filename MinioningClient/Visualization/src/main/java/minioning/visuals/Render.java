@@ -31,6 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import static minioning.common.data.EntityType.DOOR;
 import static minioning.common.data.EntityType.HOLYBOLT;
+import static minioning.common.data.EntityType.MINIONMAGE;
 import static minioning.common.data.EntityType.PLAYER;
 import static minioning.visuals.State.INMENU;
 
@@ -48,13 +49,14 @@ public class Render {
     private Texture backgroundTexture_2;
     private Texture backgroundTexture_3;
     private Texture backgroundTexture_4;
-
+  private Texture backgroundTexture_5;
     // Entities
     private Texture playerTexture;
     private Texture enemyTexture;
     private Texture portalTexture;
     private Texture missile1Texture;
     private Texture otherPlayerTexture;
+    private Texture minionTexture;
 
     private static Sprite backgroundSprite;
 
@@ -181,6 +183,7 @@ public class Render {
 
         System.out.println("Loading bg textures");
         try {
+            this.backgroundTexture_5 = new Texture(RESOURCE_ROOT + "map/" + "cave.png");
             this.backgroundTexture_4 = new Texture(RESOURCE_ROOT + "map/" + "wilderness_west.png");
             this.backgroundTexture_3 = new Texture(RESOURCE_ROOT + "map/" + "wilderness_east.png");
             this.backgroundTexture_2 = new Texture(RESOURCE_ROOT + "map/" + "arena.png");
@@ -198,7 +201,9 @@ public class Render {
             portalTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "portal.png"));
             missile1Texture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "holybolt.png"));
             otherPlayerTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "green.png"));
+            minionTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "minion.png"));
             errorTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "error.png"));
+            
             try {
                 buttonTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "button1.png"));
 
@@ -292,6 +297,8 @@ public class Render {
             sprite = new Sprite(missile1Texture, 0, 0, sizeS, sizeS);
         } else if (entity.getType() == PLAYER && entity.getID() != LocalData.getClientID()) {
             sprite = new Sprite(otherPlayerTexture, 0, 0, sizeL, sizeL);
+            } else if (entity.getType() == MINIONMAGE && entity.getID() != LocalData.getClientID()) {
+            sprite = new Sprite(otherPlayerTexture, 0, 0, sizeL, sizeL);
         } else {
             sprite = new Sprite(errorTexture, 0, 0, sizeL, sizeL);
         }
@@ -326,6 +333,8 @@ public class Render {
                         backgroundSprite = new Sprite(backgroundTexture_3);
                     } else if (bgString.contentEquals("wilderness_west")) {
                         backgroundSprite = new Sprite(backgroundTexture_4);
+                           } else if (bgString.contentEquals("cave")) {
+                        backgroundSprite = new Sprite(backgroundTexture_5);
                     } else {
                         backgroundSprite = new Sprite(errorBG);
                     }

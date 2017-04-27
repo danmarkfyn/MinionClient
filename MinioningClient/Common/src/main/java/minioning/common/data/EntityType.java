@@ -21,5 +21,6 @@ public enum EntityType {
     GOLD,
     PORTAL,
     HOLYBOLT,
+    MINIONMAGE,
     WALL;
 }
