@@ -86,7 +86,7 @@ public class Render {
     Sprite enemy;
     Sprite otherP;
 
-    Sprite[] sa;
+
 
     // Time values
     private float elapsed = 0;
@@ -96,7 +96,6 @@ public class Render {
     private BitmapFont font1;
     private BitmapFont font2;
     private BitmapFont font3;
-//    private SpriteBatch batch;
 
     /**
      * Class constructer
@@ -118,7 +117,6 @@ public class Render {
         font3.setColor(Color.WHITE);
         font3.getData().setScale(1f);
         try {
-//            batch = new SpriteBatch();
 
             loadTextures();
             loadSprites();
@@ -137,7 +135,7 @@ public class Render {
     public void render(ConcurrentHashMap<UUID, Entity> world, State s) {
 
         drawSprites(world);
-//        drawHud();
+        drawHud();
         if (s == INMENU) {
             ShowMenu(s);
         } else {
