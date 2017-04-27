@@ -29,7 +29,6 @@ import minioning.common.data.LocalData;
 import minioning.common.data.Vector2D;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import static minioning.common.data.EntityType.DOOR;
 import static minioning.common.data.EntityType.HOLYBOLT;
 import static minioning.common.data.EntityType.PLAYER;
@@ -42,8 +41,6 @@ import static minioning.visuals.State.INMENU;
 public class Render {
 
     private static final String RESOURCE_ROOT = "../../../Core/src/main/resources/";
-
-
 
     // Textures and Images
     // Background
@@ -95,12 +92,34 @@ public class Render {
     private float elapsed = 0;
     private float lastTime = elapsed;
 
+    private BitmapFont font;
+    private BitmapFont font1;
+    private BitmapFont font2;
+    private BitmapFont font3;
+//    private SpriteBatch batch;
+
     /**
      * Class constructer
      */
     public Render() {
+        font = new BitmapFont();
+        font.setColor(Color.WHITE);
+        font.getData().setScale(2f);
 
+        font1 = new BitmapFont();
+        font1.setColor(Color.BLUE);
+        font1.getData().setScale(1f);
+
+        font2 = new BitmapFont();
+        font2.setColor(Color.RED);
+        font2.getData().setScale(1f);
+
+        font3 = new BitmapFont();
+        font3.setColor(Color.WHITE);
+        font3.getData().setScale(1f);
         try {
+//            batch = new SpriteBatch();
+
             loadTextures();
             loadSprites();
         } catch (Exception e) {
@@ -118,7 +137,7 @@ public class Render {
     public void render(ConcurrentHashMap<UUID, Entity> world, State s) {
 
         drawSprites(world);
-        drawHud();
+//        drawHud();
         if (s == INMENU) {
             ShowMenu(s);
         } else {
@@ -136,9 +155,6 @@ public class Render {
 
         // Set up 
         SpriteBatch batch = new SpriteBatch();
-        BitmapFont font = new BitmapFont();
-        font.setColor(Color.WHITE);
-        font.getData().setScale(2f);
 
         // Draw
         batch.begin();
@@ -254,12 +270,10 @@ public class Render {
 
         sprite.setPosition(x, y);
 
-        BitmapFont font = new BitmapFont();
-        font.setColor(Color.WHITE);
-        font.getData().setScale(1.3f);
+        font3.getData().setScale(1.3f);
 
         // Draw
-        font.draw(batch, text, x - 10, y + newY, 0, Align.right, false);
+        font3.draw(batch, text, x - 10, y + newY, 0, Align.right, false);
 
         sprite.draw(batch);
 
@@ -362,14 +376,6 @@ public class Render {
                 sprite.draw(batch);
 
                 // Displays Entity Info
-                BitmapFont font1 = new BitmapFont();
-                font1.setColor(Color.BLUE);
-
-                BitmapFont font2 = new BitmapFont();
-                font2.setColor(Color.RED);
-
-                font1.getData().setScale(1f);
-
                 if (entity.getType() == PLAYER || entity.getType() == DOOR || entity.getType() == ENEMY) {
                     font1.draw(batch, entity.getName().toString(), entity.getX(), entity.getY() + entity.getSprite().getHeight() + 20, 0, Align.center, false);
                     font2.draw(batch, entity.getHp() + "", entity.getX(), entity.getY() + entity.getSprite().getHeight(), 0, Align.center, false);
