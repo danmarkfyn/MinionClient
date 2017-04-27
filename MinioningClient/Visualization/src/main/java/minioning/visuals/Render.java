@@ -31,7 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import static minioning.common.data.EntityType.DOOR;
 import static minioning.common.data.EntityType.HOLYBOLT;
-import static minioning.common.data.EntityType.MINIONMAGE;
+import static minioning.common.data.EntityType.MINION;
 import static minioning.common.data.EntityType.PLAYER;
 import static minioning.visuals.State.INMENU;
 
@@ -297,7 +297,7 @@ public class Render {
             sprite = new Sprite(missile1Texture, 0, 0, sizeS, sizeS);
         } else if (entity.getType() == PLAYER && entity.getID() != LocalData.getClientID()) {
             sprite = new Sprite(otherPlayerTexture, 0, 0, sizeL, sizeL);
-            } else if (entity.getType() == MINIONMAGE && entity.getID() != LocalData.getClientID()) {
+            } else if (entity.getType() == MINION && entity.getID() != LocalData.getClientID()) {
             sprite = new Sprite(otherPlayerTexture, 0, 0, sizeL, sizeL);
         } else {
             sprite = new Sprite(errorTexture, 0, 0, sizeL, sizeL);
