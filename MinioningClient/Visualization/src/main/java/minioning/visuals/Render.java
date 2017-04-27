@@ -49,7 +49,7 @@ public class Render {
     private Texture backgroundTexture_2;
     private Texture backgroundTexture_3;
     private Texture backgroundTexture_4;
-  private Texture backgroundTexture_5;
+    private Texture backgroundTexture_5;
     // Entities
     private Texture playerTexture;
     private Texture enemyTexture;
@@ -84,11 +84,10 @@ public class Render {
     private ImageButton button;
 
     // Menu Sprites
-    Sprite player;
-    Sprite enemy;
-    Sprite otherP;
-
-
+    private Sprite player;
+    private Sprite enemy;
+    private Sprite otherP;
+    private Sprite minion;
 
     // Time values
     private float elapsed = 0;
@@ -203,7 +202,7 @@ public class Render {
             otherPlayerTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "green.png"));
             minionTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "minion.png"));
             errorTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "error.png"));
-            
+
             try {
                 buttonTexture = new Texture(Gdx.files.local(RESOURCE_ROOT + "graphics/" + "button1.png"));
 
@@ -242,6 +241,7 @@ public class Render {
             setMenuIcon(batch, 125, 400, player, "PLAYER: ");
             setMenuIcon(batch, 125, 350, enemy, "ENEMY: ");
             setMenuIcon(batch, 125, 300, otherP, "ALLIES: ");
+            setMenuIcon(batch, 125, 250, minion, "MINION: ");
 
 //            ss = setMenuIcon(batch, 50, 200, player, RESOURCE_ROOT);
 //
@@ -264,7 +264,7 @@ public class Render {
         this.player = new Sprite(playerTexture, 0, 0, sizeL, sizeL);
         this.enemy = new Sprite(enemyTexture, 0, 0, sizeL, sizeL);
         this.otherP = new Sprite(otherPlayerTexture, 0, 0, sizeL, sizeL);
-
+this.minion = new Sprite(minionTexture, 0, 0, sizeS, sizeS);
     }
 
     private void setMenuIcon(SpriteBatch batch, int x, int y, Sprite sprite, String text) {
@@ -280,7 +280,6 @@ public class Render {
 
         sprite.draw(batch);
 
-        // Dispose of objects
     }
 
     private Sprite setSprite(Entity entity) {
@@ -297,8 +296,8 @@ public class Render {
             sprite = new Sprite(missile1Texture, 0, 0, sizeS, sizeS);
         } else if (entity.getType() == PLAYER && entity.getID() != LocalData.getClientID()) {
             sprite = new Sprite(otherPlayerTexture, 0, 0, sizeL, sizeL);
-            } else if (entity.getType() == MINION && entity.getID() != LocalData.getClientID()) {
-            sprite = new Sprite(otherPlayerTexture, 0, 0, sizeL, sizeL);
+        } else if (entity.getType() == MINION && entity.getID() != LocalData.getClientID()) {
+            sprite = new Sprite(minionTexture, 0, 0, sizeS, sizeS);
         } else {
             sprite = new Sprite(errorTexture, 0, 0, sizeL, sizeL);
         }
@@ -314,7 +313,7 @@ public class Render {
      */
     // Draws sprites
     private void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
-        System.out.println(world.size());
+//        System.out.println(world.size());
         SpriteBatch batch = new SpriteBatch();
         batch.begin();
 
@@ -333,7 +332,7 @@ public class Render {
                         backgroundSprite = new Sprite(backgroundTexture_3);
                     } else if (bgString.contentEquals("wilderness_west")) {
                         backgroundSprite = new Sprite(backgroundTexture_4);
-                           } else if (bgString.contentEquals("cave")) {
+                    } else if (bgString.contentEquals("cave")) {
                         backgroundSprite = new Sprite(backgroundTexture_5);
                     } else {
                         backgroundSprite = new Sprite(errorBG);
