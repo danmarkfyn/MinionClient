@@ -46,18 +46,7 @@ public class LauncherLogicTest {
 //    public void tearDown() {
 //    }
 //
-//    /**
-//     * Test of getDatagramSocket method, of class LauncherLogic.
-//     */
-//    @Test
-//    public void testGetDatagramSocket() throws Exception {
-//        System.out.println("getDatagramSocket");
-//        DatagramSocket expResult = null;
-//        DatagramSocket result = LauncherLogic.getDatagramSocket();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+
 
     /**
      * Test of nameCheck method, of class LauncherLogic.

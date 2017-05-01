@@ -142,7 +142,7 @@ public class Render {
         } else {
             widthAlign = 100;
         }
-//        drawCustomCursor();
+        drawCustomCursor();
 
     }
 
