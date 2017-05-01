@@ -25,14 +25,14 @@ import org.openide.util.LookupListener;
 
 /**
  *
- * @author Jakob
+ * @author Jakob & Mads
  */
+
 public class Core implements Runnable {
 
     private Map<UUID, Entity> world = new ConcurrentHashMap<>();
     private final Lookup lookup = Lookup.getDefault();
     private List<IPluginService> gamePlugins = new CopyOnWriteArrayList<>();
-    private Lookup.Result<IPluginService> result;
 
     public Core() {
 
@@ -78,9 +78,7 @@ public class Core implements Runnable {
                 if (!initialized) {
                     
                     //runs once to install visualisation
-                    System.out.println("Looking for IGameInitializer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                     for (IGameInitializer installService : getGameInitializer()) {
-                        System.out.println("Found IGameInitializer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         installService.install();
                     }
                     initialized = true;
@@ -104,7 +102,6 @@ public class Core implements Runnable {
     private final LookupListener lookupListener = new LookupListener() {
         @Override
         public void resultChanged(LookupEvent le) {
-
         }
     };
 }

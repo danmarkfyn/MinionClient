@@ -142,7 +142,7 @@ public class Render {
         } else {
             widthAlign = 100;
         }
-        drawCustomCursor();
+//        drawCustomCursor();
 
     }
 
@@ -158,7 +158,7 @@ public class Render {
         // Draw
         batch.begin();
         font.draw(batch, "In: " + LocalData.getLocation(), width - 155, LocalData.getHeight(), 150, Align.right, false);
-        font.draw(batch, "Logged in as: " + LocalData.getUser(), widthAlign, LocalData.getHeight(), 150, Align.right, false);
+        font.draw(batch, "Logged in as: " + LocalData.getUser(), widthAlign + 60, LocalData.getHeight(), 150, Align.right, false);
         batch.end();
 
         // Dispose of objects
@@ -264,7 +264,7 @@ public class Render {
         this.player = new Sprite(playerTexture, 0, 0, sizeL, sizeL);
         this.enemy = new Sprite(enemyTexture, 0, 0, sizeL, sizeL);
         this.otherP = new Sprite(otherPlayerTexture, 0, 0, sizeL, sizeL);
-this.minion = new Sprite(minionTexture, 0, 0, sizeS, sizeS);
+        this.minion = new Sprite(minionTexture, 0, 0, sizeS, sizeS);
     }
 
     private void setMenuIcon(SpriteBatch batch, int x, int y, Sprite sprite, String text) {

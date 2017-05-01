@@ -2,8 +2,9 @@ package minioning.core;
 
 /**
  *
- * @author Jakob
+ * @author Jakob & Mads
  */
+
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
@@ -40,25 +41,28 @@ import javafx.scene.image.Image;
 
 public class Launcher extends Application {
 
-     private static final String RESOURCE_ROOT = "../../../Core/src/main/resources/";
-    
+    /**
+     * @author Jakob & Mads
+     */
+
     private final int height = 200;
     private final int width = 310;
     private static final BooleanProperty serverToken = new SimpleBooleanProperty();
     private static StringProperty name = new SimpleStringProperty();
     private final ToggleGroup tg = new ToggleGroup();
-    
+
     private ImageView iv = new ImageView();
     private Image image;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        
+
         image = new Image(getClass().getClassLoader().getResource("graphics/blue.png").toString(), true);
         iv.setImage(image);
         serverToken.setValue(Boolean.FALSE);
 
         LauncherLogic launcher = new LauncherLogic();
-        
+
         Group root = new Group();
 
         //***TAB SETUP***
@@ -122,10 +126,10 @@ public class Launcher extends Application {
         rb2.setToggleGroup(tg);
 
         // Initial Field Values
-        usernameField.setText("hit");
-        passwordField.setText("me");
+        usernameField.setText("player2");
+        passwordField.setText("player2");
 
-        avatarnameField.setText("Player");
+        avatarnameField.setText("Player2");
 
         // Labels
         Label usernameLabel = new Label("Username: ");
@@ -157,7 +161,7 @@ public class Launcher extends Application {
 
         });
 
-        // Radio buttons action
+        // Radio buttons action with a lambda expression
         rb1.setOnAction((v) -> {
 
             LocalData.setInetAddress("localhost");
@@ -170,7 +174,7 @@ public class Launcher extends Application {
             System.out.println(LocalData.getInetAddress());
         });
 
-        // Login button action
+        // Login button action with a lambda expression
         loginBtn.setOnAction((v) -> {
 
             String username = launcher.nameCheck(usernameField.getText());
@@ -211,7 +215,7 @@ public class Launcher extends Application {
             primaryStage.close();
         });
 
-        // create account action
+        // create account action with a lambda expression
         createAccountBtn.setOnAction((v) -> {
             String tempName = launcher.nameCheck(createNameField.getText());
 
@@ -227,7 +231,7 @@ public class Launcher extends Application {
 
         });
 
-        // create avatar button action
+        // create avatar button action with a lambda expression
         createAvatarBtn.setOnAction((v) -> {
             String avatarName = avatarnameField.getText();
             String name = launcher.nameCheck(avatarName);
@@ -235,7 +239,7 @@ public class Launcher extends Application {
             if (name != null) {
                 try {
                     launcher.CreatePlayer(name);
-                     tab4.setDisable(false);
+                    tab4.setDisable(false);
                 } catch (Exception e) {
                     System.out.println(e);
                 }
@@ -266,14 +270,13 @@ public class Launcher extends Application {
 
         t2_vb1.getChildren().addAll(t2_hb1, t2_hb2, createAccountBtn);
 
-        
         VBox radioVB = new VBox();
-        
-        radioVB.getChildren().addAll(rb1,rb2);
-        
+
+        radioVB.getChildren().addAll(rb1, rb2);
+
         HBox head = new HBox();
         head.getChildren().addAll(titelLabel, radioVB);
-        
+
         // binds
         tab2.disableProperty().bind(serverToken);
         tab3.disableProperty().bind(serverToken.not());
@@ -310,10 +313,9 @@ public class Launcher extends Application {
         playBtn.setPrefSize(this.width, 100);
 
         root.getChildren().addAll(pane);
-        
+
         Scene scene = new Scene(root, width, height, Color.GAINSBORO);
-        
-        
+
         primaryStage.setOnCloseRequest((v) -> {
             System.out.println("Closing");
         });

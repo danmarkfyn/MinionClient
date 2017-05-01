@@ -5,7 +5,7 @@
  */
 package minioning.core;
 
-import java.io.IOException;
+
 import java.util.UUID;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -37,11 +37,7 @@ import static minioning.common.data.LocalData.setClientID;
  * into the event list for transmission to the server for handeling.
  */
 public final class LauncherLogic{
-
-
-
-
-
+    
     /**
      * This method takes a String as parameter and checks if it live up to the
      * format specified
@@ -69,7 +65,6 @@ public final class LauncherLogic{
      * This method puts a CreatePlayer query in the list of events for server transmission
      * 
      * @param avatarName User input for a avatar name (String)
-     * @throws IOException 
      */
     public final void CreatePlayer(String avatarName){
         String output = LocalData.getClientID() + ";" + CREATEPLAYER + ";" + avatarName;
@@ -81,12 +76,9 @@ public final class LauncherLogic{
      * 
      * This method handles both queries for creating an account and logging in
      * 
-     * @param event An event enum specifying what kind of query (CREATEAACOUNR or LOGIN
+     * @param event An event enum specifying what kind of query (CREATEAACOUNT or LOGIN
      * @param username Login username or wished username for an account not yet created
      * @param password Login password or wished password for an account not yet created
-     * @param IPAddress
-     * @param clientSocket
-     * @throws IOException 
      */
     
     public final void accountQuery(Events event, String username, String password){
@@ -141,9 +133,6 @@ public final class LauncherLogic{
      * 
      * @param id
      * @param event
-     * @param IPAddress
-     * @param clientSocket
-     * @throws IOException 
      */
     
     public final void play(UUID id , Events event){

@@ -12,21 +12,26 @@ import minioning.common.data.LocalData;
 
 /**
  *
- * @author Jakob
+ * @author Jakob & Mads
  */
+
+
 public class WorldUpdater {
 
+    /**
+     * 
+     * @param newWorld String array with all entity data send from the server
+     * @param world Map with UUID and all the entities on the client which should be processed
+     */
+    
     public synchronized static void updateWorld(String[] newWorld, Map<UUID, Entity> world) {
-
+        System.out.println(world.size());
         world.clear();
         for (int i = 1; i < newWorld.length; i++) {
             Entity newEntity = createEntity(newWorld[i]);
             if (newEntity.getOwner().equals(LocalData.getClientID())) {
-
                 LocalData.setLocation(newEntity.getLocation());
-
             }
-
             UUID ID = newEntity.getID();
             if (!world.containsKey(ID)) {
                 world.put(ID, newEntity);
@@ -36,10 +41,17 @@ public class WorldUpdater {
         }
     }
 
+    /**
+     * 
+     * @param entityString String array with data for a single entity, sent from the server. 
+     * Used to mirror the entities on the client.
+     * @return Returns an instance of the entity class
+     */
+    
     private static Entity createEntity(String entityString) {
+        
+        
         String[] data = entityString.split(";");
-        for (String out : data) {
-        }
         UUID ID = UUID.fromString(data[0]);
         String type = data[1];
         String name = data[2];
@@ -65,24 +77,7 @@ public class WorldUpdater {
                 doorTo,
                 hp
         );
-        
-//         if (newEntity.getOwner().equals(LocalData.getClientID())) {
-//             LocalData.setLocation(location);
-//         }
-        
 
-//        Entity newEntity = new Entity(ID, name, x, y, location);
-//        newEntity.setOwner(UUID.fromString(data[4]));
-//        newEntity.setType(EntityType.valueOf(data[7]));
-//        float vxp = Float.parseFloat(data[7]);
-//        float vyp = Float.parseFloat(data[8]);
-//        Vector2D vPosition = new Vector2D(vxp, vyp);
-//        newEntity.setvPosition(vPosition);
-//        float vxg = Float.parseFloat(data[9]);
-//        float vyg = Float.parseFloat(data[10]);
-//        Vector2D vTarget = new Vector2D(vxg, vyg);
-//        newEntity.setvPosition(vTarget);
         return newEntity;
     }
-
 }
