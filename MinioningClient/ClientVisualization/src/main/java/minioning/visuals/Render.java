@@ -389,10 +389,11 @@ public class Render {
                 }
 
             }
-        }
-        // Dispose of objects
+            // Dispose of objects
         batch.end();
         batch.dispose();
+        }
+        
     }
 
 }

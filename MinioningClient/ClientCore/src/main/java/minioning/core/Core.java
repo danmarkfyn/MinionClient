@@ -5,13 +5,10 @@
  */
 package minioning.core;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import minioning.common.data.Entity;
 import minioning.common.data.LocalData;
 import static minioning.common.data.LocalData.getPlaying;
@@ -32,13 +29,6 @@ public class Core implements Runnable {
     private Map<UUID, Entity> world = new ConcurrentHashMap<>();
     private final Lookup lookup = Lookup.getDefault();
 
-    public Core() {
-
- 
-
-        System.out.println(lookup.lookupAll(IProcessingService.class).size() + " processors was found");
-
-    }
 
     public void updateEntities() {
         for (IProcessingService processorService : getProcessingServices()) {
