@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-OpenIDE-Module-Localizing-Bundle: minioning/visualization/Bundle.properties
-OpenIDE-Module-Install: minioning/visuals/GameInstaller.class

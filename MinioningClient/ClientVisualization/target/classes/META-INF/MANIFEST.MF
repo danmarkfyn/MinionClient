@@ -1,0 +1,34 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Localizing-Bundle: minioning/visualization/Bundle.prope
+ rties
+OpenIDE-Module-Install: minioning/visuals/GameInstaller.class
+OpenIDE-Module-Specification-Version: 1.0
+OpenIDE-Module-Implementation-Version: 1.0-20170514
+OpenIDE-Module-Build-Version: 201705141428
+OpenIDE-Module: minioning.ClientVisualization
+OpenIDE-Module-Public-Packages: -
+OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
+OpenIDE-Module-Display-Category: minioning
+OpenIDE-Module-Name: ClientVisualization
+OpenIDE-Module-Short-Description: <undefined>
+OpenIDE-Module-Long-Description: <undefined>
+X-Class-Path: ext/minioning.ClientVisualization/com-badlogicgames-gdx/
+ gdx-platform-natives-desktop.jar ext/minioning.ClientVisualization/co
+ m-badlogicgames-gdx/gdx-backend-lwjgl.jar ext/minioning.ClientVisuali
+ zation/org-lwjgl-lwjgl/lwjgl.jar ext/minioning.ClientVisualization/or
+ g-lwjgl-lwjgl/lwjgl-platform-natives-windows.jar ext/minioning.Client
+ Visualization/org-lwjgl-lwjgl/lwjgl-platform-natives-linux.jar ext/mi
+ nioning.ClientVisualization/org-lwjgl-lwjgl/lwjgl-platform-natives-os
+ x.jar ext/minioning.ClientVisualization/net-java-jinput/jinput.jar ex
+ t/minioning.ClientVisualization/net-java-jutils/jutils.jar ext/minion
+ ing.ClientVisualization/com-badlogicgames-gdx/gdx.jar
+Maven-Class-Path: com.badlogicgames.gdx:gdx-platform:1.9.2:natives-des
+ ktop com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.2 org.lwjgl.lwjgl:lw
+ jgl:2.9.2 org.lwjgl.lwjgl:lwjgl-platform:2.9.2:natives-windows org.lw
+ jgl.lwjgl:lwjgl-platform:2.9.2:natives-linux org.lwjgl.lwjgl:lwjgl-pl
+ atform:2.9.2:natives-osx net.java.jinput:jinput:2.0.5 net.java.jutils
+ :jutils:1.0.0 com.badlogicgames.gdx:gdx:1.9.2
+OpenIDE-Module-Module-Dependencies: org.netbeans.api.annotations.commo
+ n/1 > 1.27.1, org.openide.modules > 7.47.1, org.openide.util > 7.31.1
+ .1, minioning.ClientCommon > 1.0
+

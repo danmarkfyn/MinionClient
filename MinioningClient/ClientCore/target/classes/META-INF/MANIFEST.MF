@@ -1,0 +1,36 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Install: minioning/core/Installer.class
+OpenIDE-Module-Localizing-Bundle: minioning/core/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+OpenIDE-Module-Implementation-Version: 1.0-20170514
+OpenIDE-Module-Build-Version: 201705141428
+OpenIDE-Module: minioning.ClientCore
+OpenIDE-Module-Public-Packages: -
+OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
+OpenIDE-Module-Display-Category: minioning
+OpenIDE-Module-Name: ClientCore
+OpenIDE-Module-Short-Description: <undefined>
+OpenIDE-Module-Long-Description: <undefined>
+X-Class-Path: ext/minioning.ClientCore/com-badlogicgames-gdx/gdx-platf
+ orm-natives-desktop.jar ext/minioning.ClientCore/com-badlogicgames-gd
+ x/gdx.jar ext/minioning.ClientCore/com-badlogicgames-gdx/gdx-backend-
+ lwjgl.jar ext/minioning.ClientCore/org-lwjgl-lwjgl/lwjgl.jar ext/mini
+ oning.ClientCore/org-lwjgl-lwjgl/lwjgl-platform-natives-windows.jar e
+ xt/minioning.ClientCore/org-lwjgl-lwjgl/lwjgl-platform-natives-linux.
+ jar ext/minioning.ClientCore/org-lwjgl-lwjgl/lwjgl-platform-natives-o
+ sx.jar ext/minioning.ClientCore/net-java-jinput/jinput.jar ext/minion
+ ing.ClientCore/net-java-jutils/jutils.jar ext/minioning.ClientCore/or
+ g-lwjgl-lwjgl/lwjgl_util.jar ext/minioning.ClientCore/com-badlogicgam
+ es-jlayer/jlayer.jar ext/minioning.ClientCore/org-jcraft/jorbis.jar
+Maven-Class-Path: com.badlogicgames.gdx:gdx-platform:1.9.2:natives-des
+ ktop com.badlogicgames.gdx:gdx:1.9.2 com.badlogicgames.gdx:gdx-backen
+ d-lwjgl:1.9.2 org.lwjgl.lwjgl:lwjgl:2.9.2 org.lwjgl.lwjgl:lwjgl-platf
+ orm:2.9.2:natives-windows org.lwjgl.lwjgl:lwjgl-platform:2.9.2:native
+ s-linux org.lwjgl.lwjgl:lwjgl-platform:2.9.2:natives-osx net.java.jin
+ put:jinput:2.0.5 net.java.jutils:jutils:1.0.0 org.lwjgl.lwjgl:lwjgl_u
+ til:2.9.2 com.badlogicgames.jlayer:jlayer:1.0.1-gdx org.jcraft:jorbis
+ :0.0.17
+OpenIDE-Module-Module-Dependencies: org.netbeans.api.annotations.commo
+ n/1 > 1.27.1, org.openide.modules > 7.47.1, org.openide.util.lookup >
+  8.32.1, minioning.ClientCommon > 1.0
+
