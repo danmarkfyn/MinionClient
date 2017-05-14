@@ -14,7 +14,7 @@ import static minioning.common.data.LocalData.getHeight;
 
 /**
  *
- * @author Jakob
+ * @author Jakob & mads
  */
 @ServiceProvider(service = IGameInitializer.class)
 public class GameInitializer implements IGameInitializer {

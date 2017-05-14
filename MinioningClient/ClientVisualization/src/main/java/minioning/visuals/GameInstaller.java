@@ -9,32 +9,19 @@ package minioning.visuals;
 import org.openide.modules.ModuleInstall;
 /**
  *
- * @author Jakob
+ * @author Jakob & mads
  */
 public class GameInstaller extends ModuleInstall{
     
     
      @Override
     public void restored() {
-//
-//           LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-//           
-//            cfg.width = 1024;
-//            cfg.height = 576;
-//            cfg.useGL30 = false;
-//            cfg.resizable = false;
-//            
-//            
-//            new LwjglApplication(new VisualProcess(), cfg);
 }
         @Override
     public void uninstalled() {
-        
-        
-//        t.stop();
+
         super.uninstalled(); //To change body of generated methods, choose Tools | Templates.
 
-        
     }
 }
 

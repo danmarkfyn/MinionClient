@@ -7,11 +7,9 @@ package minioning.visuals;
 
 /**
  *
- * @author Jakob
+ * @author Jakob & mads
  */
 public enum State {
- 
     INGAME,
     INMENU;
-    
 }

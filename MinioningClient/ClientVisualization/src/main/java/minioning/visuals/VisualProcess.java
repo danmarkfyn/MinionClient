@@ -24,7 +24,7 @@ import static minioning.visuals.State.INMENU;
 
 /**
  *
- * @author Jakob
+ * @author Jakob & mads
  */
 @ServiceProvider(service = IProcessingService.class)
 public class VisualProcess implements IProcessingService, ApplicationListener {
