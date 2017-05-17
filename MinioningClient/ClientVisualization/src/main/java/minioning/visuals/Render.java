@@ -58,6 +58,8 @@ public class Render {
     private Texture otherPlayerTexture;
     private Texture minionTexture;
 
+    
+    private Cursor customCursor;
     private Sprite backgroundSprite;
 
     // textures for entity and bg errors
@@ -107,7 +109,7 @@ public class Render {
      */
     public Render() {
 
-
+    drawCustomCursor();
 
         font = new BitmapFont();
         font.setColor(Color.WHITE);
@@ -147,36 +149,44 @@ public class Render {
         batch = new SpriteBatch();
 
         batch.begin();
-        drawSprites(world, batch);
+        drawSprites(world);
 
-        drawHud(batch);
+        drawHud();
         if (s == INMENU) {
-            ShowMenu(s, batch);
+            ShowMenu(s);
         } else {
             widthAlign = 100;
         }
-        drawCustomCursor();
+        
         batch.end();
         batch.dispose();
+        
+//                    sr.begin(ShapeType.Line);
+//                    sr.setColor(Color.DARK_GRAY);
+//                    sr.rect(100, 100, 100, 5);
+//                
+//                    sr.end();
+        
     }
 
     /**
      * This method draws the Head-Up Display (HUD)
      */
 // Draws the HeadUp Display
-    private void drawHud(SpriteBatch batch) {
+    private void drawHud() {
 
         // Draw
         font.draw(batch, "In: " + LocalData.getLocation(), width - 155, LocalData.getHeight(), 150, Align.right, false);
         font.draw(batch, "Logged in as: " + LocalData.getUser(), widthAlign + 60, LocalData.getHeight(), 150, Align.right, false);
-
+    
+    
     }
 
     private void drawCustomCursor() {
         // Sets custom cursor
-        Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(RESOURCE_ROOT + "graphics/" + "cursor.png")), 16, 16);
+        customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(RESOURCE_ROOT + "graphics/" + "cursor.png")), 16, 16);
         Gdx.graphics.setCursor(customCursor);
-//        customCursor.dispose();
+        customCursor.dispose();
     }
 
     /**
@@ -231,7 +241,7 @@ public class Render {
      * This method renders the ingame menu
      */
     // Draws ingame menu
-    private void ShowMenu(final State s, SpriteBatch batch) {
+    private void ShowMenu(final State s) {
         if (s.equals(INMENU)) {
 
             widthAlign = 300;
@@ -241,10 +251,10 @@ public class Render {
             sr.rect(0, 0, 200, height);
             sr.end();
 
-            setMenuIcon(batch, 125, 400, player, "PLAYER: ");
-            setMenuIcon(batch, 125, 350, enemy, "ENEMY: ");
-            setMenuIcon(batch, 125, 300, otherP, "ALLIES: ");
-            setMenuIcon(batch, 125, 250, minion, "MINION: ");
+            setMenuIcon(125, 400, player, "PLAYER: ");
+            setMenuIcon(125, 350, enemy, "ENEMY: ");
+            setMenuIcon(125, 300, otherP, "ALLIES: ");
+            setMenuIcon(125, 250, minion, "MINION: ");
 //            ss = setMenuIcon(batch, 50, 200, player, RESOURCE_ROOT);
 //
 //            button.setX(75);
@@ -260,6 +270,22 @@ public class Render {
         }
     }
 
+        private void setMenuIcon(int x, int y, Sprite sprite, String text) {
+
+        int newY = (int) sprite.getHeight() / 2;
+
+        sprite.setPosition(x, y);
+
+        font3.getData().setScale(1.3f);
+
+        // Draw
+        font3.draw(batch, text, x - 10, y + newY, 0, Align.right, false);
+        batch.draw(sprite, width, width);
+//        sprite.draw(batch);
+//            System.out.println("skdsjfk");
+    }
+    
+    
     /**
      * Loads Sprites for entity types
      */
@@ -270,20 +296,7 @@ public class Render {
         this.minion = new Sprite(minionTexture, 0, 0, sizeS, sizeS);
     }
 
-    private void setMenuIcon(SpriteBatch batch, int x, int y, Sprite sprite, String text) {
 
-        int newY = (int) sprite.getHeight() / 2;
-
-        sprite.setPosition(x, y);
-
-        font3.getData().setScale(1.3f);
-
-        // Draw
-        font3.draw(batch, text, x - 10, y + newY, 0, Align.right, false);
-
-        sprite.draw(batch);
-
-    }
 
     private Sprite setSprite(Entity entity) {
         Sprite sprite;
@@ -337,7 +350,7 @@ public class Render {
     
     
     private void drawEntity(Entity entity){
-         if (entity.getLocation().equals(LocalData.getLocation())) {
+//         if (entity.getLocation().equals(LocalData.getLocation())) {
                 if (entity.getSprite() == null) {
 
                     Sprite sprite = setSprite(entity);
@@ -368,17 +381,21 @@ public class Render {
 
                 }
 
-                // Draw sprite
-                entity.getSprite().draw(batch);
+              
 
                 // Displays Entity Info
                 if (entity.getType() == PLAYER || entity.getType() == DOOR || entity.getType() == ENEMY) {
                     font1.draw(batch, entity.getName().toString(), entity.getX(), entity.getY() + entity.getSprite().getHeight() + 20, 0, Align.center, false);
                     font2.draw(batch, entity.getHp() + "", entity.getX(), entity.getY() + entity.getSprite().getHeight(), 0, Align.center, false);
-
+                    
+                    
+//        
+              
                 }
-
-            }
+         // Draw sprite
+                entity.getSprite().draw(batch);
+//            }
+  
     }
     
     /**
@@ -387,7 +404,7 @@ public class Render {
      * @param world ConcurrentHashMap with entities (game world)
      */
     // Draws sprites
-    private void drawSprites(ConcurrentHashMap<UUID, Entity> world, SpriteBatch batch) {
+    private void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
 
 
         for (Entity entity : world.values()) {
@@ -402,17 +419,5 @@ public class Render {
              drawEntity(entity);
 
         }
-
-        // Dispose of objects
-//        batch.end();
-//        batch.dispose();
-    }
-
-    public void draw(Entity entity) {
-
-        if (entity.getType() == PLAYER) {
-
-        }
-
     }
 }

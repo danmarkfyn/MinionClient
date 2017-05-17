@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><module codename="minioning.ClientCore">
-    <module_version install_time="1494774988697" last="true" origin="installer" specification_version="1.0">
+    <module_version install_time="1495016327212" last="true" origin="installer" specification_version="1.0">
         <file crc="2627242368" name="config/Modules/minioning-ClientCore.xml"/>
         <file crc="1996090546" name="modules/ext/minioning.ClientCore/com-badlogicgames-gdx/gdx-backend-lwjgl.jar"/>
         <file crc="3632476030" name="modules/ext/minioning.ClientCore/com-badlogicgames-gdx/gdx-platform-natives-desktop.jar"/>
@@ -13,7 +13,6 @@
         <file crc="2303095678" name="modules/ext/minioning.ClientCore/org-lwjgl-lwjgl/lwjgl-platform-natives-windows.jar"/>
         <file crc="2615574348" name="modules/ext/minioning.ClientCore/org-lwjgl-lwjgl/lwjgl.jar"/>
         <file crc="2012419266" name="modules/ext/minioning.ClientCore/org-lwjgl-lwjgl/lwjgl_util.jar"/>
-        <file crc="186623747" name="modules/minioning-ClientCore.jar"/>
-        <file crc="15625102" name="update_tracking/minioning-ClientCore.xml"/>
+        <file crc="3207106273" name="modules/minioning-ClientCore.jar"/>
     </module_version>
 </module>

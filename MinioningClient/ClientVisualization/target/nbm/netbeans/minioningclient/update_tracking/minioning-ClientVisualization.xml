@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><module codename="minioning.ClientVisualization">
-    <module_version install_time="1494772111729" last="true" origin="installer" specification_version="1.0">
+    <module_version install_time="1495016332670" last="true" origin="installer" specification_version="1.0">
         <file crc="3856859666" name="config/Modules/minioning-ClientVisualization.xml"/>
         <file crc="1996090546" name="modules/ext/minioning.ClientVisualization/com-badlogicgames-gdx/gdx-backend-lwjgl.jar"/>
         <file crc="3632476030" name="modules/ext/minioning.ClientVisualization/com-badlogicgames-gdx/gdx-platform-natives-desktop.jar"/>
@@ -10,7 +10,6 @@
         <file crc="892697031" name="modules/ext/minioning.ClientVisualization/org-lwjgl-lwjgl/lwjgl-platform-natives-osx.jar"/>
         <file crc="2303095678" name="modules/ext/minioning.ClientVisualization/org-lwjgl-lwjgl/lwjgl-platform-natives-windows.jar"/>
         <file crc="2615574348" name="modules/ext/minioning.ClientVisualization/org-lwjgl-lwjgl/lwjgl.jar"/>
-        <file crc="4218954151" name="modules/minioning-ClientVisualization.jar"/>
-        <file crc="2570951278" name="update_tracking/minioning-ClientVisualization.xml"/>
+        <file crc="4030670322" name="modules/minioning-ClientVisualization.jar"/>
     </module_version>
 </module>
