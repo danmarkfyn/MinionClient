@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="minioning.core.LauncherLogicTest" time="0.522" tests="4" errors="0" skipped="0" failures="0">
+<testsuite name="minioning.core.LauncherLogicTest" time="0.193" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files (x86)\Java\jdk1.8.0_11\jre\bin"/>
@@ -60,8 +60,9 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86"/>
   </properties>
-  <testcase name="testPlay" classname="minioning.core.LauncherLogicTest" time="0.521"/>
-  <testcase name="testNameCheck" classname="minioning.core.LauncherLogicTest" time="0"/>
-  <testcase name="testCreatePlayer" classname="minioning.core.LauncherLogicTest" time="0"/>
+  <testcase name="testNameCheck" classname="minioning.core.LauncherLogicTest" time="0.017"/>
+  <testcase name="testPlay" classname="minioning.core.LauncherLogicTest" time="0.174"/>
   <testcase name="testSetUUID" classname="minioning.core.LauncherLogicTest" time="0.001"/>
+  <testcase name="testAccountQuery" classname="minioning.core.LauncherLogicTest" time="0.001"/>
+  <testcase name="testCreatePlayer" classname="minioning.core.LauncherLogicTest" time="0"/>
 </testsuite>

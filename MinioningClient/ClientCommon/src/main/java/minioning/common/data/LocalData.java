@@ -21,6 +21,16 @@ public class LocalData {
     private static String inetAddress = "localhost";
     private static String location;
     private static String user;
+    private static int hp;
+    
+
+    public static int getHp() {
+        return hp;
+    }
+
+    public static void setHp(int hp) {
+        LocalData.hp = hp;
+    }
     private static float dt;
     private static float updateTime = 0.1f;
     private static boolean key1;
