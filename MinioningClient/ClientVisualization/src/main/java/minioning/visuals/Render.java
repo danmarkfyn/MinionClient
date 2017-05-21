@@ -66,7 +66,8 @@ public class Render {
     private Texture errorBG;
 
     // Shaperender
-    private ShapeRenderer sr = new ShapeRenderer();
+    private ShapeRenderer sr;
+    
     //  Get local values
     private float width = LocalData.getWidth();
     private float height = LocalData.getWidth();
@@ -98,6 +99,7 @@ public class Render {
     private BitmapFont font1;
     private BitmapFont font2;
     private BitmapFont font3;
+    private BitmapFont font4;
 
     private SpriteBatch batch;
 
@@ -107,7 +109,7 @@ public class Render {
     public Render() {
 
         drawCustomCursor();
-
+        sr = new ShapeRenderer();
         font = new BitmapFont();
         font.setColor(Color.WHITE);
         font.getData().setScale(2f);
@@ -123,6 +125,10 @@ public class Render {
         font3 = new BitmapFont();
         font3.setColor(Color.WHITE);
         font3.getData().setScale(1f);
+
+        font4 = new BitmapFont();
+        font4.setColor(Color.BLACK);
+        font4.getData().setScale(1f);
         try {
 
             loadTextures();
@@ -148,14 +154,18 @@ public class Render {
         drawHud();
         batch.end();
 
-        if (s == INMENU) {
-        sr.begin(ShapeType.Filled);
-        sr.setColor(Color.DARK_GRAY);
-        sr.rect(0, 0, 200, height);
-        sr.end();
         batch.begin();
-        ShowMenu(s);
+        drawHP();
         batch.end();
+
+        if (s == INMENU) {
+            sr.begin(ShapeType.Filled);
+            sr.setColor(Color.DARK_GRAY);
+            sr.rect(0, 0, 200, height);
+            sr.end();
+            batch.begin();
+            ShowMenu(s);
+            batch.end();
         } else {
             widthAlign = 100;
         }
@@ -173,6 +183,27 @@ public class Render {
         // Draw
         font.draw(batch, "In: " + LocalData.getLocation(), width - 155, LocalData.getHeight(), 150, Align.right, false);
         font.draw(batch, "Logged in as: " + LocalData.getUser(), widthAlign + 60, LocalData.getHeight(), 150, Align.right, false);
+
+    }
+
+    private void drawHP() {
+        
+        sr.begin(ShapeType.Filled);
+        sr.setColor(Color.BLACK);
+        sr.rect(LocalData.getWidth() - 290, 15, 205, 55);
+        sr.end();
+
+        sr.begin(ShapeType.Filled);
+        sr.setColor(Color.RED);
+        sr.rect(LocalData.getWidth() - 300, 25, 200, 50);
+        sr.end();
+
+        sr.begin(ShapeType.Filled);
+        sr.setColor(Color.GREEN);
+        sr.rect(LocalData.getWidth() - 300, 25, LocalData.getHp() * 2, 50);
+        sr.end();
+
+        font4.draw(batch, "HP: " + LocalData.getHp(),100, 100, 100, Align.right, false);
 
     }
 
@@ -244,18 +275,6 @@ public class Render {
             setMenuIcon(125, 350, enemy, "ENEMY: ");
             setMenuIcon(125, 300, otherP, "ALLIES: ");
             setMenuIcon(125, 250, minion, "MINION: ");
-//            ss = setMenuIcon(batch, 50, 200, player, RESOURCE_ROOT);
-//
-//            button.setX(75);
-//            button.setY(height / 2);
-//
-//            stage = new Stage(new ScreenViewport());
-//            stage.addActor(button);
-//            Gdx.input.setInputProcessor(stage);
-//
-//            stage.act(Gdx.graphics.getDeltaTime());
-//            stage.draw();
-//            ss.draw(batch);
         }
     }
 
@@ -305,42 +324,39 @@ public class Render {
         return sprite;
     }
 
-    
     /**
      * This method draws the background image
-     * 
+     *
      * @param entity an entity from world
      */
-    
-    private void drawBG(Entity entity) {
+    private void drawBG() {
 
-        if (entity.getOwner().equals(LocalData.getClientID())) {
-            try {
-                if (LocalData.getLocation().contentEquals("arena")) {
-                    backgroundSprite = new Sprite(backgroundTexture_2);
-                } else if (LocalData.getLocation().contentEquals("wilderness")) {
-                    backgroundSprite = new Sprite(backgroundTexture_1);
-                } else if (LocalData.getLocation().contentEquals("wilderness_east")) {
-                    backgroundSprite = new Sprite(backgroundTexture_3);
-                } else if (LocalData.getLocation().contentEquals("wilderness_west")) {
-                    backgroundSprite = new Sprite(backgroundTexture_4);
-                } else if (LocalData.getLocation().contentEquals("cave")) {
-                    backgroundSprite = new Sprite(backgroundTexture_5);
-                } else {
-                    backgroundSprite = new Sprite(errorBG);
-                }
-            } catch (Exception e) {
-                System.out.println("Error in render: " + e);
+        try {
+            if (LocalData.getLocation().contentEquals("arena")) {
+                backgroundSprite = new Sprite(backgroundTexture_2);
+            } else if (LocalData.getLocation().contentEquals("wilderness")) {
+                backgroundSprite = new Sprite(backgroundTexture_1);
+            } else if (LocalData.getLocation().contentEquals("wilderness_east")) {
+                backgroundSprite = new Sprite(backgroundTexture_3);
+            } else if (LocalData.getLocation().contentEquals("wilderness_west")) {
+                backgroundSprite = new Sprite(backgroundTexture_4);
+            } else if (LocalData.getLocation().contentEquals("cave")) {
+                backgroundSprite = new Sprite(backgroundTexture_5);
+            } else {
+                backgroundSprite = new Sprite(errorBG);
             }
-            backgroundSprite.draw(batch);
+        } catch (Exception e) {
+            System.out.println("Error in render: " + e);
         }
+        backgroundSprite.draw(batch);
+
     }
+
     /**
      * This method draws entities
-     * 
+     *
      * @param entity an entity from world
      */
-    
     private void drawEntity(Entity entity) {
 //         if (entity.getLocation().equals(LocalData.getLocation())) {
         if (entity.getSprite() == null) {
@@ -350,7 +366,7 @@ public class Render {
             Vector2D ownVelocity = entity.getVelocity();
             Vector2 velocity = new Vector2(ownVelocity.getX(), ownVelocity.getY());
             /*
-             den her vÃƒÂ¦k?
+             den her vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¦k?
              Vector2 vTarget = new Vector2(entity.getvxg(), entity.getvyg());
              */
             Interpolation interpolation = Interpolation.linear;
@@ -361,7 +377,7 @@ public class Render {
             float progess = Math.min(1f, elapsed / updateTime);
             float alpha = interpolation.apply(progess);
             /*
-             den her ÃƒÂ¦ndres? vTarget??
+             den her ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¦ndres? vTarget??
              velocity.interpolate(vTarget, alpha, interpolation);
              */
 //                    float x = entity.getX()*vPos.x;
@@ -377,13 +393,11 @@ public class Render {
         if (entity.getType() == PLAYER || entity.getType() == DOOR || entity.getType() == ENEMY) {
             font1.draw(batch, entity.getName().toString(), entity.getX(), entity.getY() + entity.getSprite().getHeight() + 20, 0, Align.center, false);
             font2.draw(batch, entity.getHp() + "", entity.getX(), entity.getY() + entity.getSprite().getHeight(), 0, Align.center, false);
-            
+
 //        
         }
         // Draw sprite
         entity.getSprite().draw(batch);
-//            }
-
     }
 
     /**
@@ -394,16 +408,11 @@ public class Render {
     // Draws sprites
     private void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
 
-        for (Entity entity : world.values()) {
-
-            drawBG(entity);
-
-        }
+            drawBG();
 
         // Sets sprites for entities
         for (Entity entity : world.values()) {
             drawEntity(entity);
-
         }
     }
 }
