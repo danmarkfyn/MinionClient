@@ -3,8 +3,8 @@ OpenIDE-Module-Localizing-Bundle: minioning/visualization/Bundle.prope
  rties
 OpenIDE-Module-Install: minioning/visuals/GameInstaller.class
 OpenIDE-Module-Specification-Version: 1.0
-OpenIDE-Module-Implementation-Version: 1.0-20170517
-OpenIDE-Module-Build-Version: 201705171018
+OpenIDE-Module-Implementation-Version: 1.0-20170519
+OpenIDE-Module-Build-Version: 201705191140
 OpenIDE-Module: minioning.ClientVisualization
 OpenIDE-Module-Public-Packages: -
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
