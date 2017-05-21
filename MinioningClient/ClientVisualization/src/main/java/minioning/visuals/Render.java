@@ -58,7 +58,6 @@ public class Render {
     private Texture otherPlayerTexture;
     private Texture minionTexture;
 
-    
     private Cursor customCursor;
     private Sprite backgroundSprite;
 
@@ -102,14 +101,12 @@ public class Render {
 
     private SpriteBatch batch;
 
-//    private String bgString;
-
     /**
      * Class constructer
      */
     public Render() {
 
-    drawCustomCursor();
+        drawCustomCursor();
 
         font = new BitmapFont();
         font.setColor(Color.WHITE);
@@ -135,8 +132,6 @@ public class Render {
         }
     }
 
-
-
     /**
      * This method renders all assets in correct order to ensure no unwanted
      * overlapping
@@ -150,23 +145,23 @@ public class Render {
 
         batch.begin();
         drawSprites(world);
-
         drawHud();
+        batch.end();
+
         if (s == INMENU) {
-            ShowMenu(s);
+        sr.begin(ShapeType.Filled);
+        sr.setColor(Color.DARK_GRAY);
+        sr.rect(0, 0, 200, height);
+        sr.end();
+        batch.begin();
+        ShowMenu(s);
+        batch.end();
         } else {
             widthAlign = 100;
         }
-        
-        batch.end();
+
         batch.dispose();
-        
-//                    sr.begin(ShapeType.Line);
-//                    sr.setColor(Color.DARK_GRAY);
-//                    sr.rect(100, 100, 100, 5);
-//                
-//                    sr.end();
-        
+
     }
 
     /**
@@ -178,8 +173,7 @@ public class Render {
         // Draw
         font.draw(batch, "In: " + LocalData.getLocation(), width - 155, LocalData.getHeight(), 150, Align.right, false);
         font.draw(batch, "Logged in as: " + LocalData.getUser(), widthAlign + 60, LocalData.getHeight(), 150, Align.right, false);
-    
-    
+
     }
 
     private void drawCustomCursor() {
@@ -246,11 +240,6 @@ public class Render {
 
             widthAlign = 300;
 
-            sr.begin(ShapeType.Filled);
-            sr.setColor(Color.DARK_GRAY);
-            sr.rect(0, 0, 200, height);
-            sr.end();
-
             setMenuIcon(125, 400, player, "PLAYER: ");
             setMenuIcon(125, 350, enemy, "ENEMY: ");
             setMenuIcon(125, 300, otherP, "ALLIES: ");
@@ -270,22 +259,18 @@ public class Render {
         }
     }
 
-        private void setMenuIcon(int x, int y, Sprite sprite, String text) {
+    private void setMenuIcon(int x, int y, Sprite sprite, String text) {
 
         int newY = (int) sprite.getHeight() / 2;
 
         sprite.setPosition(x, y);
-
         font3.getData().setScale(1.3f);
 
         // Draw
         font3.draw(batch, text, x - 10, y + newY, 0, Align.right, false);
-        batch.draw(sprite, width, width);
-//        sprite.draw(batch);
-//            System.out.println("skdsjfk");
+        sprite.draw(batch);
     }
-    
-    
+
     /**
      * Loads Sprites for entity types
      */
@@ -295,8 +280,6 @@ public class Render {
         this.otherP = new Sprite(otherPlayerTexture, 0, 0, sizeL, sizeL);
         this.minion = new Sprite(minionTexture, 0, 0, sizeS, sizeS);
     }
-
-
 
     private Sprite setSprite(Entity entity) {
         Sprite sprite;
@@ -323,81 +306,86 @@ public class Render {
     }
 
     
+    /**
+     * This method draws the background image
+     * 
+     * @param entity an entity from world
+     */
     
-    private void drawBG(Entity entity){
-                    
-            if (entity.getOwner().equals(LocalData.getClientID())) {
-                try {
-                    if (LocalData.getLocation().contentEquals("arena")) {
-                        backgroundSprite = new Sprite(backgroundTexture_2);
-                    } else if (LocalData.getLocation().contentEquals("wilderness")) {
-                        backgroundSprite = new Sprite(backgroundTexture_1);
-                    } else if (LocalData.getLocation().contentEquals("wilderness_east")) {
-                        backgroundSprite = new Sprite(backgroundTexture_3);
-                    } else if (LocalData.getLocation().contentEquals("wilderness_west")) {
-                        backgroundSprite = new Sprite(backgroundTexture_4);
-                    } else if (LocalData.getLocation().contentEquals("cave")) {
-                        backgroundSprite = new Sprite(backgroundTexture_5);
-                    } else {
-                        backgroundSprite = new Sprite(errorBG);
-                    }
-                } catch (Exception e) {
-                    System.out.println("Error in render: " + e);
+    private void drawBG(Entity entity) {
+
+        if (entity.getOwner().equals(LocalData.getClientID())) {
+            try {
+                if (LocalData.getLocation().contentEquals("arena")) {
+                    backgroundSprite = new Sprite(backgroundTexture_2);
+                } else if (LocalData.getLocation().contentEquals("wilderness")) {
+                    backgroundSprite = new Sprite(backgroundTexture_1);
+                } else if (LocalData.getLocation().contentEquals("wilderness_east")) {
+                    backgroundSprite = new Sprite(backgroundTexture_3);
+                } else if (LocalData.getLocation().contentEquals("wilderness_west")) {
+                    backgroundSprite = new Sprite(backgroundTexture_4);
+                } else if (LocalData.getLocation().contentEquals("cave")) {
+                    backgroundSprite = new Sprite(backgroundTexture_5);
+                } else {
+                    backgroundSprite = new Sprite(errorBG);
                 }
-                backgroundSprite.draw(batch);
+            } catch (Exception e) {
+                System.out.println("Error in render: " + e);
             }
+            backgroundSprite.draw(batch);
+        }
     }
+    /**
+     * This method draws entities
+     * 
+     * @param entity an entity from world
+     */
     
-    
-    private void drawEntity(Entity entity){
+    private void drawEntity(Entity entity) {
 //         if (entity.getLocation().equals(LocalData.getLocation())) {
-                if (entity.getSprite() == null) {
+        if (entity.getSprite() == null) {
 
-                    Sprite sprite = setSprite(entity);
+            Sprite sprite = setSprite(entity);
 
-                    Vector2D ownVelocity = entity.getVelocity();
-                    Vector2 velocity = new Vector2(ownVelocity.getX(), ownVelocity.getY());
-                    /*
-                     den her vÃƒÂ¦k?
-                     Vector2 vTarget = new Vector2(entity.getvxg(), entity.getvyg());
-                     */
-                    Interpolation interpolation = Interpolation.linear;
+            Vector2D ownVelocity = entity.getVelocity();
+            Vector2 velocity = new Vector2(ownVelocity.getX(), ownVelocity.getY());
+            /*
+             den her vÃƒÂ¦k?
+             Vector2 vTarget = new Vector2(entity.getvxg(), entity.getvyg());
+             */
+            Interpolation interpolation = Interpolation.linear;
 
-                    elapsed = LocalData.getDt() - lastTime;
-                    lastTime = elapsed;
-                    float updateTime = LocalData.getUpdateTime();
-                    float progess = Math.min(1f, elapsed / updateTime);
-                    float alpha = interpolation.apply(progess);
-                    /*
-                     den her ÃƒÂ¦ndres? vTarget??
-                     velocity.interpolate(vTarget, alpha, interpolation);
-                     */
+            elapsed = LocalData.getDt() - lastTime;
+            lastTime = elapsed;
+            float updateTime = LocalData.getUpdateTime();
+            float progess = Math.min(1f, elapsed / updateTime);
+            float alpha = interpolation.apply(progess);
+            /*
+             den her ÃƒÂ¦ndres? vTarget??
+             velocity.interpolate(vTarget, alpha, interpolation);
+             */
 //                    float x = entity.getX()*vPos.x;
 //                    float y = entity.getY()*vPos.y;
-                    float x = entity.getX();
-                    float y = entity.getY();
+            float x = entity.getX();
+            float y = entity.getY();
 
-                    sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
+            sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
 
-                }
+        }
 
-              
-
-                // Displays Entity Info
-                if (entity.getType() == PLAYER || entity.getType() == DOOR || entity.getType() == ENEMY) {
-                    font1.draw(batch, entity.getName().toString(), entity.getX(), entity.getY() + entity.getSprite().getHeight() + 20, 0, Align.center, false);
-                    font2.draw(batch, entity.getHp() + "", entity.getX(), entity.getY() + entity.getSprite().getHeight(), 0, Align.center, false);
-                    
-                    
+        // Displays Entity Info
+        if (entity.getType() == PLAYER || entity.getType() == DOOR || entity.getType() == ENEMY) {
+            font1.draw(batch, entity.getName().toString(), entity.getX(), entity.getY() + entity.getSprite().getHeight() + 20, 0, Align.center, false);
+            font2.draw(batch, entity.getHp() + "", entity.getX(), entity.getY() + entity.getSprite().getHeight(), 0, Align.center, false);
+            
 //        
-              
-                }
-         // Draw sprite
-                entity.getSprite().draw(batch);
+        }
+        // Draw sprite
+        entity.getSprite().draw(batch);
 //            }
-  
+
     }
-    
+
     /**
      * Draws sprites to represent entities in world
      *
@@ -406,17 +394,15 @@ public class Render {
     // Draws sprites
     private void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
 
-
         for (Entity entity : world.values()) {
 
-            
             drawBG(entity);
-          
+
         }
 
         // Sets sprites for entities
         for (Entity entity : world.values()) {
-             drawEntity(entity);
+            drawEntity(entity);
 
         }
     }
