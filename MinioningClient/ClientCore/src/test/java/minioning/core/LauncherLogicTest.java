@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.util.UUID;
 import minioning.common.data.EventData;
 import minioning.common.data.Events;
+import static minioning.common.data.Events.CREATEACCOUNT;
 import static minioning.common.data.Events.CREATEPLAYER;
 import static minioning.common.data.Events.PLAY;
 import minioning.common.data.Lists;
@@ -47,7 +48,6 @@ public class LauncherLogicTest {
 //    }
 //
 
-
     /**
      * Test of nameCheck method, of class LauncherLogic.
      */
@@ -57,7 +57,7 @@ public class LauncherLogicTest {
 
         // Arrange
         // Create Objects
-        LauncherLogic instance = new LauncherLogic();
+        LauncherLogic LLInstance = new LauncherLogic();
 
         // Create variables
         String input1 = "New Player";
@@ -65,8 +65,8 @@ public class LauncherLogicTest {
         String expResult = "NewPlayer";
 
         // Act
-        String result1 = instance.nameCheck(input1);
-        String result2 = instance.nameCheck(input2);
+        String result1 = LLInstance.nameCheck(input1);
+        String result2 = LLInstance.nameCheck(input2);
 
         // Assert
         assertEquals(expResult, result1);
@@ -90,25 +90,31 @@ public class LauncherLogicTest {
 
         // Assert
         assertTrue(Lists.getOutputList().isEmpty() == false);
+        assertTrue(Lists.getOutputList().containsKey(CREATEPLAYER));
+    }
+
+    /**
+     * Test of accountQuery method, of class LauncherLogic.
+     */
+    @Test
+    public void testAccountQuery() throws Exception {
+        System.out.println("accountQuery");
+
+        // Arrange
+        Events event = CREATEACCOUNT;
+        String username = "player1";
+        String password = "player1";
+
+        LauncherLogic LLInstance = new LauncherLogic();
+
+        // Act
+        LLInstance.accountQuery(event, username, password);
+
+        // Assert
+        assertTrue(Lists.getOutputList().isEmpty() == false);
+        assertTrue(Lists.getOutputList().containsKey(CREATEACCOUNT));
 
     }
-//
-//    /**
-//     * Test of accountQuery method, of class LauncherLogic.
-//     */
-//    @Test
-//    public void testAccountQuery() throws Exception {
-//        System.out.println("accountQuery");
-//        Events event = null;
-//        String username = "";
-//        String password = "";
-//        InetAddress IPAddress = null;
-//        DatagramSocket clientSocket = null;
-//        LauncherLogic instance = new LauncherLogic();
-//        instance.accountQuery(event, username, password, IPAddress, clientSocket);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
 //
 //    /**
 //     * Test of promt method, of class LauncherLogic.
@@ -154,8 +160,8 @@ public class LauncherLogicTest {
         // Assert
         assertTrue(Lists.getOutputList().isEmpty() == false);
         assertNotNull(testResult);
-        assertEquals(testID+";"+testEvent, testResult);
-        
+        assertEquals(testID + ";" + testEvent, testResult);
+
     }
 
 //    /**
@@ -179,5 +185,4 @@ public class LauncherLogicTest {
         assertEquals(LocalData.getClientID(), testID);
 
     }
-//    
 }

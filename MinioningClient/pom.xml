@@ -59,7 +59,6 @@
     <modules>
         <module>branding</module>
         <module>application</module>
-        <module>SilentUpdate</module>
         <module>Connection</module>
         <module>ClientCore</module>
         <module>ClientCommon</module>

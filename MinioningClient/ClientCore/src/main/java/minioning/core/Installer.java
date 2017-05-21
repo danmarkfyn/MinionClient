@@ -13,8 +13,6 @@ import org.openide.modules.ModuleInstall;
  */
 public class Installer extends ModuleInstall {
 
-    
-   
     @Override
     public void restored() {
         runLauncher();
@@ -22,22 +20,20 @@ public class Installer extends ModuleInstall {
 
     @Override
     public void uninstalled() {
-        
-        
 
         super.uninstalled(); //To change body of generated methods, choose Tools | Templates.
 
-        
     }
 
     private static void runLauncher() {
-//        t.run();
-        new Thread() {
+
+        Thread t = new Thread() {
             @Override
             public void run() {
                 javafx.application.Application.launch(Launcher.class);
             }
-        }.start();
+        };
+        t.start();
         new Thread(new Core()).start();
     }
 }

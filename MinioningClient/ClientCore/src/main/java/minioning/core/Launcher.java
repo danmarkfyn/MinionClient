@@ -4,7 +4,6 @@ package minioning.core;
  *
  * @author Jakob & Mads
  */
-
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
@@ -44,11 +43,10 @@ public class Launcher extends Application {
     /**
      * @author Jakob & Mads
      */
-
     private final int height = 200;
     private final int width = 310;
-    private static final BooleanProperty serverToken = new SimpleBooleanProperty();
-    private static StringProperty name = new SimpleStringProperty();
+    private final BooleanProperty serverToken = new SimpleBooleanProperty();
+    private StringProperty name = new SimpleStringProperty();
     private final ToggleGroup tg = new ToggleGroup();
 
     private ImageView iv = new ImageView();
@@ -156,7 +154,7 @@ public class Launcher extends Application {
                 clearEventData();
 
             } catch (Exception e) {
-
+                launcher.promt(e.toString(), e.getClass().toString());
             }
 
         });
@@ -170,7 +168,7 @@ public class Launcher extends Application {
 
         rb2.setOnAction((v) -> {
 
-            LocalData.setInetAddress("10.126.91.36");
+            LocalData.setInetAddress("10.125.14.79");
             System.out.println(LocalData.getInetAddress());
         });
 
@@ -200,6 +198,7 @@ public class Launcher extends Application {
                     }
 
                 } catch (InterruptedException ex) {
+                    launcher.promt(ex.toString(), ex.getClass().toString());
                     Exceptions.printStackTrace(ex);
                 }
             }
@@ -211,7 +210,7 @@ public class Launcher extends Application {
         playBtn.setOnAction((v) -> {
 
             launcher.play(LocalData.getClientID(), PLAY);
-
+//            close();
             primaryStage.close();
         });
 
@@ -241,7 +240,7 @@ public class Launcher extends Application {
                     launcher.CreatePlayer(name);
                     tab4.setDisable(false);
                 } catch (Exception e) {
-                    System.out.println(e);
+                    launcher.promt(e.toString(), e.getClass().toString());
                 }
                 avatarnameField.clear();
                 selectionModel.select(3);
@@ -317,7 +316,7 @@ public class Launcher extends Application {
         Scene scene = new Scene(root, width, height, Color.GAINSBORO);
 
         primaryStage.setOnCloseRequest((v) -> {
-            System.out.println("Closing");
+           close();
         });
 
         primaryStage.setScene(scene);
@@ -326,7 +325,16 @@ public class Launcher extends Application {
 
         primaryStage.show();
     }
-
+    
+    private void close(){
+           System.out.println("Closing");
+            try {
+                this.stop();
+            } catch (Exception ex) {
+                Exceptions.printStackTrace(ex);
+            }
+    }
+    
     public static void main(String[] args) throws SocketException, UnknownHostException {
         Application.launch(args);
     }

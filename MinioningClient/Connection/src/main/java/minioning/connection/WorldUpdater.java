@@ -25,12 +25,13 @@ public class WorldUpdater {
      */
     
     public synchronized static void updateWorld(String[] newWorld, Map<UUID, Entity> world) {
-        System.out.println(world.size());
+        
         world.clear();
         for (int i = 1; i < newWorld.length; i++) {
             Entity newEntity = createEntity(newWorld[i]);
             if (newEntity.getOwner().equals(LocalData.getClientID())) {
                 LocalData.setLocation(newEntity.getLocation());
+                LocalData.setHp(newEntity.getHp());
             }
             UUID ID = newEntity.getID();
             if (!world.containsKey(ID)) {
@@ -39,6 +40,7 @@ public class WorldUpdater {
                 world.replace(ID, newEntity);
             }
         }
+        System.out.println(world.size());
     }
 
     /**
