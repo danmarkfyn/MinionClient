@@ -6,7 +6,7 @@ import java.util.UUID;
 
 /**
  *
- * @author Mogensen
+ * @author Jakob & Mads
  */
 public class Entity implements Serializable {
 
@@ -135,7 +135,7 @@ public class Entity implements Serializable {
     }
 
     public Entity(UUID ID, String name, int x, int y, String location) {
-//        this.owner = owner;
+
         this.name = name;
         this.x = x;
         this.y = y;
