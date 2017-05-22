@@ -99,7 +99,6 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
             if (!qPressed) {
 
                 getOutputList().put(Events.SKILLQ, mouseClick(Events.SKILLQ));
-//                System.out.println("Q is pressed");
                 qPressed = true;
             }
         } else {
@@ -107,13 +106,9 @@ public class VisualProcess implements IProcessingService, ApplicationListener {
 
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-//            getOutputList().put(Events.SKILLW, "");
-//            System.out.println("W is pressed");
         }
         if (Gdx.input.isKeyPressed(Input.Keys.E)) {
             if (!ePressed) {
-//                getOutputList().put(Events.SKILLE, "");
-//                System.out.println("E is pressed");
                 ePressed = true;
             }
 

@@ -9,7 +9,7 @@ import org.openide.modules.ModuleInstall;
 
 /**
  *
- * @author Jakob
+ * @author Jakob & Mads
  */
 public class Installer extends ModuleInstall {
 

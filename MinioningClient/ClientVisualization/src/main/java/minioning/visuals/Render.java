@@ -67,7 +67,7 @@ public class Render {
 
     // Shaperender
     private ShapeRenderer sr;
-    
+
     //  Get local values
     private float width = LocalData.getWidth();
     private float height = LocalData.getWidth();
@@ -187,7 +187,7 @@ public class Render {
     }
 
     private void drawHP() {
-        
+
         sr.begin(ShapeType.Filled);
         sr.setColor(Color.BLACK);
         sr.rect(LocalData.getWidth() - 290, 15, 205, 55);
@@ -203,7 +203,7 @@ public class Render {
         sr.rect(LocalData.getWidth() - 300, 25, LocalData.getHp() * 2, 50);
         sr.end();
 
-        font4.draw(batch, "HP: " + LocalData.getHp(),100, 100, 100, Align.right, false);
+        font4.draw(batch, "HP: " + LocalData.getHp(), 100, 100, 100, Align.right, false);
 
     }
 
@@ -270,6 +270,9 @@ public class Render {
         if (s.equals(INMENU)) {
 
             widthAlign = 300;
+
+            font3.draw(batch, "Legend", 140, 500, 0, Align.right, false);
+            
 
             setMenuIcon(125, 400, player, "PLAYER: ");
             setMenuIcon(125, 350, enemy, "ENEMY: ");
@@ -358,7 +361,6 @@ public class Render {
      * @param entity an entity from world
      */
     private void drawEntity(Entity entity) {
-//         if (entity.getLocation().equals(LocalData.getLocation())) {
         if (entity.getSprite() == null) {
 
             Sprite sprite = setSprite(entity);
@@ -408,7 +410,7 @@ public class Render {
     // Draws sprites
     private void drawSprites(ConcurrentHashMap<UUID, Entity> world) {
 
-            drawBG();
+        drawBG();
 
         // Sets sprites for entities
         for (Entity entity : world.values()) {

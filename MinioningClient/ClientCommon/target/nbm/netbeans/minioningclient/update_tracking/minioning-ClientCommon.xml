@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><module codename="minioning.ClientCommon">
-    <module_version install_time="1495194033763" last="true" origin="installer" specification_version="1.0">
+    <module_version install_time="1495419664686" last="true" origin="installer" specification_version="1.0">
         <file crc="1187742182" name="config/Modules/minioning-ClientCommon.xml"/>
         <file crc="3421092373" name="modules/ext/minioning.ClientCommon/com-badlogicgames-gdx/gdx.jar"/>
-        <file crc="1252706542" name="modules/minioning-ClientCommon.jar"/>
+        <file crc="2251072859" name="modules/minioning-ClientCommon.jar"/>
+        <file crc="2051985638" name="update_tracking/minioning-ClientCommon.xml"/>
     </module_version>
 </module>

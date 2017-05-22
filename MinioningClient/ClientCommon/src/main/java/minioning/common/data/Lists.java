@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
- * @author Jakob
+ * @author Jakob & Mads
  */
 public class Lists {
 

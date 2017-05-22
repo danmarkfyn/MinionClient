@@ -9,7 +9,7 @@ import java.util.UUID;
 
 /**
  *
- * @author Jakob
+ * @author Jakob & Mads
  */
 public class LocalData {
 
@@ -114,7 +114,4 @@ public class LocalData {
     public static void setClientID(UUID ClientID) {
         LocalData.ClientID = ClientID;
     }
-
-    
-    
 }

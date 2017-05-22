@@ -23,15 +23,10 @@ import static minioning.common.data.Lists.putOutput;
 import minioning.common.data.LocalData;
 import static minioning.common.data.LocalData.setClientID;
 
-/**
- * 
- * This class handles the logic of the launcher. It allows to put login and other server queries
- * into the event list for transmission to the server for handeling.
- */
 
 /**
  *
- * @author Jakob
+ * @author Jakob & Mads
  * 
  * This class handles the logic of the launcher. It allows to put login and other server queries
  * into the event list for transmission to the server for handeling.
@@ -84,7 +79,6 @@ public final class LauncherLogic{
     public final void accountQuery(Events event, String username, String password){
         String login = ";" + event + ";" + username + ";" + password;
         putOutput(event, login);
-        System.out.println("putting event " + event);
     }
 
     /**
@@ -144,7 +138,6 @@ public final class LauncherLogic{
     public void setUUID(String raw) {
 
         UUID ID = UUID.fromString(raw);
-        System.out.println(ID);
         setClientID(ID);
     }
 }

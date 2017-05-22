@@ -40,7 +40,6 @@ public class WorldUpdater {
                 world.replace(ID, newEntity);
             }
         }
-        System.out.println(world.size());
     }
 
     /**

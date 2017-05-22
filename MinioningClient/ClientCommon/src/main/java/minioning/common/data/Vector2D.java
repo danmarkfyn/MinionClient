@@ -1,5 +1,11 @@
 package minioning.common.data;
 
+
+
+/**
+ * 
+ * @author Jakob & Mads
+ */
 public class Vector2D {
     
     private float x; //the magnitude on the x-axis
@@ -24,7 +30,6 @@ public class Vector2D {
 
     private void calculateDirection() {
         this.direction = (float) Math.asin(x/getMagnitude());
-//        this.direction = (float) Math.atan(y / x);
     }
 
     public float getMagnitude() {
